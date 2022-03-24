@@ -14,7 +14,11 @@ function useRead() {
     try {
       const response = await fetch(url)
       const payload = await response.json()
-      setData(payload)
+      if (payload && payload.error) {
+        setError(payload)
+      } else {
+        setData(payload)
+      }
     } catch (error) {
       setError({
         message: String(error),

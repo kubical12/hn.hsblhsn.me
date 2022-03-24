@@ -25,7 +25,7 @@ const useFeedStatus = (): FeedStatusT | null => {
 
   useEffect(() => {
     const param = searchParams.get('page')
-    if (param !== null) {
+    if (param) {
       const page: number = parseInt(param, 10)
       if (!isNaN(page)) {
         setFeedPage(Math.max(1, page))
