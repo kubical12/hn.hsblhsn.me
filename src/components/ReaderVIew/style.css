@@ -19,7 +19,7 @@
 }
 
 .reader-view {
-  @apply text-lg;
+  @apply text-lg text-justify;
 }
 
 .reader-view img {
