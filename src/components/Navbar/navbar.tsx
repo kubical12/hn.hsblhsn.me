@@ -28,10 +28,7 @@ export function Navbar() {
         <StyledNavigationList $align={ALIGN.left}>
           <StyledNavigationItem>
             <HeadingLarge>
-              <Link to="/" className="sm:hidden">
-                HN
-              </Link>
-              <Link to="/" className="hidden sm:block">
+              <Link to="/">
                 HackerNews
               </Link>
             </HeadingLarge>
