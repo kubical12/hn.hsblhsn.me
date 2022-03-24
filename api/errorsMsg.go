@@ -27,7 +27,7 @@ func (m ErrorMsg) String() string {
 // HTTPError returns an error message as a JSON response.
 func HTTPError(w http.ResponseWriter, err error, code int, msg string) {
 	if err != nil {
-		logger.Error(
+		zap.L().Error(
 			"error occurred in handler",
 			zap.Error(err),
 			zap.Int("code", code),
