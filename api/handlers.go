@@ -65,6 +65,7 @@ func (h *Handler) feedList(w http.ResponseWriter, r *http.Request) {
 		HTTPError(w, err, http.StatusInternalServerError, "Failed to get feed items.")
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(feed); err != nil {
 		HTTPError(w, err, http.StatusInternalServerError, "Failed to encode feed items.")
 		return
@@ -86,6 +87,7 @@ func (h *Handler) feedItem(w http.ResponseWriter, r *http.Request) {
 		HTTPError(w, err, http.StatusInternalServerError, "Failed to get feed item.")
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(feedItem); err != nil {
 		HTTPError(w, err, http.StatusInternalServerError, "Failed to encode feed item.")
 		return
