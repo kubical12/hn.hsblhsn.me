@@ -1,0 +1,28 @@
+syntax = "proto3";
+package readabilitypb;
+
+option go_package = "./readabilityclient";
+
+message GetReadableDocumentRequest {
+  string identifier = 1;
+  string html = 2;
+}
+
+message GetReadableDocumentResponse {
+  string title = 1;
+  string body = 2;
+}
+
+message GetReadinessInfoRequest {
+  string identifier = 1;
+}
+
+message GetReadinessInfoResponse {
+  bool ready = 1;
+}
+
+service Readability {
+  rpc GetReadableDocument (GetReadableDocumentRequest) returns (GetReadableDocumentResponse) {}
+  rpc GetReadinessInfo (GetReadinessInfoRequest) returns (GetReadinessInfoResponse) {}
+}
+

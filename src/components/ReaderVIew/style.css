@@ -1,0 +1,27 @@
+.reader-view h1 {
+  @apply text-4xl font-semibold pt-3;
+}
+
+.reader-view h2 {
+  @apply text-3xl font-semibold pt-3;
+}
+
+.reader-view h3 {
+  @apply text-2xl font-semibold pt-3;
+}
+
+.reader-view h4 {
+  @apply text-xl font-semibold pt-3;
+}
+
+.reader-view p {
+  @apply pb-3 pt-1;
+}
+
+.reader-view {
+  @apply text-lg;
+}
+
+.reader-view img {
+  @apply block ml-auto mr-auto w-1/2;
+}
