@@ -8,7 +8,12 @@ import (
 
 func main() {
 	logger, _ := zap.NewProduction()
-	defer logger.Sync()
+	defer func() {
+		err := logger.Sync()
+		if err != nil {
+			panic(err)
+		}
+	}()
 	zap.ReplaceGlobals(logger)
 
 	logger.Info("main: starting server...")
