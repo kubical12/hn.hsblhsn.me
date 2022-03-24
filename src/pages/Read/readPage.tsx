@@ -4,8 +4,10 @@ import { ErrorScreen } from '../../components/ErrorScreen'
 import { LoadingScreen } from './loading'
 import { ReaderView } from '../../components/ReaderVIew'
 import useRead from '../../hooks/read'
+import { useStyletron } from 'baseui'
 
 export function FeedPage() {
+  const [,theme] = useStyletron()
   const { loading, data, error } = useRead()
   let content: JSX.Element | null = null
   if (loading) {
@@ -24,6 +26,8 @@ export function FeedPage() {
           $style={{
             paddingTop: '1.5rem',
             paddingBottom: '1.5rem',
+            paddingRight: theme.sizing.scale800,
+            paddingLeft: theme.sizing.scale800,
           }}
         >
           {content}

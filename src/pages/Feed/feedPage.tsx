@@ -4,8 +4,10 @@ import { Container } from '../../components/Layout'
 import useFeed from '../../hooks/feed'
 import { ErrorScreen } from '../../components/ErrorScreen'
 import { LoadingScreen } from './loading'
+import { useStyletron } from 'baseui'
 
 export function FeedPage() {
+  const [,theme] = useStyletron()
   const { loading, data, error } = useFeed()
   let content: JSX.Element | null = null
 
@@ -25,6 +27,8 @@ export function FeedPage() {
           $style={{
             paddingTop: '1.5rem',
             paddingBottom: '1.5rem',
+            paddingRight: theme.sizing.scale800,
+            paddingLeft: theme.sizing.scale800,
           }}
         >
           {content}
