@@ -35,5 +35,7 @@ func HTTPError(w http.ResponseWriter, err error, code int, msg string) {
 		)
 	}
 	w.WriteHeader(code)
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Cache-Control", "no-cache")
 	fmt.Fprintln(w, ErrorMsg{Message: msg})
 }
