@@ -10,6 +10,7 @@ import (
 	"github.com/hsblhsn/hn.hsblhsn.me/api/internal/clients"
 	"github.com/hsblhsn/queues"
 	"github.com/pkg/errors"
+	"golang.org/x/sync/errgroup"
 )
 
 // hnFeedItemResponse is the response from HackerNews API.
@@ -66,14 +67,20 @@ func (h *HackerNews) GetFeedItem(ctx context.Context, id int, readability bool) 
 		return nil, errors.Wrap(err, "hackernews: error while decoding item")
 	}
 	item := NewFeedItemFromHN(&itemResp)
-	if err := item.UseOpengraph(ctx); err != nil {
-		return nil, err
-	}
+
+	g, ctx := errgroup.WithContext(ctx)
+	g.Go(func() error {
+		return item.UseOpengraph(ctx)
+	})
 	if readability {
-		if err := item.UseReadability(ctx); err != nil {
-			return nil, err
-		}
+		g.Go(func() error {
+			return item.UseReadability(ctx)
+		})
 	}
+	if err := g.Wait(); err != nil {
+		return nil, errors.Wrap(err, "hackernews: error while fetching item contents")
+	}
+
 	return item, nil
 }
 
