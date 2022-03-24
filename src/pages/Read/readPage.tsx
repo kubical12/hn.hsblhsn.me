@@ -26,8 +26,8 @@ export function FeedPage() {
           $style={{
             paddingTop: '1.5rem',
             paddingBottom: '1.5rem',
-            paddingRight: theme.sizing.scale800,
-            paddingLeft: theme.sizing.scale800,
+            paddingRight: theme.sizing.scale700,
+            paddingLeft: theme.sizing.scale700,
           }}
         >
           {content}
