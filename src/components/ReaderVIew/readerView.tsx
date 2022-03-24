@@ -35,11 +35,12 @@ export function ReaderView({ feedItem, font }: ReaderViewProps) {
     BaseButton: {
       style: {
         width: '100%',
+        overflow: 'hidden',
       },
     },
   }
 
-  if (feedItem === null) {
+  if (!feedItem) {
     return (
       <ErrorScreen
         error={{
@@ -85,6 +86,7 @@ export function ReaderView({ feedItem, font }: ReaderViewProps) {
             kind={KIND.secondary}
             startEnhancer={<ChevronLeft />}
             onClick={goBack}
+            shape={SHAPE.pill}
             overrides={fullWidthBtn}
           >
             Back
@@ -95,11 +97,12 @@ export function ReaderView({ feedItem, font }: ReaderViewProps) {
             $as={'a'}
             href={feedItem.link}
             kind={KIND.secondary}
+            shape={SHAPE.pill}
             endEnhancer={<ChevronRight />}
             onClick={openInHN}
             overrides={fullWidthBtn}
           >
-            Open in HackerNews
+            HackerNews
           </Button>
         </FlexGridItem>
       </FlexGrid>

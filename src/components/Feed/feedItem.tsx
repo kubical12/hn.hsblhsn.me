@@ -20,13 +20,12 @@ export function FeedItem({ feedItem }: { feedItem: FeedItemT | null }) {
 
   // do not render null feedItems or feedItems without a body or link.
   // these kind of feedItems does not add any value to the feed.
-  if (feedItem === null) {
+  if (!feedItem) {
     return null
   }
   if (feedItem.body === '' || feedItem.link === '') {
     return null
   }
-
   // linkToReaderView props.
   // add pointer cursor to the element.
   // go to the reader view on click.
@@ -86,7 +85,7 @@ function FeedItemInteractions({ feedItem }: { feedItem: FeedItemT }) {
 
 // FeedItemThumbnail renders the thumbnail of the feedItem.
 function FeedItemThumbnail({ images }: { images: Array<ImageT> | null }) {
-  if (images === null || images.length === 0) {
+  if (!images || images.length === 0) {
     return null
   }
   const primaryImage = findBestImage(images)
@@ -154,8 +153,8 @@ function NoOpLink({
   href,
   children,
 }: {
-  href: string;
-  children: string | JSX.Element;
+  href: string
+  children: string | JSX.Element
 }) {
   const noop = useCallback((e) => {
     e.preventDefault()

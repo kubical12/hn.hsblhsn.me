@@ -15,7 +15,7 @@ type FeedProps = {
 
 // FeedList renders a list of feedItems.
 export function FeedList({ feed }: FeedProps) {
-  if (feed.feedItems === null) {
+  if (!feed) {
     return (
       <ErrorScreen
         error={{
@@ -25,7 +25,8 @@ export function FeedList({ feed }: FeedProps) {
       />
     )
   }
-  if (feed.feedItems === null || feed.feedItems.length === 0) {
+  console.log(feed.feedItems)
+  if (!feed.feedItems || feed.feedItems.length === 0) {
     return (
       <ErrorScreen
         error={{
