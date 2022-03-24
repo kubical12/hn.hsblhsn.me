@@ -1,11 +1,11 @@
-import { HeadingLarge, Label4 } from 'baseui/typography'
+import { HeadingLarge } from 'baseui/typography'
 import { Block } from 'baseui/block'
 import { Fragment, useCallback } from 'react'
 import { FeedItemT } from '../../types'
 import { ErrorScreen } from '../ErrorScreen'
 import { useStyletron } from 'baseui'
 import { FeedItemSource } from '../Feed'
-import { Button, KIND, SIZE, SHAPE } from 'baseui/button'
+import { Button, KIND, SHAPE } from 'baseui/button'
 import { FlexGrid, FlexGridItem } from 'baseui/flex-grid'
 import { ChevronLeft, ChevronRight } from 'baseui/icon'
 import './style.css'
@@ -57,17 +57,6 @@ export function ReaderView({ feedItem, font }: ReaderViewProps) {
           marginBottom: theme.sizing.scale1000,
         })}
       >
-        <Label4>
-          <Button
-            size={SIZE.mini}
-            shape={SHAPE.pill}
-            kind={KIND.minimal}
-            onClick={goBack}
-            startEnhancer={<ChevronLeft />}
-          >
-            Back to previous page
-          </Button>
-        </Label4>
         <HeadingLarge>{feedItem.title}</HeadingLarge>
         <FeedItemSource feedItem={feedItem} />
       </Block>
