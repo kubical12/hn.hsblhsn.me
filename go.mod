@@ -9,6 +9,7 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/hsblhsn/queues v0.0.0-20220219165404-d2097de75d81
 	github.com/microcosm-cc/bluemonday v1.0.18
+	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
 	github.com/otiai10/opengraph/v2 v2.1.0
 	github.com/pkg/errors v0.9.1
 	go.uber.org/zap v1.21.0

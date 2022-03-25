@@ -12,6 +12,35 @@ import (
 	"github.com/pkg/errors"
 )
 
+type ImageSize string
+
+func (f ImageSize) String() string {
+	switch f {
+	case ImageSizeThumbnail, ImageSizeFull:
+		return string(f)
+	default:
+		return string(ImageSizeFull)
+	}
+}
+
+func (f ImageSize) Dimension() (height, width uint) {
+	switch f {
+	case ImageSizeThumbnail:
+		return 180, 180
+	case ImageSizeFull:
+		return 560, 560
+	default:
+		return 560, 560
+	}
+}
+
+const (
+	// ImageSizeThumbnail is the size of the thumbnail image.
+	ImageSizeThumbnail ImageSize = "thumbnail"
+	// ImageSizeFull is the size of the full image.
+	ImageSizeFull ImageSize = "full"
+)
+
 // FeedItemImage is a single image.
 type FeedItemImage struct {
 	Type   string `json:"type"`
@@ -32,7 +61,7 @@ func NewFeedImage(ogImg opengraph.Image, proxyEndpoint, feedItemLink string) *Fe
 	if secureURL := ogImg.SecureURL; secureURL != "" {
 		uri = secureURL
 	}
-	img.URL = proxyImgSrc(uri, proxyEndpoint, feedItemLink)
+	img.URL = proxyImgSrc(uri, proxyEndpoint, feedItemLink, ImageSizeThumbnail)
 	return img
 }
 
@@ -47,7 +76,7 @@ func proxyAllImgSrc(r io.Reader, proxyEndpoint, feedItemLink string) (string, er
 		if !ok {
 			return
 		}
-		proxied := proxyImgSrc(src, proxyEndpoint, feedItemLink)
+		proxied := proxyImgSrc(src, proxyEndpoint, feedItemLink, ImageSizeFull)
 		s.SetAttr("src", proxied)
 	}
 	doc.Find("img").Each(imgIterator)
@@ -59,10 +88,10 @@ func proxyAllImgSrc(r io.Reader, proxyEndpoint, feedItemLink string) (string, er
 }
 
 // proxyImgSrc returns a proxied image src.
-func proxyImgSrc(imgSrc, proxyEndpoint, feedItemLink string) string {
+func proxyImgSrc(imgSrc, proxyEndpoint, feedItemLink string, size ImageSize) string {
 	base, _ := url.Parse(feedItemLink)
 	escapedURI := url.QueryEscape(joinUrls(base, imgSrc))
-	return fmt.Sprintf("%s?imageUrl=%s", proxyEndpoint, escapedURI)
+	return fmt.Sprintf("%s?imageUrl=%s&size=%s", proxyEndpoint, escapedURI, size)
 }
 
 // joinUrls returns a absolute url if relpath is relative.

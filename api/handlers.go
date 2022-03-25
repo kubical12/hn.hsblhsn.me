@@ -15,6 +15,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/hsblhsn/hn.hsblhsn.me/api/internal/clients"
 	"github.com/hsblhsn/hn.hsblhsn.me/api/internal/hackernews"
+	"github.com/nfnt/resize"
 )
 
 type Handler struct {
@@ -42,7 +43,7 @@ func (h *Handler) RegisterRoutes(r *mux.Router) {
 			Methods(http.MethodGet).
 			Handler(AttachMiddlewares(h.feedItem, DefaultReqTimeout, DefaultCacheMaxAge))
 		r.Path("/feed_images").
-			Queries("imageUrl", "{imageUrl}").
+			Queries("imageUrl", "{imageUrl}", "size", "{size:full|thumbnail}").
 			Methods(http.MethodGet).
 			Handler(AttachMiddlewares(h.feedImage, DefaultReqTimeout, DefaultCacheMaxAge))
 	})
@@ -102,17 +103,11 @@ func (h *Handler) feedImage(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), time.Second*5)
 	defer cancel()
 	r = r.WithContext(ctx)
-
 	var (
-		params   = mux.Vars(r)
-		url      = params["imageUrl"]
-		fallback = params["fallback"]
+		params = mux.Vars(r)
+		url    = params["imageUrl"]
+		size   = hackernews.ImageSize(params["size"])
 	)
-	if fallback == "true" {
-		ImgErr(w, nil, http.StatusOK, "Fallback image requested")
-		return
-	}
-
 	reader, err := clients.SendHTTPRequest(r.Context(), url)
 	if err != nil {
 		ImgErr(w, err, http.StatusInternalServerError, "Failed to get image.")
@@ -124,6 +119,8 @@ func (h *Handler) feedImage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	width, height := size.Dimension()
+	img = resize.Thumbnail(width, height, img, resize.NearestNeighbor)
 	availableMediaTypes := []contenttype.MediaType{
 		contenttype.NewMediaType("image/jpeg"),
 		contenttype.NewMediaType("image/png"),
