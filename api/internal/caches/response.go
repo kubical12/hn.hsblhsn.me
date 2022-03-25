@@ -34,12 +34,15 @@ func (w *CachedResponseWriter) WriteHeader(statusCode int) {
 }
 
 func (w *CachedResponseWriter) send(secs int) {
-	w.WriteHeader(w.statusCode)
+	if w.statusCode == 0 {
+		w.statusCode = http.StatusOK
+	}
 	if w.statusCode == http.StatusOK {
 		w.Header().Set("Cache-Control", fmt.Sprintf("public, max-age=%d", secs))
 	} else {
 		w.Header().Set("Cache-Control", "no-cache")
 	}
+	w.ResponseWriter.WriteHeader(w.statusCode)
 	_, _ = io.Copy(w.ResponseWriter, w.response)
 }
 
