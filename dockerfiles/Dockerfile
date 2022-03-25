@@ -22,7 +22,9 @@ WORKDIR /readability
 COPY requirements.txt requirements.txt
 COPY Makefile Makefile
 RUN make dep-readability
+WORKDIR /app
 COPY --from=api-builder /api/bin/hn /app/hn
+RUN rm -rf /readability
 
 EXPOSE 8080
 CMD ["/app/hn"]

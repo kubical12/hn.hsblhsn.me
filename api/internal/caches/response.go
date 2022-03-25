@@ -4,7 +4,9 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"mime"
 	"net/http"
+	"path"
 	"time"
 
 	"go.uber.org/zap"
@@ -45,26 +47,32 @@ func Middleware(fn http.Handler, cacheTimeout time.Duration) http.Handler {
 	secs := int(cacheTimeout.Seconds())
 	cache := Cache()
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			fn.ServeHTTP(w, r)
+			return
+		}
+
 		rw := NewCachedResponseWriter(w)
 		defer rw.send(secs)
-
 		cacheKey := []byte("server-handler" + r.RequestURI)
-		if r.Method == http.MethodGet {
-			if item, err := cache.Get(cacheKey); err == nil {
-				w.Header().Set("X-Cache", "HIT")
-				w.WriteHeader(http.StatusOK)
-				_, _ = w.Write(item)
-				return
-			}
+
+		if item, err := cache.Get(cacheKey); err == nil {
+			cType := mime.TypeByExtension(path.Ext(r.URL.Path))
+			rw.Header().Set("X-Cache", "HIT")
+			rw.Header().Set("Content-Type", cType)
+			rw.WriteHeader(http.StatusOK)
+			_, _ = rw.Write(item)
+			return
 		}
 
 		w.Header().Set("X-Cache", "MISS")
 		fn.ServeHTTP(rw, r)
-		if r.Method == http.MethodGet && rw.statusCode == http.StatusOK {
-			err := cache.Set(cacheKey, rw.response.Bytes(), secs)
-			if err != nil {
-				zap.L().Error("caches: failed to cache handler response", zap.Error(err))
-			}
+		if rw.statusCode != http.StatusOK {
+			return
+		}
+		err := cache.Set(cacheKey, rw.response.Bytes(), secs)
+		if err != nil {
+			zap.L().Error("caches: failed to cache handler response", zap.Error(err))
 		}
 	})
 }
