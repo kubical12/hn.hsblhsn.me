@@ -19,12 +19,8 @@ build:
 
 
 
-docker-build-api:
-	@docker build -t hn-api -f ./dockerfiles/api.Dockerfile .
-docker-build-ui:
-	@docker build -t hn-ui -f ./dockerfiles/api.Dockerfile .
 docker-build:
-	@docker build -t hn -f ./dockerfiles/Dockerfile .
+	@docker build -t hn -f ./Dockerfile .
 
 
 
