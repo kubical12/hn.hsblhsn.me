@@ -25,10 +25,12 @@ func main() {
 	go readabilityserver.Initialize()
 
 	// Start the server.
-	router := mux.NewRouter()
-	domainFilter := router.Host(os.Getenv("DOMAIN")).Subrouter()
-	apiV1 := domainFilter.PathPrefix("/api/v1").Subrouter()
-	root := apiV1.PathPrefix("/").Subrouter()
+	var (
+		domain = os.Getenv("DOMAIN")
+		router = mux.NewRouter()
+		apiV1  = router.Host(domain).PathPrefix("/api/v1").Subrouter()
+		root   = router.Host(domain).PathPrefix("/").Subrouter()
+	)
 
 	api.RegisterRoutes(apiV1)
 	spa.RegisterRoutes(root, embedded.Assets)

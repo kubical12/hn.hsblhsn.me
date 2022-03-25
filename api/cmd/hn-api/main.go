@@ -2,10 +2,9 @@ package main
 
 import (
 	"github.com/gorilla/mux"
+	"github.com/hsblhsn/hn.hsblhsn.me/api"
 	"github.com/hsblhsn/hn.hsblhsn.me/api/internal/grpc/readabilityserver"
 	"github.com/hsblhsn/hn.hsblhsn.me/api/internal/servers"
-	"github.com/hsblhsn/hn.hsblhsn.me/api/internal/spa"
-	"github.com/hsblhsn/hn.hsblhsn.me/embedded"
 	"go.uber.org/zap"
 )
 
@@ -23,7 +22,7 @@ func main() {
 
 	// Start the server.
 	router := mux.NewRouter()
-	spa.RegisterRoutes(router.PathPrefix("/").Subrouter(), embedded.Assets)
+	api.RegisterRoutes(router.PathPrefix("/api/v1").Subrouter())
 	if err := servers.Start(router); err != nil {
 		logger.Fatal("main: could not start server", zap.Error(err))
 	}
