@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.0
+	github.com/elnormous/contenttype v1.0.2
 	github.com/gorilla/mux v1.8.0
 	github.com/hsblhsn/queues v0.0.0-20220219165404-d2097de75d81
 	github.com/microcosm-cc/bluemonday v1.0.18
