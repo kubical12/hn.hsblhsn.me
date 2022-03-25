@@ -17,7 +17,11 @@ COPY . .
 COPY --from=ui-builder /ui/embedded/dist ./embedded/dist
 RUN make build
 
-FROM python:3.9-bullseye
+FROM python:3.9-slim
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y make \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 WORKDIR /readability
 COPY requirements.txt requirements.txt
 COPY Makefile Makefile
