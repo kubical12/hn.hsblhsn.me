@@ -2,12 +2,15 @@ package api
 
 import (
 	"encoding/json"
-	"io"
+	"image"
+	"image/jpeg"
+	"image/png"
 	"net/http"
 	"strconv"
 	"sync"
 	"time"
 
+	"github.com/elnormous/contenttype"
 	"github.com/gorilla/mux"
 	"github.com/hsblhsn/hn.hsblhsn.me/api/internal/clients"
 	"github.com/hsblhsn/hn.hsblhsn.me/api/internal/hackernews"
@@ -92,16 +95,47 @@ func (h *Handler) feedItem(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) feedImage(w http.ResponseWriter, r *http.Request) {
 	var (
-		params = mux.Vars(r)
-		url    = params["imageUrl"]
+		params   = mux.Vars(r)
+		url      = params["imageUrl"]
+		fallback = params["fallback"]
 	)
-	reader, err := clients.SendHTTPRequest(r.Context(), url)
-	if err != nil {
-		HTTPError(w, err, http.StatusInternalServerError, "Failed to get image.")
+	if fallback == "true" {
+		ImgErr(w, nil, http.StatusOK, "Fallback image requested")
 		return
 	}
-	if _, err := io.Copy(w, reader); err != nil {
-		HTTPError(w, err, http.StatusInternalServerError, "Failed to copy image.")
+
+	reader, err := clients.SendHTTPRequest(r.Context(), url)
+	if err != nil {
+		ImgErr(w, err, http.StatusInternalServerError, "Failed to get image.")
+		return
+	}
+	img, _, err := image.Decode(reader)
+	if err != nil {
+		ImgErr(w, err, http.StatusInternalServerError, "Failed to decode image.")
+		return
+	}
+
+	availableMediaTypes := []contenttype.MediaType{
+		contenttype.NewMediaType("image/jpeg"),
+		contenttype.NewMediaType("image/png"),
+		contenttype.NewMediaType("image/apng"),
+	}
+	accepted, _, err := contenttype.GetAcceptableMediaType(r, availableMediaTypes)
+	if err != nil {
+		ImgErr(w, err, http.StatusInternalServerError, "Please pass a valid Accept header")
+		return
+	}
+
+	if accepted.Subtype == "png" {
+		w.Header().Set("Content-Type", "image/png")
+		err = png.Encode(w, img)
+	} else if accepted.Type == "image" || accepted.Subtype == "jpeg" {
+		w.Header().Set("Content-Type", "image/jpeg")
+		err = jpeg.Encode(w, img, nil)
+	}
+
+	if err != nil {
+		ImgErr(w, err, http.StatusInternalServerError, "Failed to encode image.")
 		return
 	}
 }

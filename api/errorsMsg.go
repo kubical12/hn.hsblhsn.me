@@ -1,9 +1,13 @@
 package api
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"image"
+	"image/jpeg"
 	"net/http"
+	"sync"
 
 	"go.uber.org/zap"
 )
@@ -38,4 +42,20 @@ func HTTPError(w http.ResponseWriter, err error, code int, msg string) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Cache-Control", "no-cache")
 	fmt.Fprintln(w, ErrorMsg{Message: msg})
+}
+
+var (
+	_ImgErrBytes []byte
+	_ImgErrOnce  sync.Once
+)
+
+func ImgErr(w http.ResponseWriter, err error, code int, msg string) {
+	_ImgErrOnce.Do(func() {
+		img := image.NewRGBA(image.Rectangle{})
+		writer := bytes.NewBuffer(_ImgErrBytes)
+		if err := jpeg.Encode(writer, img, nil); err != nil {
+			panic(err)
+		}
+	})
+	_, _ = w.Write(_ImgErrBytes)
 }
