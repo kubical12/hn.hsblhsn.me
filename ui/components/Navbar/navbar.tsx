@@ -28,14 +28,16 @@ export function Navbar() {
         <StyledNavigationList $align={ALIGN.left}>
           <StyledNavigationItem>
             <HeadingLarge>
-              <Link to="/">
-                HackerNews
-              </Link>
+              <Link to="/">HackerNews</Link>
             </HeadingLarge>
           </StyledNavigationItem>
         </StyledNavigationList>
       </HeaderNavigation>
-      <Block className="mb-16"></Block>
+      <Block
+        $style={{
+          marginBottom: '5rem',
+        }}
+      />
     </Block>
   )
 }
