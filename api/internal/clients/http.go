@@ -33,6 +33,7 @@ func SendHTTPRequest(ctx context.Context, url string) (io.ReadCloser, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, "clients: error while creating items request")
 	}
+	req.Header.Set("User-Agent", "Hackernews Reader By @hsblhsn")
 	resp, err := HTTP().Do(req)
 	if err != nil {
 		return nil, errors.Wrap(err, "clients: error while fetching items")
