@@ -1,4 +1,6 @@
-const HOST = 'http://localhost:8080'
+import process from 'process'
+
+const HOST = `${process.env.VITE_APP_API_HOST || ''}`
 const BASE_PATH = `${HOST}/api/v1`
 
 export const ENDPOINTS = {
