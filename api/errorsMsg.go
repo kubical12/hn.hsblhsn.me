@@ -57,5 +57,6 @@ func ImgErr(w http.ResponseWriter, err error, code int, msg string) {
 			panic(err)
 		}
 	})
+	w.Header().Set("Content-Type", "image/jpeg")
 	_, _ = w.Write(_ImgErrBytes)
 }

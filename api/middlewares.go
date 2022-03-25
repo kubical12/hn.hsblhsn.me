@@ -4,13 +4,15 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/hsblhsn/hn.hsblhsn.me/api/internal/caches"
 )
 
 // AttachMiddlewares attaches necessary middlewares to the given handler.
 func AttachMiddlewares(fn http.HandlerFunc, reqTimeout, cacheTimeout time.Duration) http.Handler {
 	timeoutMsg := ErrorMsg{Message: "Request timed out"}
 	h := http.TimeoutHandler(fn, reqTimeout, timeoutMsg.String())
-	return CSP(CORS(CacheControl(h, cacheTimeout)))
+	return CSP(CORS(caches.Middleware(h, cacheTimeout)))
 }
 
 // CORS adds CORS headers to the response.

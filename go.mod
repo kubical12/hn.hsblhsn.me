@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.0
+	github.com/coocood/freecache v1.2.1
 	github.com/elnormous/contenttype v1.0.2
 	github.com/gorilla/mux v1.8.0
 	github.com/hsblhsn/queues v0.0.0-20220219165404-d2097de75d81
@@ -20,6 +21,7 @@ require (
 require (
 	github.com/andybalholm/cascadia v1.3.1 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
+	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.7 // indirect

@@ -1,12 +1,16 @@
 package clients
 
 import (
+	"bytes"
 	"context"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"sync"
 
+	"github.com/hsblhsn/hn.hsblhsn.me/api/internal/caches"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 )
 
 const (
@@ -29,6 +33,11 @@ func HTTP() *http.Client {
 // SendHTTPRequest sends an HTTP request.
 // If the context is canceled, it returns an error.
 func SendHTTPRequest(ctx context.Context, url string) (io.ReadCloser, error) {
+	cache := caches.Cache()
+	val, err := cache.Get([]byte(url))
+	if err == nil {
+		return ioutil.NopCloser(bytes.NewReader(val)), nil
+	}
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "clients: error while creating items request")
@@ -42,5 +51,14 @@ func SendHTTPRequest(ctx context.Context, url string) (io.ReadCloser, error) {
 		return nil, errors.Errorf("clients: error while fetching items: %d", resp.StatusCode)
 	}
 	reader := http.MaxBytesReader(nil, resp.Body, HTTPMaxBodyLimit)
-	return reader, nil
+
+	val, err = ioutil.ReadAll(reader)
+	if err != nil {
+		return nil, errors.Wrap(err, "clients: error while reading response body")
+	}
+	if err := cache.Set([]byte(url), val, 600); err != nil {
+		// just log the error
+		zap.L().Error("clients: error while caching response", zap.Error(err))
+	}
+	return ioutil.NopCloser(bytes.NewReader(val)), nil
 }

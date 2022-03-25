@@ -1,6 +1,7 @@
 package api
 
 import (
+	"context"
 	"encoding/json"
 	"image"
 	"image/jpeg"
@@ -30,16 +31,20 @@ func NewHandler(client *hackernews.HackerNews) *Handler {
 
 func (h *Handler) RegisterRoutes(r *mux.Router) {
 	h.once.Do(func() {
+		const (
+			DefaultReqTimeout  = time.Second * 10
+			DefaultCacheMaxAge = time.Minute * 30
+		)
 		r.Path("/feeds/{kind:new|top}/{page:[0-9]{1,3}}").
 			Methods(http.MethodGet).
-			Handler(AttachMiddlewares(h.feedList, time.Second*10, time.Hour))
+			Handler(AttachMiddlewares(h.feedList, DefaultReqTimeout, DefaultCacheMaxAge))
 		r.Path("/feed_items/{id:[0-9]+}").
 			Methods(http.MethodGet).
-			Handler(AttachMiddlewares(h.feedItem, time.Second*3, time.Hour))
+			Handler(AttachMiddlewares(h.feedItem, DefaultReqTimeout, DefaultCacheMaxAge))
 		r.Path("/feed_images").
 			Queries("imageUrl", "{imageUrl}").
 			Methods(http.MethodGet).
-			Handler(AttachMiddlewares(h.feedImage, time.Second*3, time.Hour))
+			Handler(AttachMiddlewares(h.feedImage, DefaultReqTimeout, DefaultCacheMaxAge))
 	})
 }
 
@@ -94,6 +99,10 @@ func (h *Handler) feedItem(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) feedImage(w http.ResponseWriter, r *http.Request) {
+	ctx, cancel := context.WithTimeout(r.Context(), time.Second*5)
+	defer cancel()
+	r = r.WithContext(ctx)
+
 	var (
 		params   = mux.Vars(r)
 		url      = params["imageUrl"]
