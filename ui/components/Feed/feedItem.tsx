@@ -89,7 +89,15 @@ function FeedItemThumbnail({ images }: { images: Array<ImageT> | null }) {
     return null
   }
   const primaryImage = findBestImage(images)
-  return <StyledThumbnail src={primaryImage.url} alt={primaryImage.alt} />
+  return (
+    <StyledThumbnail
+      src={primaryImage.url}
+      alt={primaryImage.alt}
+      onError={(e: { target: { style: { display: string } } }) => {
+        e.target.style.display = 'none'
+      }}
+    />
+  )
 }
 
 // findBestImage returns the best image from the given array of images.
