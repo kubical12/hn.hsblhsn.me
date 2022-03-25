@@ -20,7 +20,7 @@ func main() {
 	logger.Info("main: starting ui server...")
 	router := mux.NewRouter()
 	spa.RegisterRoutes(router, embedded.Assets)
-	if err := servers.Serve(router); err != nil {
+	if err := servers.Start(router); err != nil {
 		logger.Fatal("main: could not start server", zap.Error(err))
 	}
 }

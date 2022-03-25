@@ -10,8 +10,8 @@ import (
 	"gocloud.dev/server/requestlog"
 )
 
-func Serve(h http.Handler) error {
-	srv := server.New(h, &server.Options{
+func Start(h http.Handler) error {
+	srv := server.New(globalMiddlewares(h), &server.Options{
 		RequestLogger: requestlog.NewStackdriverLogger(os.Stdout, func(error) {}),
 	})
 	port := os.Getenv("PORT")

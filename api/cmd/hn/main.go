@@ -21,10 +21,14 @@ func main() {
 	zap.ReplaceGlobals(logger)
 	logger.Info("main: starting server...")
 	go readabilityserver.Initialize()
+
+	// Start the server.
 	router := mux.NewRouter()
-	api.RegisterRoutes(router)
+
+	api.RegisterRoutes(router.PathPrefix("/api/v1").Subrouter())
 	spa.RegisterRoutes(router, embedded.Assets)
-	if err := servers.Serve(router); err != nil {
+
+	if err := servers.Start(router); err != nil {
 		logger.Fatal("main: could not start server", zap.Error(err))
 	}
 }
