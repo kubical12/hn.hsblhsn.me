@@ -13,10 +13,6 @@ import (
 	"github.com/hsblhsn/hn.hsblhsn.me/api/internal/hackernews"
 )
 
-var (
-	hn = hackernews.NewHackerNews()
-)
-
 type Handler struct {
 	hnClient *hackernews.HackerNews
 	once     sync.Once
@@ -60,7 +56,7 @@ func (h *Handler) feedList(w http.ResponseWriter, r *http.Request) {
 		HTTPError(w, err, http.StatusBadRequest, "Invalid feed kind.")
 		return
 	}
-	feed, err := hn.GetFeed(r.Context(), feedKind, pageNum)
+	feed, err := h.hnClient.GetFeed(r.Context(), feedKind, pageNum)
 	if err != nil {
 		HTTPError(w, err, http.StatusInternalServerError, "Failed to get feed items.")
 		return
@@ -82,7 +78,7 @@ func (h *Handler) feedItem(w http.ResponseWriter, r *http.Request) {
 		HTTPError(w, err, http.StatusBadRequest, "Invalid item ID.")
 		return
 	}
-	feedItem, err := hn.GetFeedItem(r.Context(), itemIDNum, true)
+	feedItem, err := h.hnClient.GetFeedItem(r.Context(), itemIDNum, true)
 	if err != nil {
 		HTTPError(w, err, http.StatusInternalServerError, "Failed to get feed item.")
 		return

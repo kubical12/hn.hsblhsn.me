@@ -18,26 +18,28 @@ var HTMLViewerPolicy = bluemonday.UGCPolicy()
 // FeedItem is a single post.
 // It uses opengraph data to fill in missing fields.
 type FeedItem struct {
-	ID            int              `json:"id"`
-	Title         string           `json:"title"`
-	Body          string           `json:"body"`
-	HTML          string           `json:"__html"`
-	Link          string           `json:"link"`
-	Images        []*FeedItemImage `json:"images"`
-	TotalPoints   int              `json:"totalPoints"`
-	TotalComments int              `json:"totalComments"`
-	mu            sync.Mutex
+	ID               int              `json:"id"`
+	Title            string           `json:"title"`
+	Body             string           `json:"body"`
+	HTML             string           `json:"__html"`
+	Link             string           `json:"link"`
+	Images           []*FeedItemImage `json:"images"`
+	TotalPoints      int              `json:"totalPoints"`
+	TotalComments    int              `json:"totalComments"`
+	imgProxyEndpoint string
+	mu               sync.Mutex
 }
 
 // NewFeedItemFromHN converts a hackernews post to a FeedItem.
-func NewFeedItemFromHN(resp *hnFeedItemResponse) *FeedItem {
+func NewFeedItemFromHN(resp *hnFeedItemResponse, imgProxyEndpoint string) *FeedItem {
 	return &FeedItem{
-		ID:            resp.Id,
-		Title:         resp.Title,
-		Body:          resp.Text,
-		Link:          resp.Url,
-		TotalPoints:   resp.Score,
-		TotalComments: len(resp.Kids),
+		ID:               resp.Id,
+		Title:            resp.Title,
+		Body:             resp.Text,
+		Link:             resp.Url,
+		TotalPoints:      resp.Score,
+		TotalComments:    len(resp.Kids),
+		imgProxyEndpoint: imgProxyEndpoint,
 	}
 }
 
@@ -62,7 +64,7 @@ func (f *FeedItem) UseOpengraph(ctx context.Context) error {
 	defer f.mu.Unlock()
 	f.Images = make([]*FeedItemImage, len(og.Image))
 	for i, img := range og.Image {
-		f.Images[i] = NewFeedImage(img, og.URL)
+		f.Images[i] = NewFeedImage(img, f.imgProxyEndpoint, og.URL)
 	}
 	if og.Title != "" {
 		f.Title = og.Title
@@ -85,7 +87,7 @@ func (f *FeedItem) UseReadability(ctx context.Context) error {
 		return errors.Wrap(err, "hackernews: could not get readability data")
 	}
 	// proxy all the images on the page
-	b, err := proxyAllImgSrc(reader, f.Link)
+	b, err := proxyAllImgSrc(reader, f.imgProxyEndpoint, f.Link)
 	if err != nil {
 		return errors.Wrap(err, "hackernews: could not read readability data")
 	}

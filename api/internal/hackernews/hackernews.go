@@ -28,14 +28,17 @@ type hnFeedItemResponse struct {
 
 // HackerNews is a HackerNews client.
 type HackerNews struct {
-	cache map[FeedKind]IDList
-	mu    sync.RWMutex
+	imageProxyURL string
+	cache         map[FeedKind]IDList
+	mu            sync.RWMutex
 }
 
 // NewHackerNews returns a new HackerNews client.
-func NewHackerNews() *HackerNews {
+func NewHackerNews(imgProxyURL string) *HackerNews {
 	return &HackerNews{
-		cache: make(map[FeedKind]IDList),
+		imageProxyURL: imgProxyURL,
+		cache:         make(map[FeedKind]IDList),
+		mu:            sync.RWMutex{},
 	}
 }
 
@@ -66,7 +69,7 @@ func (h *HackerNews) GetFeedItem(ctx context.Context, id int, readability bool) 
 	if err := json.NewDecoder(reader).Decode(&itemResp); err != nil {
 		return nil, errors.Wrap(err, "hackernews: error while decoding item")
 	}
-	item := NewFeedItemFromHN(&itemResp)
+	item := NewFeedItemFromHN(&itemResp, h.imageProxyURL)
 
 	g, ctx := errgroup.WithContext(ctx)
 	g.Go(func() error {

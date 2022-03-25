@@ -22,7 +22,7 @@ type FeedItemImage struct {
 }
 
 // NewFeedImage creates a new FeedItemImage from opengraph.Image.
-func NewFeedImage(ogImg opengraph.Image, fallBackHost string) *FeedItemImage {
+func NewFeedImage(ogImg opengraph.Image, proxyEndpoint, feedItemLink string) *FeedItemImage {
 	img := &FeedItemImage{
 		Alt:    ogImg.Alt,
 		Height: ogImg.Height,
@@ -32,24 +32,25 @@ func NewFeedImage(ogImg opengraph.Image, fallBackHost string) *FeedItemImage {
 	if secureURL := ogImg.SecureURL; secureURL != "" {
 		uri = secureURL
 	}
-	img.URL = proxyImgSrc(uri, fallBackHost)
+	img.URL = proxyImgSrc(uri, proxyEndpoint, feedItemLink)
 	return img
 }
 
 // proxyAllImgSrc replaces all image src with proxied image src.
-func proxyAllImgSrc(r io.Reader, imgFallbackHost string) (string, error) {
+func proxyAllImgSrc(r io.Reader, proxyEndpoint, feedItemLink string) (string, error) {
 	doc, err := goquery.NewDocumentFromReader(r)
 	if err != nil {
 		return "", errors.Wrap(err, "hackernews: could not parse html")
 	}
-	doc.Find("img").Each(func(i int, s *goquery.Selection) {
+	var imgIterator = func(i int, s *goquery.Selection) {
 		src, ok := s.Attr("src")
 		if !ok {
 			return
 		}
-		proxied := proxyImgSrc(src, imgFallbackHost)
+		proxied := proxyImgSrc(src, proxyEndpoint, feedItemLink)
 		s.SetAttr("src", proxied)
-	})
+	}
+	doc.Find("img").Each(imgIterator)
 	out, err := doc.Html()
 	if err != nil {
 		return "", errors.Wrap(err, "hackernews: could not convert html doc to string")
@@ -58,14 +59,14 @@ func proxyAllImgSrc(r io.Reader, imgFallbackHost string) (string, error) {
 }
 
 // proxyImgSrc returns a proxied image src.
-func proxyImgSrc(uri string, fallBackHost string) string {
-	base, _ := url.Parse(fallBackHost)
-	escapedURI := url.QueryEscape(joinToAbsolute(base, uri))
-	return fmt.Sprintf("http://localhost:8080/api/v1/images?imageUrl=%s", escapedURI)
+func proxyImgSrc(imgSrc, proxyEndpoint, feedItemLink string) string {
+	base, _ := url.Parse(feedItemLink)
+	escapedURI := url.QueryEscape(joinUrls(base, imgSrc))
+	return fmt.Sprintf("%s?imageUrl=%s", proxyEndpoint, escapedURI)
 }
 
-// joinToAbsolute returns a absolute url if relpath is relative.
-func joinToAbsolute(base *url.URL, relpath string) string {
+// joinUrls returns a absolute url if relpath is relative.
+func joinUrls(base *url.URL, relpath string) string {
 	if base == nil {
 		return relpath
 	}

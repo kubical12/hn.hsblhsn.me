@@ -14,7 +14,8 @@ import (
 // ListenAndServe starts the server.
 func ListenAndServe() error {
 	router := mux.NewRouter()
-	handler := NewHandler(hackernews.NewHackerNews())
+	imgProxyEndpoint := "http://localhost:8080/api/v1/feed_images"
+	handler := NewHandler(hackernews.NewHackerNews(imgProxyEndpoint))
 	handler.RegisterRoutes(router.PathPrefix("/api/v1").Subrouter())
 
 	srv := server.New(router, &server.Options{
