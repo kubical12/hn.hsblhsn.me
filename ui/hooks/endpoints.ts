@@ -1,13 +1,10 @@
-import process from 'process'
-
-const HOST = `${process.env.VITE_APP_API_HOST || ''}`
-const BASE_PATH = `${HOST}/api/v1`
+import config from '../app.config'
 
 export const ENDPOINTS = {
   feedList(kind: string, page: number): string {
-    return `${BASE_PATH}/feeds/${kind}/${page}`
+    return `${config.apiBasePath}/feeds/${kind}/${page}`
   },
   feedItem(id: number): string {
-    return `${BASE_PATH}/feed_items/${id}`
+    return `${config.apiBasePath}/feed_items/${id}`
   },
 }

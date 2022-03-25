@@ -57,7 +57,11 @@ export function ReaderView({ feedItem, font }: ReaderViewProps) {
           marginBottom: theme.sizing.scale1000,
         })}
       >
-        <HeadingLarge>{feedItem.title}</HeadingLarge>
+        <HeadingLarge>
+          <a href={feedItem.link} target="_blank" rel="noreferrer">
+            {feedItem.title}
+          </a>
+        </HeadingLarge>
         <FeedItemSource feedItem={feedItem} />
       </Block>
       <div
