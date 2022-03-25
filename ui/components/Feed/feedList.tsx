@@ -25,7 +25,6 @@ export function FeedList({ feed }: FeedProps) {
       />
     )
   }
-  console.log(feed.feedItems)
   if (!feed.feedItems || feed.feedItems.length === 0) {
     return (
       <ErrorScreen
