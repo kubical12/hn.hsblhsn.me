@@ -1,5 +1,5 @@
 import { Card, StyledAction, StyledBody, StyledThumbnail } from 'baseui/card'
-import { styled } from 'baseui'
+import { styled, useStyletron } from 'baseui'
 import { FeedItemT } from '../../types'
 import { Button, SIZE, SHAPE, KIND } from 'baseui/button'
 import { Skeleton } from 'baseui/skeleton'
@@ -17,6 +17,7 @@ type ContainerProps = {
 
 // ui of the component.
 function ui(props: UIProps) {
+  const [css, theme] = useStyletron()
   const cardOverrides = {
     Root: {
       style({ $theme }) {
@@ -56,7 +57,15 @@ function ui(props: UIProps) {
       </HeadingXSmall>
 
       {/* news summary */}
-      <StyledBody>{props.summary}</StyledBody>
+      <StyledBody
+        className={css({
+          minHeight: theme.sizing.scale1600,
+          minBlockSize: theme.sizing.scale1600,
+          marginTop: theme.sizing.scale500,
+        })}
+      >
+        {props.summary}
+      </StyledBody>
 
       {/* interactions */}
       <StyledAction>
