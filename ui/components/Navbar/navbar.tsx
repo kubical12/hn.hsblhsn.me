@@ -81,7 +81,7 @@ export function Navbar(props: NavbarPropsT) {
       </HeaderNavigation>
       <Block
         $style={{
-          paddingBottom: '3.8rem',
+          marginBottom: '3.8rem',
         }}
       />
     </Block>

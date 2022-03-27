@@ -33,8 +33,8 @@ export function ErrorScreen({ error }: { error: ErrorT }) {
       <HeadingXXLarge>Oops!</HeadingXXLarge>
       <Block
         className={css({
-          paddingTop: theme.sizing.scale600,
-          paddingBottom: theme.sizing.scale1000,
+          marginTop: theme.sizing.scale600,
+          marginBottom: theme.sizing.scale1000,
         })}
       >
         <Paragraph1>An error occurred!</Paragraph1>

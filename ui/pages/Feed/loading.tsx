@@ -13,7 +13,7 @@ export function LoadingScreen() {
           Root: {
             style: {
               borderRadius: '0.5rem',
-              paddingBottom: '1rem',
+              marginBottom: '1rem',
             },
           },
         }}
