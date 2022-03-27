@@ -1,6 +1,6 @@
 import { Card, StyledAction, StyledBody, StyledThumbnail } from 'baseui/card'
 import { styled } from 'baseui'
-import { ImageT, FeedItemT } from '../../types'
+import { FeedItemT } from '../../types'
 import { Button, SIZE, SHAPE, KIND } from 'baseui/button'
 import { Skeleton } from 'baseui/skeleton'
 import { Link } from 'react-router-dom'
@@ -8,16 +8,7 @@ import { HeadingXSmall } from 'baseui/typography'
 import { createComponent } from '../component'
 
 // UIProps to pass to the ui component.
-type UIProps = {
-  title: string
-  body: string
-  thumbnailUrl?: string
-  domain: string
-  link: string
-  hnLink: string
-  readerViewLink: string
-  totalComments: number
-}
+type UIProps = FeedItemT
 
 // containerProps is the props that the container component receives.
 type ContainerProps = {
@@ -45,7 +36,7 @@ function ui(props: UIProps) {
     <Card overrides={cardOverrides}>
       <StyledItemSource>
         <a
-          href={props.link}
+          href={props.url}
           title={props.title}
           target="_blank"
           rel="noreferrer"
@@ -61,7 +52,7 @@ function ui(props: UIProps) {
 
       {/* news title */}
       <HeadingXSmall>
-        <Link to={props.readerViewLink}>{props.title}</Link>
+        <Link to={`/read/${props.id}`}>{props.title}</Link>
       </HeadingXSmall>
 
       {/* news summary */}
@@ -70,7 +61,7 @@ function ui(props: UIProps) {
       {/* interactions */}
       <StyledAction>
         <StyledItemInteraction>
-          <a href={props.hnLink} target="_blank" rel="noreferrer">
+          <a href={props.hackerNewsUrl} target="_blank" rel="noreferrer">
             <Button size={SIZE.mini} shape={SHAPE.pill} kind={KIND.tertiary}>
               {props.totalComments} comments
             </Button>
@@ -87,37 +78,7 @@ function prelude(props: ContainerProps): UIProps | undefined {
   if (!item || item.body.trim() === '') {
     return undefined
   }
-  const url = new URL(item.link)
-  const hostname = url.hostname
-  const HNLink = `https://news.ycombinator.com/item?id=${item.id}`
-  const linkToReaderView = `/read/${item.id}`
-  let thumbnail: string | undefined = undefined
-  if (item.images && item.images.length != 0) {
-    const primaryImage = findBestImage(item.images)
-    thumbnail = primaryImage.url
-  }
-  return {
-    title: item.title,
-    body: item.body.substring(0, 360),
-    thumbnailUrl: thumbnail,
-    domain: hostname,
-    link: item.link,
-    hnLink: HNLink,
-    readerViewLink: linkToReaderView,
-    totalComments: item.totalComments,
-  }
-}
-
-// findBestImage returns the best image from the given array of images.
-// it selects the image with the highest width.
-function findBestImage(images: Array<ImageT>): ImageT {
-  let best: ImageT = images[0]
-  for (let i = 1; i < images.length; i++) {
-    if (images[i].width > best.width) {
-      best = images[i]
-    }
-  }
-  return best
+  return item
 }
 
 // StyledItemInteraction is the container for displaying HackerNews interactions.

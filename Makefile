@@ -14,7 +14,7 @@ build-ui:
 	@npm run build
 build-ui-server: build-ui
 	@go build -o bin/hn-ui ./api/cmd/hn-ui
-build:
+build: build-ui
 	@go build -o bin/hn ./api/cmd/hn
 
 

@@ -15,9 +15,9 @@ export type ReaderViewProps = {
 
 type ReaderUIPropsT = {
   title: string
-  host: string
-  link: string
-  hnLink: string
+  domain: string
+  url: string
+  hackerNewsUrl: string
   content: string
   onBack: () => void
   onForward: () => void
@@ -42,7 +42,7 @@ function ui(props: ReaderUIPropsT) {
   )
   return (
     <Block>
-      <Label4>{props.host}</Label4>
+      <Label4>{props.domain}</Label4>
       <HeadingLarge>{props.title}</HeadingLarge>
       <Block>
         <div
@@ -65,20 +65,17 @@ function prelude(props: ReaderPropsT): ReaderUIPropsT | undefined {
     return undefined
   }
   const item = props.item
-  const url = new URL(item.link)
-  const hostname = url.hostname
-  const HNLink = `https://news.ycombinator.com/item?id=${item.id}`
   return {
     title: item.title,
     content: item.__html,
-    host: hostname,
-    link: item.link,
-    hnLink: HNLink,
+    domain: item.domain,
+    url: item.url,
+    hackerNewsUrl: item.hackerNewsUrl,
     onBack: () => {
       window.history.back()
     },
     onForward: () => {
-      window.open(HNLink, '_blank')
+      window.open(item.hackerNewsUrl, '_blank')
     },
   }
 }

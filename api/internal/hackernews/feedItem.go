@@ -23,17 +23,17 @@ var HTMLViewerPolicy = bluemonday.UGCPolicy()
 // FeedItem is a single post.
 // It uses opengraph data to fill in missing fields.
 type FeedItem struct {
-	ID             int    `json:"id"`
-	Title          string `json:"title"`
-	Body           string `json:"body"`
-	HTML           string `json:"__html"`
-	Link           string `json:"link"`
-	Domain         string `json:"domain"`
-	HackerNewsLink string `json:"hackerNewsLink"`
-	Thumbnail      string `json:"thumbnail"`
-	TotalPoints    int    `json:"totalPoints"`
-	TotalComments  int    `json:"totalComments"`
-	mu             sync.Mutex
+	ID            int    `json:"id"`
+	Title         string `json:"title"`
+	Body          string `json:"body"`
+	HTML          string `json:"__html"`
+	Domain        string `json:"domain"`
+	URL           string `json:"url"`
+	HackerNewsUrl string `json:"hackerNewsUrl"`
+	ThumbnailUrl  string `json:"thumbnailUrl"`
+	TotalPoints   int    `json:"totalPoints"`
+	TotalComments int    `json:"totalComments"`
+	mu            sync.Mutex
 }
 
 // NewFeedItemFromHN converts a hackernews post to a FeedItem.
@@ -46,21 +46,21 @@ func NewFeedItemFromHN(resp *hnFeedItemResponse) *FeedItem {
 	}
 
 	return &FeedItem{
-		ID:             resp.ID,
-		Title:          resp.Title,
-		Body:           resp.Text,
-		Link:           resp.URL,
-		Domain:         domain,
-		HackerNewsLink: hnLink,
-		TotalPoints:    resp.Score,
-		TotalComments:  len(resp.Kids),
+		ID:            resp.ID,
+		Title:         resp.Title,
+		Body:          resp.Text,
+		URL:           resp.URL,
+		Domain:        domain,
+		HackerNewsUrl: hnLink,
+		TotalPoints:   resp.Score,
+		TotalComments: len(resp.Kids),
 	}
 }
 
 // UseOpengraph fetches the opengraph data from the linked website.
 // It overwrites the original title and body with the opengraph data.
 func (f *FeedItem) UseOpengraph(ctx context.Context) error {
-	og, err := opengraph.Fetch(f.Link, opengraph.Intent{
+	og, err := opengraph.Fetch(f.URL, opengraph.Intent{
 		Context:    ctx,
 		HTTPClient: clients.HTTP(),
 		Strict:     false,
@@ -87,7 +87,7 @@ func (f *FeedItem) UseOpengraph(ctx context.Context) error {
 	f.mu.Lock()
 	defer f.mu.Unlock()
 	if bestImage.URL != "" {
-		f.Thumbnail = images.ProxiedURL(bestImage.URL, images.ImageSizeThumbnail)
+		f.ThumbnailUrl = images.ProxiedURL(bestImage.URL, images.ImageSizeThumbnail)
 	}
 	if og.Title != "" {
 		f.Title = og.Title
@@ -105,7 +105,7 @@ func (f *FeedItem) UseOpengraph(ctx context.Context) error {
 // At last it sanitizes the html document.
 func (f *FeedItem) UseReadability(ctx context.Context) error {
 	// get the original content from the linked website
-	reader, err := clients.SendHTTPRequest(ctx, f.Link)
+	reader, err := clients.SendHTTPRequest(ctx, f.URL)
 	if err != nil {
 		return errors.Wrap(err, "hackernews: could not get readability data")
 	}
@@ -122,13 +122,13 @@ func (f *FeedItem) UseReadability(ctx context.Context) error {
 	rc := clients.ReadabilityClient()
 	resp, err := rc.GetReadableDocument(ctx, &readabilityclient.GetReadableDocumentRequest{
 		Html:       string(contentBytes),
-		Identifier: f.Link,
+		Identifier: f.URL,
 	})
 	if err != nil {
 		return errors.Wrap(err, "hackernews: error while calling readability")
 	}
 	// sanitize the html document
-	htmlContent, err := readerviews.Sanitize(resp.GetBody(), f.Link)
+	htmlContent, err := readerviews.Sanitize(resp.GetBody(), f.URL)
 	if err != nil {
 		return errors.Wrap(err, "hackernews: could not sanitize html")
 	}
