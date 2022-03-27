@@ -47,6 +47,7 @@ func SendHTTPRequest(ctx context.Context, url string) (io.ReadCloser, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, "clients: error while fetching items")
 	}
+	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
 		return nil, errors.Errorf("clients: error while fetching items: %d", resp.StatusCode)
 	}

@@ -2,11 +2,13 @@ package hackernews
 
 import (
 	"context"
+	"io"
 	"sync"
 	"time"
 
 	"github.com/hsblhsn/hn.hsblhsn.me/api/internal/clients"
 	"github.com/hsblhsn/hn.hsblhsn.me/api/internal/grpc/readabilityclient"
+	"github.com/hsblhsn/hn.hsblhsn.me/api/internal/readerviews"
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/otiai10/opengraph/v2"
 	"github.com/pkg/errors"
@@ -18,28 +20,26 @@ var HTMLViewerPolicy = bluemonday.UGCPolicy()
 // FeedItem is a single post.
 // It uses opengraph data to fill in missing fields.
 type FeedItem struct {
-	ID               int              `json:"id"`
-	Title            string           `json:"title"`
-	Body             string           `json:"body"`
-	HTML             string           `json:"__html"`
-	Link             string           `json:"link"`
-	Images           []*FeedItemImage `json:"images"`
-	TotalPoints      int              `json:"totalPoints"`
-	TotalComments    int              `json:"totalComments"`
-	imgProxyEndpoint string
-	mu               sync.Mutex
+	ID            int              `json:"id"`
+	Title         string           `json:"title"`
+	Body          string           `json:"body"`
+	HTML          string           `json:"__html"`
+	Link          string           `json:"link"`
+	Images        []*FeedItemImage `json:"images"`
+	TotalPoints   int              `json:"totalPoints"`
+	TotalComments int              `json:"totalComments"`
+	mu            sync.Mutex
 }
 
 // NewFeedItemFromHN converts a hackernews post to a FeedItem.
-func NewFeedItemFromHN(resp *hnFeedItemResponse, imgProxyEndpoint string) *FeedItem {
+func NewFeedItemFromHN(resp *hnFeedItemResponse) *FeedItem {
 	return &FeedItem{
-		ID:               resp.Id,
-		Title:            resp.Title,
-		Body:             resp.Text,
-		Link:             resp.Url,
-		TotalPoints:      resp.Score,
-		TotalComments:    len(resp.Kids),
-		imgProxyEndpoint: imgProxyEndpoint,
+		ID:            resp.Id,
+		Title:         resp.Title,
+		Body:          resp.Text,
+		Link:          resp.Url,
+		TotalPoints:   resp.Score,
+		TotalComments: len(resp.Kids),
 	}
 }
 
@@ -64,7 +64,7 @@ func (f *FeedItem) UseOpengraph(ctx context.Context) error {
 	defer f.mu.Unlock()
 	f.Images = make([]*FeedItemImage, len(og.Image))
 	for i, img := range og.Image {
-		f.Images[i] = NewFeedImage(img, f.imgProxyEndpoint, og.URL)
+		f.Images[i] = NewFeedImage(img, og.URL)
 	}
 	if og.Title != "" {
 		f.Title = og.Title
@@ -86,11 +86,11 @@ func (f *FeedItem) UseReadability(ctx context.Context) error {
 	if err != nil {
 		return errors.Wrap(err, "hackernews: could not get readability data")
 	}
-	// proxy all the images on the page
-	b, err := proxyAllImgSrc(reader, f.imgProxyEndpoint, f.Link)
+	contentBytes, err := io.ReadAll(reader)
 	if err != nil {
 		return errors.Wrap(err, "hackernews: could not read readability data")
 	}
+
 	// convert the webpage to a readable html document
 	ready := clients.IsReadabilityClientReady(ctx, time.Second*3)
 	if !ready {
@@ -98,15 +98,18 @@ func (f *FeedItem) UseReadability(ctx context.Context) error {
 	}
 	rc := clients.ReadabilityClient()
 	resp, err := rc.GetReadableDocument(ctx, &readabilityclient.GetReadableDocumentRequest{
-		Html:       string(b),
+		Html:       string(contentBytes),
 		Identifier: f.Link,
 	})
 	if err != nil {
 		return errors.Wrap(err, "hackernews: error while calling readability")
 	}
 	// sanitize the html document
-	htmlBody := resp.GetBody()
-	f.HTML = HTMLViewerPolicy.Sanitize(htmlBody)
+	htmlContent, err := readerviews.Sanitize(resp.GetBody(), f.Link)
+	if err != nil {
+		return errors.Wrap(err, "hackernews: could not sanitize html")
+	}
+	f.HTML = htmlContent
 
 	// prepare the title.
 	if title := resp.GetTitle(); title != "" {
