@@ -5,12 +5,50 @@ import {
   StyledNavigationItem,
 } from 'baseui/header-navigation'
 import { Block } from 'baseui/block'
-import { Link } from 'react-router-dom'
-import { HeadingLarge } from 'baseui/typography'
+import LoadingBar from 'react-top-loading-bar'
+import { HeadingSmall } from 'baseui/typography'
+import ArrowLeft from 'baseui/icon/arrow-left'
+import { FEED_KIND } from '../../hooks/navigation'
+import { ArrowRight } from 'baseui/icon'
+import { NavBtn } from './navBtn'
+import { useEffect, useRef } from 'react'
+import { useStyletron } from 'baseui'
 
-export function Navbar() {
+type NavbarPropsT = {
+  onBack?: () => void
+  onForward?: () => void
+  feedKind?: FEED_KIND
+  isLoading?: boolean
+}
+
+export function Navbar(props: NavbarPropsT) {
+  const ref = useRef(null)
+  const [,theme]= useStyletron()
+  const { onBack, onForward, isLoading } = props
+
+  useEffect(() => {
+    if (isLoading && isLoading === true) {
+      ref.current.continuousStart()
+    } else {
+      ref.current.complete()
+    }
+  }, [isLoading])
+
+  const BackBtn = (
+    <NavBtn onClick={onBack}>
+      <ArrowLeft />
+    </NavBtn>
+  )
+
+  const ForwardBtn = (
+    <NavBtn onClick={onForward}>
+      <ArrowRight />
+    </NavBtn>
+  )
+
   return (
     <Block>
+      <LoadingBar color={theme.colors.accent} ref={ref} shadow={true} />
       <HeaderNavigation
         overrides={{
           Root: {
@@ -26,10 +64,10 @@ export function Navbar() {
         }}
       >
         <StyledNavigationList $align={ALIGN.left}>
+          <StyledNavigationItem>{BackBtn}</StyledNavigationItem>
+          <StyledNavigationItem>{ForwardBtn}</StyledNavigationItem>
           <StyledNavigationItem>
-            <HeadingLarge>
-              <Link to="/">HackerNews</Link>
-            </HeadingLarge>
+            <HeadingSmall>HackerNews</HeadingSmall>
           </StyledNavigationItem>
         </StyledNavigationList>
       </HeaderNavigation>

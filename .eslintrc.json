@@ -20,8 +20,12 @@
   },
   "plugins": [
     "react",
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "unicorn"
   ],
+  "rules": {
+    "unicorn/no-null": "error"
+  },
   "settings": {
     "react": {
       "version": "detect"

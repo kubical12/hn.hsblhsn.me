@@ -1,2 +1,4 @@
-export { FeedList } from './feedList'
-export { FeedItemSource } from './feedItem'
+export {
+  ListContainer as FeedListContainer,
+  ListSkeleton as FeedListSkeleton,
+} from './list'

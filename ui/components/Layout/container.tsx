@@ -1,20 +1,27 @@
-import { Grid, Cell } from 'baseui/layout-grid'
+import { Grid, Cell, BEHAVIOR } from 'baseui/layout-grid'
+import { Fragment } from 'react'
 
 type ContainerProps = {
-  left: JSX.Element;
-  center: JSX.Element;
-  right: JSX.Element;
-};
+  top: JSX.Element
+  left: JSX.Element
+  center: JSX.Element
+  right: JSX.Element
+}
 
 export function Container(props: ContainerProps) {
   return (
-    <Grid
-      gridMargins={0}
-      gridGaps={0}
-    >
-      <Cell span={[0, 1, 3]}>{props.left}</Cell>
-      <Cell span={[4, 6, 6]}>{props.center}</Cell>
-      <Cell span={[0, 1, 3]}>{props.right}</Cell>
-    </Grid>
+    <Fragment>
+      {props.top}
+      <Grid
+        behavior={BEHAVIOR.fixed}
+        gridMargins={0}
+        gridGaps={0}
+        gridMaxWidth={1500}
+      >
+        <Cell span={[0, 1, 3]}>{props.left}</Cell>
+        <Cell span={[4, 6, 6]}>{props.center}</Cell>
+        <Cell span={[0, 1, 3]}>{props.right}</Cell>
+      </Grid>
+    </Fragment>
   )
 }

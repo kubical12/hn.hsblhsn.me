@@ -1,2 +1,2 @@
-import { FeedPage } from './feedPage'
-export default FeedPage
+import { Page } from './page'
+export default Page

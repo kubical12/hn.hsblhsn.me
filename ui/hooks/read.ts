@@ -5,9 +5,9 @@ import { ENDPOINTS } from './endpoints'
 
 function useRead() {
   const routeParams = useParams()
-  const [data, setData] = useState<FeedItemT | null>(null)
+  const [data, setData] = useState<FeedItemT | undefined>(undefined)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<ErrorT | null>(null)
+  const [error, setError] = useState<ErrorT | undefined>(undefined)
 
   const fetchData = async (url: string) => {
     setLoading(true)

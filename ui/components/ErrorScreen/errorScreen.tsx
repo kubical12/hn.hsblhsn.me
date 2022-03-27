@@ -44,7 +44,7 @@ export function ErrorScreen({ error }: { error: ErrorT }) {
         <Paragraph1>Sorry for the inconvenience!</Paragraph1>
         <Accordion>
           <Panel title="Error Details">
-            <MonoSpaced>{JSON.stringify(error, null, 2)}</MonoSpaced>
+            <MonoSpaced>{JSON.stringify(error, undefined, 2)}</MonoSpaced>
           </Panel>
         </Accordion>
       </Block>
