@@ -1,5 +1,5 @@
 dep-api:
-	@go mod download -x
+	@go mod download
 dep-readability:
 	@pip3 install -r requirements.txt
 dep-ui:
