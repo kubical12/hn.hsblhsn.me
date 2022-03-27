@@ -18,11 +18,11 @@ export enum PAGE {
 }
 
 export type AppNavigatorT = {
-  currentPage(): PAGE;
-  home(): void;
-  feed(kind: FEED_KIND, page: number): void;
-  read(id: number): void;
-};
+  currentPage(): PAGE
+  home(): void
+  feed(kind: FEED_KIND, page: number): void
+  read(id: number): void
+}
 
 const useAppNavigator = (): AppNavigatorT => {
   const navigate = useNavigate()

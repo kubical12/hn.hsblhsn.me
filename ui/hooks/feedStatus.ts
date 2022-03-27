@@ -3,9 +3,9 @@ import { useParams, useSearchParams } from 'react-router-dom'
 import useAppNavigator, { PAGE, FEED_KIND } from './navigation'
 
 type FeedStatusT = {
-  kind: FEED_KIND | undefined;
-  page: number | undefined;
-};
+  kind: FEED_KIND | undefined
+  page: number | undefined
+}
 
 const useFeedStatus = (): FeedStatusT | undefined => {
   const appNav = useAppNavigator()
@@ -48,12 +48,12 @@ const useFeedStatus = (): FeedStatusT | undefined => {
 
 function parseFeedKind(str: string): FEED_KIND | undefined {
   switch (str) {
-  case 'new':
-    return FEED_KIND.new
-  case 'top':
-    return FEED_KIND.top
-  default:
-    return undefined
+    case 'new':
+      return FEED_KIND.new
+    case 'top':
+      return FEED_KIND.top
+    default:
+      return undefined
   }
 }
 

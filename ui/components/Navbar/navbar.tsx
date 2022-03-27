@@ -49,7 +49,12 @@ export function Navbar(props: NavbarPropsT) {
 
   return (
     <Block>
-      <LoadingBar color={theme.colors.accent} ref={ref} shadow={true} />
+      <LoadingBar
+        color={theme.colors.accent}
+        height={3}
+        ref={ref}
+        shadow={true}
+      />
       <HeaderNavigation
         overrides={{
           Root: {
@@ -76,7 +81,7 @@ export function Navbar(props: NavbarPropsT) {
       </HeaderNavigation>
       <Block
         $style={{
-          marginBottom: '5rem',
+          marginBottom: '3.8rem',
         }}
       />
     </Block>
