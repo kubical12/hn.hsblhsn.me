@@ -21,7 +21,7 @@ function ui(props: UIProps) {
     Root: {
       style({ $theme }) {
         return {
-          marginBottom: $theme.sizing.scale900,
+          paddingBottom: $theme.sizing.scale900,
         }
       },
     },
@@ -84,7 +84,7 @@ function prelude(props: ContainerProps): UIProps | undefined {
 // StyledItemInteraction is the container for displaying HackerNews interactions.
 const StyledItemInteraction = styled('div', ({ $theme }) => ({
   padding: '0',
-  marginTop: $theme.sizing.scale500,
+  paddingTop: $theme.sizing.scale500,
   display: 'flex',
   justifyContent: 'flex-end',
 }))
@@ -107,7 +107,7 @@ const ItemSkeleton = () => (
       Root: {
         style: ({ $theme }) => ({
           borderRadius: $theme.sizing.scale300,
-          marginBottom: $theme.sizing.scale900,
+          paddingBottom: $theme.sizing.scale900,
         }),
       },
     }}

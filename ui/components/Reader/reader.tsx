@@ -100,7 +100,7 @@ const ReaderSkeleton = () => (
       overrides={{
         Root: {
           style: ({ $theme }) => ({
-            marginBottom: $theme.sizing.scale1000,
+            paddingBottom: $theme.sizing.scale1000,
           }),
         },
       }}
@@ -112,13 +112,13 @@ const ReaderSkeleton = () => (
       overrides={{
         Root: {
           style: ({ $theme }) => ({
-            marginBottom: $theme.sizing.scale1200,
+            paddingBottom: $theme.sizing.scale1200,
           }),
         },
         Row: {
           style: {
             height: '20px',
-            marginBottom: '15px',
+            paddingBottom: '15px',
           },
         },
       }}
@@ -130,13 +130,13 @@ const ReaderSkeleton = () => (
       overrides={{
         Root: {
           style: ({ $theme }) => ({
-            marginBottom: $theme.sizing.scale600,
+            paddingBottom: $theme.sizing.scale600,
           }),
         },
         Row: {
           style: {
             height: '20px',
-            marginBottom: '15px',
+            paddingBottom: '15px',
           },
         },
       }}
