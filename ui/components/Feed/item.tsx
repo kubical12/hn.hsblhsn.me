@@ -84,7 +84,7 @@ function ui(props: UIProps) {
 // prelude prepares the container props for the ui component.
 function prelude(props: ContainerProps): UIProps | undefined {
   const item = props.item
-  if (!item) {
+  if (!item || !item.title || !item.summary) {
     return undefined
   }
   return item
