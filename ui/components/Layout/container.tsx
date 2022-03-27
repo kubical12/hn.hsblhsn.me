@@ -14,7 +14,8 @@ export function Container(props: ContainerProps) {
       {props.top}
       <Grid
         behavior={BEHAVIOR.fixed}
-        gridMargins={0}
+        gridColumns={[4, 8, 12]}
+        gridMargins={[0, 0, 0]}
         gridGaps={0}
         gridMaxWidth={1500}
       >

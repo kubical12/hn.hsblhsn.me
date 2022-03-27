@@ -8,6 +8,7 @@ import ReadPage from './pages/Read'
 const StyledAppShell = styled('div', ({ $theme }) => ({
   backgroundColor: $theme.colors.backgroundPrimary,
   color: $theme.colors.contentPrimary,
+  overflow: 'hidden',
   minHeight: '100vh',
   minWidth: '100vw',
 }))
