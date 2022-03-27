@@ -2,12 +2,15 @@ package hackernews
 
 import (
 	"context"
+	"fmt"
 	"io"
+	"net/url"
 	"sync"
 	"time"
 
 	"github.com/hsblhsn/hn.hsblhsn.me/api/internal/clients"
 	"github.com/hsblhsn/hn.hsblhsn.me/api/internal/grpc/readabilityclient"
+	"github.com/hsblhsn/hn.hsblhsn.me/api/internal/images"
 	"github.com/hsblhsn/hn.hsblhsn.me/api/internal/readerviews"
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/otiai10/opengraph/v2"
@@ -20,26 +23,37 @@ var HTMLViewerPolicy = bluemonday.UGCPolicy()
 // FeedItem is a single post.
 // It uses opengraph data to fill in missing fields.
 type FeedItem struct {
-	ID            int              `json:"id"`
-	Title         string           `json:"title"`
-	Body          string           `json:"body"`
-	HTML          string           `json:"__html"`
-	Link          string           `json:"link"`
-	Images        []*FeedItemImage `json:"images"`
-	TotalPoints   int              `json:"totalPoints"`
-	TotalComments int              `json:"totalComments"`
-	mu            sync.Mutex
+	ID             int    `json:"id"`
+	Title          string `json:"title"`
+	Body           string `json:"body"`
+	HTML           string `json:"__html"`
+	Link           string `json:"link"`
+	Domain         string `json:"domain"`
+	HackerNewsLink string `json:"hackerNewsLink"`
+	Thumbnail      string `json:"thumbnail"`
+	TotalPoints    int    `json:"totalPoints"`
+	TotalComments  int    `json:"totalComments"`
+	mu             sync.Mutex
 }
 
 // NewFeedItemFromHN converts a hackernews post to a FeedItem.
 func NewFeedItemFromHN(resp *hnFeedItemResponse) *FeedItem {
+	hnLink := fmt.Sprintf("https://news.ycombinator.com/item?id=%d", resp.ID)
+	var domain string
+	u, err := url.Parse(resp.URL)
+	if err == nil {
+		domain = u.Host
+	}
+
 	return &FeedItem{
-		ID:            resp.Id,
-		Title:         resp.Title,
-		Body:          resp.Text,
-		Link:          resp.Url,
-		TotalPoints:   resp.Score,
-		TotalComments: len(resp.Kids),
+		ID:             resp.ID,
+		Title:          resp.Title,
+		Body:           resp.Text,
+		Link:           resp.URL,
+		Domain:         domain,
+		HackerNewsLink: hnLink,
+		TotalPoints:    resp.Score,
+		TotalComments:  len(resp.Kids),
 	}
 }
 
@@ -57,14 +71,23 @@ func (f *FeedItem) UseOpengraph(ctx context.Context) error {
 	if err := og.ToAbs(); err != nil {
 		return errors.Wrap(err, "hackernews: could not convert relative url to absolute url")
 	}
+	var bestImage opengraph.Image
+	if len(og.Image) > 0 {
+		bestImage = og.Image[0]
+	}
+	for _, img := range og.Image {
+		if img.Width > bestImage.Width {
+			bestImage = img
+		}
+	}
+
 	// add images.
 	// overwrite the original title and body with the opengraph data
 	// if the opengraph data is available.
 	f.mu.Lock()
 	defer f.mu.Unlock()
-	f.Images = make([]*FeedItemImage, len(og.Image))
-	for i, img := range og.Image {
-		f.Images[i] = NewFeedImage(img, og.URL)
+	if bestImage.URL != "" {
+		f.Thumbnail = images.ProxiedURL(bestImage.URL, images.ImageSizeThumbnail)
 	}
 	if og.Title != "" {
 		f.Title = og.Title

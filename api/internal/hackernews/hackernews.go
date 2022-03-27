@@ -15,13 +15,13 @@ import (
 
 // hnFeedItemResponse is the response from HackerNews API.
 type hnFeedItemResponse struct {
-	Id     int    `json:"id"`
+	ID     int    `json:"id"`
 	Type   string `json:"type"`
 	Time   int    `json:"time"`
 	Text   string `json:"text"`
 	Parent int    `json:"parent"`
 	Kids   []int  `json:"kids"`
-	Url    string `json:"url"`
+	URL    string `json:"url"`
 	Score  int    `json:"score"`
 	Title  string `json:"title"`
 }
