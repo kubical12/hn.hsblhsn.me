@@ -8,7 +8,6 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/hsblhsn/hn.hsblhsn.me/api/internal/images"
-	"github.com/microcosm-cc/bluemonday"
 )
 
 // toAbs returns a absolute url if relpath is relative.
@@ -34,8 +33,6 @@ func toAbs(base, relpath string) string {
 	return fmt.Sprintf("%s://%s%s", baseURL.Scheme, baseURL.Host, path.Join(baseURL.Path, relpath))
 }
 
-var sanitizationPolicy = bluemonday.UGCPolicy()
-
 func Sanitize(html string, contentLink string) (string, error) {
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(html))
 	if err != nil {
@@ -43,7 +40,7 @@ func Sanitize(html string, contentLink string) (string, error) {
 	}
 	doc.Find("img").Each(func(i int, s *goquery.Selection) {
 		src, ok := s.Attr("src")
-		if !ok {
+		if !ok || src == "" {
 			s.Remove()
 			return
 		}
@@ -53,7 +50,7 @@ func Sanitize(html string, contentLink string) (string, error) {
 	})
 	doc.Find("a").Each(func(i int, s *goquery.Selection) {
 		href, ok := s.Attr("href")
-		if !ok {
+		if !ok || href == "" {
 			s.Remove()
 			return
 		}
