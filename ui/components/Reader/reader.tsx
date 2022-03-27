@@ -7,6 +7,7 @@ import { createComponent } from '../component'
 import { Fragment } from 'react'
 import { Skeleton } from 'baseui/skeleton'
 import './style.postcss'
+import { useStyletron } from 'baseui'
 
 export type ReaderViewProps = {
   feedItem: FeedItemT | null
@@ -28,6 +29,7 @@ type ReaderPropsT = {
 }
 
 function ui(props: ReaderUIPropsT) {
+  const [, theme] = useStyletron()
   const backBtnContent = (
     <>
       <ChevronLeft />
@@ -40,10 +42,19 @@ function ui(props: ReaderUIPropsT) {
       <ChevronRight />
     </>
   )
+
   return (
     <Block>
-      <Label4>{props.domain}</Label4>
-      <HeadingLarge>{props.title}</HeadingLarge>
+      <Label4 color={theme.colors.contentTertiary}>
+        <a href={props.url} target="_blank" rel="noreferrer">
+          {props.domain}
+        </a>
+      </Label4>
+      <HeadingLarge>
+        <a href={props.url} target="_blank" rel="noreferrer">
+          {props.title}
+        </a>
+      </HeadingLarge>
       <Block>
         <div
           id="reader-view-content"
