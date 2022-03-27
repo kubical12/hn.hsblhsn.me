@@ -25,8 +25,8 @@ var HTMLViewerPolicy = bluemonday.UGCPolicy()
 type FeedItem struct {
 	ID            int    `json:"id"`
 	Title         string `json:"title"`
-	Body          string `json:"body"`
-	HTML          string `json:"__html"`
+	Summary       string `json:"summary"`
+	HTML          string `json:"content"`
 	Domain        string `json:"domain"`
 	URL           string `json:"url"`
 	HackerNewsUrl string `json:"hackerNewsUrl"`
@@ -47,8 +47,8 @@ func NewFeedItemFromHN(resp *hnFeedItemResponse) *FeedItem {
 
 	return &FeedItem{
 		ID:            resp.ID,
-		Title:         resp.Title,
-		Body:          resp.Text,
+		Title:         ellipsis(resp.Title, MaxLenTitle),
+		Summary:       ellipsis(resp.Text, MaxLenSummary),
 		URL:           resp.URL,
 		Domain:        domain,
 		HackerNewsUrl: hnLink,
@@ -93,7 +93,7 @@ func (f *FeedItem) UseOpengraph(ctx context.Context) error {
 		f.Title = og.Title
 	}
 	if og.Description != "" {
-		f.Body = og.Description
+		f.Summary = ellipsis(og.Description, MaxLenSummary)
 	}
 	return nil
 }
@@ -140,4 +140,16 @@ func (f *FeedItem) UseReadability(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+const (
+	MaxLenTitle   = 160
+	MaxLenSummary = 360
+)
+
+func ellipsis(text string, maxLen int) string {
+	if len(text) <= maxLen {
+		return text
+	}
+	return text[:maxLen] + "..."
 }

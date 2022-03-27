@@ -7,8 +7,8 @@ export type FeedT = {
 export type FeedItemT = {
   id: number
   title: string
-  body: string
-  __html: string
+  summary: string
+  content: string
   domain: string
   url: string
   hackerNewsUrl: string

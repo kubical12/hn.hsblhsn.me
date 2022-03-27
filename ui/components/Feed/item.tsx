@@ -56,7 +56,7 @@ function ui(props: UIProps) {
       </HeadingXSmall>
 
       {/* news summary */}
-      <StyledBody>{props.body}</StyledBody>
+      <StyledBody>{props.summary}</StyledBody>
 
       {/* interactions */}
       <StyledAction>
@@ -75,7 +75,7 @@ function ui(props: UIProps) {
 // prelude prepares the container props for the ui component.
 function prelude(props: ContainerProps): UIProps | undefined {
   const item = props.item
-  if (!item || item.body.trim() === '') {
+  if (!item) {
     return undefined
   }
   return item

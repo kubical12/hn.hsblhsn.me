@@ -78,7 +78,7 @@ function prelude(props: ReaderPropsT): ReaderUIPropsT | undefined {
   const item = props.item
   return {
     title: item.title,
-    content: item.__html,
+    content: item.content,
     domain: item.domain,
     url: item.url,
     hackerNewsUrl: item.hackerNewsUrl,
