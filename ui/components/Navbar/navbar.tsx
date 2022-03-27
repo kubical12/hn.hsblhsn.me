@@ -13,6 +13,7 @@ import { ArrowRight } from 'baseui/icon'
 import { NavBtn } from './navBtn'
 import { useEffect, useRef } from 'react'
 import { useStyletron } from 'baseui'
+import { Link } from 'react-router-dom'
 
 type NavbarPropsT = {
   onBack?: () => void
@@ -23,7 +24,7 @@ type NavbarPropsT = {
 
 export function Navbar(props: NavbarPropsT) {
   const ref = useRef(null)
-  const [,theme]= useStyletron()
+  const [, theme] = useStyletron()
   const { onBack, onForward, isLoading } = props
 
   useEffect(() => {
@@ -67,7 +68,9 @@ export function Navbar(props: NavbarPropsT) {
           <StyledNavigationItem>{BackBtn}</StyledNavigationItem>
           <StyledNavigationItem>{ForwardBtn}</StyledNavigationItem>
           <StyledNavigationItem>
-            <HeadingSmall>HackerNews</HeadingSmall>
+            <HeadingSmall>
+              <Link to="/">HackerNews</Link>
+            </HeadingSmall>
           </StyledNavigationItem>
         </StyledNavigationList>
       </HeaderNavigation>
