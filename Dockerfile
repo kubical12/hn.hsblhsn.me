@@ -1,5 +1,5 @@
-FROM node:17.7-bullseye AS ui-builder
-WORKDIR /ui
+FROM node:17.7-bullseye AS frontend-builder
+WORKDIR /frontend
 COPY package.json package.json
 COPY package-lock.json package-lock.json
 COPY Makefile Makefile
@@ -7,14 +7,15 @@ RUN make dep-frontend
 COPY . .
 RUN make build-frontend
 
-FROM golang:1.18-bullseye AS api-builder
+FROM golang:1.18-bullseye AS backend-builder
 WORKDIR /api
 COPY go.mod go.mod
 COPY go.sum go.sum
 COPY Makefile Makefile
 RUN make dep-backend
 COPY . .
-COPY --from=ui-builder /ui/frontend/build ./frontend/build
+RUN make build-backend
+COPY --from=frontend-builder /frontend/frontend/build ./frontend/build
 RUN make build
 
 FROM python:3.9-slim
@@ -27,8 +28,8 @@ COPY requirements.txt requirements.txt
 COPY Makefile Makefile
 RUN make dep-readability
 WORKDIR /app
-COPY --from=api-builder /api/bin/hackernews /app/hackernews
 RUN rm -rf /readability
+COPY --from=backend-builder /api/bin/hackernews /app/hackernews
 
 EXPOSE 8080
 CMD ["/app/hackernews"]

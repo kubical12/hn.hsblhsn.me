@@ -9,7 +9,7 @@ dep:
 
 
 build-backend:
-	@go build -o bin/hackernews ./cmd/hackernews
+	@go build ./...
 build-frontend:
 	@npm run build
 build:
