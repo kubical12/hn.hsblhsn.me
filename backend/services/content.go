@@ -15,7 +15,9 @@ import (
 )
 
 const (
-	DefaultMaxHTTPBytes = 1024 * 1024
+	MaxHTTPBytes  = 1024 * 1024
+	MaxTitleLen   = 160
+	MaxSummaryLen = 360
 )
 
 func getSEOData(ctx context.Context, item *types.Item, content []byte) error {
@@ -31,37 +33,31 @@ func getSEOData(ctx context.Context, item *types.Item, content []byte) error {
 		return err
 	}
 
-	// fill data from opengraph if available.
-	if og.Title != "" {
-		item.Title = og.Title
-	}
-	if og.Description != "" {
-		item.Summary = og.Description
-	}
-	bestImageUrl := getBestImageURL(og.Image)
+	var (
+		title        = elipsis(og.Title, MaxTitleLen)
+		summary      = elipsis(og.Title, MaxTitleLen)
+		thumbnailUrl = getBestImageURL(og.Image)
+	)
 
-	// fill thumbnail data.
-	item.ThumbnailUrl = images.ProxiedURL(bestImageUrl, images.ImageSizeThumbnail)
+	item.Lock()
+	defer item.Unlock()
+	// fill data from opengraph if available.
+	if title != "" {
+		item.Title = title
+	}
+	if summary != "" {
+		item.Summary = summary
+	}
+	if thumbnailUrl != "" {
+		item.ThumbnailUrl = images.ProxiedURL(thumbnailUrl, images.ImageSizeThumbnail)
+	}
 	// fill seo data.
 	item.SEO = &types.SEO{
-		Title:       og.Title,
-		Description: og.Description,
-		ImageURL:    images.ProxiedURL(bestImageUrl, images.ImageSizeFull),
+		Title:       title,
+		Description: summary,
+		ImageURL:    images.ProxiedURL(thumbnailUrl, images.ImageSizeFull),
 	}
 	return nil
-}
-
-func getBestImageURL(imgList []opengraph.Image) string {
-	if len(imgList) == 0 {
-		return ""
-	}
-	best := imgList[0]
-	for _, v := range imgList {
-		if v.Width > best.Width {
-			best = v
-		}
-	}
-	return best.URL
 }
 
 func getReadableContent(ctx context.Context, item *types.Item, content []byte) error {
@@ -75,6 +71,9 @@ func getReadableContent(ctx context.Context, item *types.Item, content []byte) e
 	if err != nil {
 		return err
 	}
+
+	item.Lock()
+	defer item.Unlock()
 
 	// fetch and prepare readable content.
 	item.Content = readableContent
@@ -109,10 +108,30 @@ func getContentFromURL(ctx context.Context, uri string, maxBytes int64) ([]byte,
 	return b, nil
 }
 
+func getBestImageURL(imgList []opengraph.Image) string {
+	if len(imgList) == 0 {
+		return ""
+	}
+	best := imgList[0]
+	for _, v := range imgList {
+		if v.Width > best.Width {
+			best = v
+		}
+	}
+	return best.URL
+}
+
 func getDomainName(uri string) string {
 	u, err := url.Parse(uri)
 	if err != nil {
 		return ""
 	}
 	return u.Host
+}
+
+func elipsis(s string, maxLength int) string {
+	if len(s) <= maxLength {
+		return s
+	}
+	return s[:maxLength-3] + "..."
 }

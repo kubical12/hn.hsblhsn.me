@@ -87,7 +87,7 @@ func (s *service) GetItemByID(ctx context.Context, id uint32) (*types.Item, erro
 		return nil, err
 	}
 	item.Domain = getDomainName(item.URL)
-	content, err := getContentFromURL(ctx, item.URL, DefaultMaxHTTPBytes)
+	content, err := getContentFromURL(ctx, item.URL, MaxHTTPBytes)
 	if err != nil {
 		return nil, err
 	}
@@ -106,7 +106,7 @@ func (s *service) GetItemByID(ctx context.Context, id uint32) (*types.Item, erro
 
 // GetResizedImage gets an image from the url and resizes it based on the given size.
 func (s *service) GetResizedImage(ctx context.Context, uri string, size images.ImageSize) (image.Image, error) {
-	content, err := getContentFromURL(ctx, uri, DefaultMaxHTTPBytes)
+	content, err := getContentFromURL(ctx, uri, MaxHTTPBytes)
 	if err != nil {
 		return nil, err
 	}
