@@ -7,6 +7,7 @@ type Item struct {
 	Content       string `json:"content"`
 	ThumbnailUrl  string `json:"thumbnailUrl"`
 	HackerNewsUrl string `json:"hackerNewsUrl"`
+	Domain        string `json:"domain"`
 	URL           string `json:"url" mapstructure:"url"`
 	SEO           *SEO   `json:"seo"`
 }

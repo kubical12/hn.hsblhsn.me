@@ -37,7 +37,7 @@ func (resp *ResponseWriter) Write(p []byte) (n int, err error) {
 
 func (resp *ResponseWriter) flush() {
 	resp.ResponseWriter.WriteHeader(resp.statusCode)
-	io.Copy(resp.ResponseWriter, resp.output)
+	_, _ = io.Copy(resp.ResponseWriter, resp.output)
 }
 
 func (resp *ResponseWriter) process(r *http.Request, m DurationMap, def time.Duration) {
@@ -102,7 +102,7 @@ func Middleware(hn http.Handler, opts CacheOptions) http.Handler {
 		if err == nil {
 			// found in cache. send cached response.
 			w.statusCode = http.StatusOK
-			w.Write(cachedResp)
+			_, _ = w.Write(cachedResp)
 			return
 		}
 

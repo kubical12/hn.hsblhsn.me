@@ -6,7 +6,7 @@ import (
 	"image"
 	"log"
 	"net/http"
-	"strings"
+	"net/url"
 
 	"github.com/hsblhsn/hackernews"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/images"
@@ -88,12 +88,18 @@ func (s *service) GetItemByID(ctx context.Context, id uint32) (*types.Item, erro
 		return nil, err
 	}
 
-	uri := item.URL
-	if !strings.HasPrefix(uri, "http://") && !strings.HasPrefix(uri, "https://") {
-		return nil, nil
+	// parse the url to get hostname.
+	{
+		uri, err := url.Parse(item.URL)
+		if err != nil {
+			return nil, err
+		}
+		if uri.Scheme != "http" && uri.Scheme != "https" {
+			return nil, nil
+		}
+		item.Domain = uri.Host
 	}
-
-	content, err := getContentFromURL(ctx, uri, DefaultMaxHTTPBytes)
+	content, err := getContentFromURL(ctx, item.URL, DefaultMaxHTTPBytes)
 	if err != nil {
 		return nil, err
 	}
