@@ -57,9 +57,11 @@ func (resp *ResponseWriter) process(r *http.Request, m DurationMap, def time.Dur
 }
 
 func Middleware(hn http.Handler, opts CacheOptions) http.Handler {
+	const cacheStatusHeader = "X-Cache-Status"
 	return http.HandlerFunc(func(resp http.ResponseWriter, r *http.Request) {
 		// do not do anything if it's not a get request.
 		if r.Method != http.MethodGet {
+			resp.Header().Set(cacheStatusHeader, "DYNAMIC")
 			hn.ServeHTTP(resp, r)
 			return
 		}
@@ -75,6 +77,7 @@ func Middleware(hn http.Handler, opts CacheOptions) http.Handler {
 		cachedResp, err := opts.Cache.Get(cacheKey)
 		if err == nil {
 			// found in cache. send cached response.
+			w.Header().Set(cacheStatusHeader, "HIT")
 			w.statusCode = http.StatusOK
 			_, _ = w.Write(cachedResp)
 			return
@@ -82,6 +85,7 @@ func Middleware(hn http.Handler, opts CacheOptions) http.Handler {
 
 		// request not found in cache.
 		// So, process the request.
+		w.Header().Set(cacheStatusHeader, "MISS")
 		hn.ServeHTTP(w, r)
 		if w.statusCode == 0 {
 			w.statusCode = http.StatusOK
