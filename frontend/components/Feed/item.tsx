@@ -48,20 +48,30 @@ function ui(props: UIProps) {
 
       {/* show thumbnail only if there is one! */}
       {showThumbnail && (
-        <StyledThumbnail src={props.thumbnailUrl} onError={hideImageOnError} />
+        <Link to={`/read/${props.id}`}>
+          <StyledThumbnail
+            src={props.thumbnailUrl}
+            onError={hideImageOnError}
+          />
+        </Link>
       )}
 
       {/* news title */}
-      <HeadingXSmall>
-        <Link to={`/read/${props.id}`}>{props.title}</Link>
-      </HeadingXSmall>
+      <Link to={`/read/${props.id}`}>
+        <HeadingXSmall
+          className={css({
+            paddingBottom: theme.sizing.scale500,
+          })}
+        >
+          {props.title}
+        </HeadingXSmall>
+      </Link>
 
       {/* news summary */}
       <StyledBody
         className={css({
           minHeight: theme.sizing.scale1600,
           minBlockSize: theme.sizing.scale1600,
-          marginTop: theme.sizing.scale500,
         })}
       >
         {props.summary}
