@@ -9,23 +9,21 @@ dep:
 
 
 build-api:
-	@go build -o bin/hn-api ./api/cmd/hn-api
+	@go build -o bin/hackernews ./cmd/hackernews
 build-ui:
 	@npm run build
-build-ui-server: build-ui
-	@go build -o bin/hn-ui ./api/cmd/hn-ui
 build:
-	@go build -o bin/hn ./api/cmd/hn
+	@go build -o bin/hackernews ./cmd/hackernews
 
 
 
 docker-build:
-	@docker build -t hn -f ./Dockerfile .
+	@docker build -t hackernews -f ./Dockerfile .
 
 
 
 proto-api:
-	@cd api/internal/grpc/readabilityclient && \
+	@cd backend/internal/grpc/readabilityclient && \
 		protoc \
 			--proto_path=../protos \
 			--go_out=. \
@@ -34,7 +32,7 @@ proto-api:
 			--go-grpc_opt=paths=source_relative \
 			../protos/readability.proto		
 proto-readability:
-	@cd api/internal/grpc/readabilityserver && \
+	@cd backend/internal/grpc/readabilityserver && \
 		python3 \
 			-m grpc_tools.protoc \
 			--proto_path=../protos \

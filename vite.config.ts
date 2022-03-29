@@ -12,7 +12,7 @@ const proxyConfig = {
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: './embedded/dist',
+    outDir: './frontend/build',
   },
   server: {
     proxy: proxyConfig,
