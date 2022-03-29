@@ -14,7 +14,7 @@ COPY go.sum go.sum
 COPY Makefile Makefile
 RUN make dep-api
 COPY . .
-COPY --from=ui-builder /ui/embedded/dist ./embedded/dist
+COPY --from=ui-builder /ui/frontend/build ./frontend/build
 RUN make build
 
 FROM python:3.9-slim
