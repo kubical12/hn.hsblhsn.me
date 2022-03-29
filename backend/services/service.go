@@ -6,7 +6,6 @@ import (
 	"image"
 	"log"
 	"net/http"
-	"net/url"
 
 	"github.com/hsblhsn/hackernews"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/images"
@@ -87,18 +86,7 @@ func (s *service) GetItemByID(ctx context.Context, id uint32) (*types.Item, erro
 	if err := mapstructure.WeakDecode(resultMap, item); err != nil {
 		return nil, err
 	}
-
-	// parse the url to get hostname.
-	{
-		uri, err := url.Parse(item.URL)
-		if err != nil {
-			return nil, err
-		}
-		if uri.Scheme != "http" && uri.Scheme != "https" {
-			return nil, nil
-		}
-		item.Domain = uri.Host
-	}
+	item.Domain = getDomainName(item.URL)
 	content, err := getContentFromURL(ctx, item.URL, DefaultMaxHTTPBytes)
 	if err != nil {
 		return nil, err

@@ -5,6 +5,7 @@ import (
 	"context"
 	"io"
 	"net/http"
+	"net/url"
 
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/images"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/readerviews"
@@ -106,4 +107,12 @@ func getContentFromURL(ctx context.Context, uri string, maxBytes int64) ([]byte,
 		return nil, errors.New("service: could not read fetched content")
 	}
 	return b, nil
+}
+
+func getDomainName(uri string) string {
+	u, err := url.Parse(uri)
+	if err != nil {
+		return ""
+	}
+	return u.Host
 }
