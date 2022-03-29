@@ -3,6 +3,7 @@ package services
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"image"
 	"log"
 	"net/http"
@@ -86,7 +87,10 @@ func (s *service) GetItemByID(ctx context.Context, id uint32) (*types.Item, erro
 	if err := mapstructure.WeakDecode(resultMap, item); err != nil {
 		return nil, err
 	}
-	item.Domain = getDomainName(item.URL)
+	{
+		item.HackerNewsUrl = fmt.Sprintf("https://news.ycombinator.com/item?id=%d", id)
+		item.Domain = getDomainName(item.URL)
+	}
 	content, err := getContentFromURL(ctx, item.URL, MaxHTTPBytes)
 	if err != nil {
 		return nil, err
