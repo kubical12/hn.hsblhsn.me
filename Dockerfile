@@ -7,7 +7,7 @@ RUN make dep-ui
 COPY . .
 RUN make build-ui
 
-FROM golang:1.17.7-bullseye AS api-builder
+FROM golang:1.18-bullseye AS api-builder
 WORKDIR /api
 COPY go.mod go.mod
 COPY go.sum go.sum
