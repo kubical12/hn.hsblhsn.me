@@ -52,34 +52,8 @@ func (resp *ResponseWriter) process(r *http.Request, m DurationMap, def time.Dur
 		return
 	}
 	cacheMaxAge := m.Get(ext, def)
-	cacheControlVal := fmt.Sprintf("public; max-age=%d; s-maxage=%d", cacheMaxAge, cacheMaxAge)
+	cacheControlVal := fmt.Sprintf("public, max-age=%d, s-maxage=%d", cacheMaxAge, cacheMaxAge)
 	resp.Header().Set("Cache-Control", cacheControlVal)
-}
-
-type DurationMap map[string]time.Duration
-
-func (m DurationMap) Get(ext string, def time.Duration) int {
-	dur, exists := m[ext]
-	if !exists {
-		dur = def
-	}
-	maxCacheAge := int(dur.Seconds())
-	return maxCacheAge
-}
-
-type CacheOptions struct {
-	Cache           Cache
-	DefaultDuration time.Duration
-	DurationMap     DurationMap
-}
-
-func NewDurationMap() DurationMap {
-	return DurationMap{
-		".json": time.Hour,
-		".jpeg": time.Hour * 72,
-		".html": time.Hour * 72,
-		".js":   time.Hour * 24,
-	}
 }
 
 func Middleware(hn http.Handler, opts CacheOptions) http.Handler {
