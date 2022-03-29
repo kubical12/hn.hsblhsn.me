@@ -35,7 +35,7 @@ func getSEOData(ctx context.Context, item *types.Item, content []byte) error {
 
 	var (
 		title        = elipsis(og.Title, MaxTitleLen)
-		summary      = elipsis(og.Title, MaxTitleLen)
+		summary      = elipsis(og.Description, MaxSummaryLen)
 		thumbnailUrl = getBestImageURL(og.Image)
 	)
 
