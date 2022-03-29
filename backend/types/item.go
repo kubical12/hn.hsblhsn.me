@@ -9,5 +9,6 @@ type Item struct {
 	HackerNewsUrl string `json:"hackerNewsUrl"`
 	Domain        string `json:"domain"`
 	URL           string `json:"url" mapstructure:"url"`
+	TotalComments uint16 `json:"totalComments" mapstructure:"descendants"`
 	SEO           *SEO   `json:"seo"`
 }
