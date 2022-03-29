@@ -1,7 +1,5 @@
 export type FeedT = {
-  feedItems: Array<FeedItemT | null>
-  totalPages: number
-  currentPage: number
+  items: Array<FeedItemT | null>
 }
 
 export type FeedItemT = {

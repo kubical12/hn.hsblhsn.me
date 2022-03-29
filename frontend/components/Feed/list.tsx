@@ -53,7 +53,7 @@ function prelude(props: ContainerProps): UIProps | undefined {
   if (!feed) {
     return undefined
   }
-  const items = feed.feedItems
+  const items = feed.items
   if (!items || items.length === 0) {
     return undefined
   }
