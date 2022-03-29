@@ -17,7 +17,9 @@ export function Page() {
 
   const paginate = useCallback(
     (inc: number) => {
-      feed(kind, page + inc)
+      if (kind && page) {
+        feed(kind, page + inc)
+      }
     },
     [feed, kind, page]
   )

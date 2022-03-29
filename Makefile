@@ -1,16 +1,16 @@
-dep-api:
+dep-backend:
 	@go mod download
 dep-readability:
 	@pip3 install -r requirements.txt
-dep-ui:
+dep-frontend:
 	@npm install
 dep:
-	@make dep-api dep-readability dep-ui
+	@make dep-backend dep-readability dep-frontend
 
 
-build-api:
+build-backend:
 	@go build -o bin/hackernews ./cmd/hackernews
-build-ui:
+build-frontend:
 	@npm run build
 build:
 	@go build -o bin/hackernews ./cmd/hackernews
@@ -22,7 +22,7 @@ docker-build:
 
 
 
-proto-api:
+proto-backend:
 	@cd backend/internal/grpc/readabilityclient && \
 		protoc \
 			--proto_path=../protos \
@@ -40,5 +40,5 @@ proto-readability:
 			--grpc_python_out=. \
 			../protos/readability.proto	
 proto:
-	@make proto-api proto-readability
+	@make proto-backend proto-readability
 

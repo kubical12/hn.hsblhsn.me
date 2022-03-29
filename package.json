@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "lint": "eslint --fix ./ui/",
+    "lint": "eslint --fix ./frontend/",
     "dev": "vite",
     "build": "npm run lint && tsc && vite build",
     "preview": "vite preview"

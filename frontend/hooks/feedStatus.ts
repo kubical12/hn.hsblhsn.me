@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
-import useAppNavigator, { PAGE, FEED_KIND } from './navigation'
+import { FEED_KIND } from './navigation'
 
 type FeedStatusT = {
   kind: FEED_KIND | undefined
   page: number | undefined
 }
 
-const useFeedStatus = (): FeedStatusT | undefined => {
-  const appNav = useAppNavigator()
+const useFeedStatus = (): FeedStatusT => {
   const [searchParams] = useSearchParams()
   const routeParams = useParams()
   const [feedKind, setFeedKind] = useState<FEED_KIND | undefined>(undefined)
@@ -36,10 +35,6 @@ const useFeedStatus = (): FeedStatusT | undefined => {
       setFeedPage(undefined)
     }
   }, [searchParams])
-
-  if (appNav.currentPage() !== PAGE.feed) {
-    return undefined
-  }
   return {
     kind: feedKind,
     page: feedPage,

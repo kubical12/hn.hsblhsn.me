@@ -3,8 +3,8 @@ import { FlexGrid, FlexGridItem } from 'baseui/flex-grid'
 import { useStyletron } from 'baseui'
 
 type LeftRightButtonsPropsT = {
-  onLeft: () => void
-  onRight: () => void
+  onLeft: (() => void) | undefined
+  onRight: (() => void) | undefined
   leftContent: React.ReactNode
   rightContent: React.ReactNode
 }

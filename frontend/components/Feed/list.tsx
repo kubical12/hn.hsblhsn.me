@@ -8,14 +8,14 @@ import { createComponent } from '../component'
 
 type ContainerProps = {
   feed: FeedT
-  onBack: () => void
-  onForward: () => void
+  onBack: (() => void) | undefined
+  onForward: (() => void) | undefined
 }
 
 type UIProps = {
-  items: Array<FeedItemT>
-  onBack: () => void
-  onForward: () => void
+  items: Array<FeedItemT | null>
+  onBack: (() => void) | undefined
+  onForward: (() => void) | undefined
 }
 
 // ui component.

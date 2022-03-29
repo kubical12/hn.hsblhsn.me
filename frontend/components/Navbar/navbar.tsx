@@ -7,7 +7,7 @@ import {
 import { Block } from 'baseui/block'
 import LoadingBar from 'react-top-loading-bar'
 import { HeadingSmall } from 'baseui/typography'
-import ArrowLeft from 'baseui/icon/arrow-left'
+import { ArrowLeft } from 'baseui/icon'
 import { FEED_KIND } from '../../hooks/navigation'
 import { ArrowRight } from 'baseui/icon'
 import { NavBtn } from './navBtn'
@@ -22,16 +22,22 @@ type NavbarPropsT = {
   isLoading?: boolean
 }
 
+interface LoadingBarRefI {
+  staticStart(): void
+  continuousStart(): void
+  complete(): void
+}
+
 export function Navbar(props: NavbarPropsT) {
-  const ref = useRef(null)
+  const ref = useRef<LoadingBarRefI>(null)
   const [, theme] = useStyletron()
   const { onBack, onForward, isLoading } = props
 
   useEffect(() => {
     if (isLoading && isLoading === true) {
-      ref.current.continuousStart()
+      ref.current?.continuousStart()
     } else {
-      ref.current.complete()
+      ref.current?.complete()
     }
   }, [isLoading])
 

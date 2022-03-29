@@ -3,16 +3,16 @@ WORKDIR /ui
 COPY package.json package.json
 COPY package-lock.json package-lock.json
 COPY Makefile Makefile
-RUN make dep-ui
+RUN make dep-frontend
 COPY . .
-RUN make build-ui
+RUN make build-frontend
 
 FROM golang:1.18-bullseye AS api-builder
 WORKDIR /api
 COPY go.mod go.mod
 COPY go.sum go.sum
 COPY Makefile Makefile
-RUN make dep-api
+RUN make dep-backend
 COPY . .
 COPY --from=ui-builder /ui/frontend/build ./frontend/build
 RUN make build
