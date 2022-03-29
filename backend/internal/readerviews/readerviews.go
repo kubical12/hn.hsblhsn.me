@@ -49,10 +49,6 @@ func Sanitize(ctx context.Context, content []byte, link string) (string, error) 
 			s.Remove()
 			return
 		}
-		if strings.HasPrefix(href, "#") {
-			// this is a fragment link.
-			return
-		}
 		absLink := toAbs(link, href)
 		s.SetAttr("href", absLink)
 		s.SetAttr("target", "_blank")
