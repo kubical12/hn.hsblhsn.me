@@ -9,7 +9,7 @@ dep:
 
 
 build-backend:
-	@go build ./...
+	@go build ./backend/...
 build-frontend:
 	@npm run build
 build:
