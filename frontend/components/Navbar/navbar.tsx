@@ -5,15 +5,13 @@ import {
   StyledNavigationItem,
 } from 'baseui/header-navigation'
 import { Block } from 'baseui/block'
-import LoadingBar from 'react-top-loading-bar'
 import { HeadingSmall } from 'baseui/typography'
 import { ArrowLeft } from 'baseui/icon'
 import { FEED_KIND } from '../../hooks/navigation'
 import { ArrowRight } from 'baseui/icon'
 import { NavBtn } from './navBtn'
-import { useEffect, useRef } from 'react'
-import { useStyletron } from 'baseui'
 import { Link } from 'react-router-dom'
+import { Loader } from './loader'
 
 type NavbarPropsT = {
   onBack?: () => void
@@ -22,24 +20,8 @@ type NavbarPropsT = {
   isLoading?: boolean
 }
 
-interface LoadingBarRefI {
-  staticStart(): void
-  continuousStart(): void
-  complete(): void
-}
-
 export function Navbar(props: NavbarPropsT) {
-  const ref = useRef<LoadingBarRefI>(null)
-  const [, theme] = useStyletron()
   const { onBack, onForward, isLoading } = props
-
-  useEffect(() => {
-    if (isLoading && isLoading === true) {
-      ref.current?.continuousStart()
-    } else {
-      ref.current?.complete()
-    }
-  }, [isLoading])
 
   const BackBtn = (
     <NavBtn onClick={onBack}>
@@ -55,12 +37,7 @@ export function Navbar(props: NavbarPropsT) {
 
   return (
     <Block>
-      <LoadingBar
-        color={theme.colors.accent}
-        height={3}
-        ref={ref}
-        shadow={true}
-      />
+      <Loader isLoading={isLoading} />
       <HeaderNavigation
         overrides={{
           Root: {

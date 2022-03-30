@@ -4,7 +4,7 @@ import { ErrorScreen } from '../../components/ErrorScreen'
 import { ReaderContainer, ReaderSkeleton } from '../../components/Reader'
 import useRead from '../../hooks/read'
 import { useStyletron } from 'baseui'
-import { Navbar } from '../../components/Navbar/navbar'
+import { Navbar } from '../../components/Navbar'
 import { Meta } from '../../components/SEO'
 import { Fragment } from 'react'
 

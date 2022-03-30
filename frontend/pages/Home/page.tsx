@@ -1,7 +1,7 @@
 import { Container } from '../../components/Layout'
 import { useEffect } from 'react'
 import { Empty } from '../../components/Empty'
-import { Navbar } from '../../components/Navbar/navbar'
+import { Navbar } from '../../components/Navbar'
 import useAppNavigator, { FEED_KIND } from '../../hooks/navigation'
 
 export function Page() {
