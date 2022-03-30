@@ -55,7 +55,9 @@ func (s *service) GetListByType(ctx context.Context, typ types.ListType, page ui
 	// closure function to fetch items concurrently.
 	fetch := func(ctx context.Context, q *queues.Q, index int, id uint32) {
 		defer q.Done()
-		item, err := s.GetItemByID(disableReadability(ctx), id)
+		ctx = disableReadability(ctx)
+		ctx = disableSEO(ctx)
+		item, err := s.GetItemByID(ctx, id)
 		if err != nil {
 			log.Println(err)
 		}

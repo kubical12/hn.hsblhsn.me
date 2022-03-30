@@ -51,11 +51,18 @@ func getSEOData(ctx context.Context, item *types.Item, content []byte) error {
 	if thumbnailUrl != "" {
 		item.ThumbnailUrl = images.ProxiedURL(thumbnailUrl, images.ImageSizeThumbnail)
 	}
+
+	// check if seo is disabled.
+	val := ctx.Value(disableSEOCtxKey{})
+	if _, ok := val.(struct{}); ok {
+		return nil
+	}
 	// fill seo data.
 	item.SEO = &types.SEO{
-		Title:       title,
-		Description: summary,
-		ImageURL:    images.ProxiedURL(thumbnailUrl, images.ImageSizeFull),
+		Title:        title,
+		Description:  summary,
+		ImageURL:     images.ProxiedURL(thumbnailUrl, images.ImageSizeFull),
+		CanonicalUrl: item.URL,
 	}
 	return nil
 }
@@ -78,12 +85,6 @@ func getReadableContent(ctx context.Context, item *types.Item, content []byte) e
 	// fetch and prepare readable content.
 	item.Content = readableContent
 	return nil
-}
-
-type disableReadabilityCtxKey struct{}
-
-func disableReadability(ctx context.Context) context.Context {
-	return context.WithValue(ctx, disableReadabilityCtxKey{}, struct{}{})
 }
 
 func getContentFromURL(ctx context.Context, uri string, maxBytes int64) ([]byte, error) {
@@ -134,4 +135,16 @@ func elipsis(s string, maxLength int) string {
 		return s
 	}
 	return s[:maxLength-3] + "..."
+}
+
+type disableReadabilityCtxKey struct{}
+
+func disableReadability(ctx context.Context) context.Context {
+	return context.WithValue(ctx, disableReadabilityCtxKey{}, struct{}{})
+}
+
+type disableSEOCtxKey struct{}
+
+func disableSEO(ctx context.Context) context.Context {
+	return context.WithValue(ctx, disableSEOCtxKey{}, struct{}{})
 }
