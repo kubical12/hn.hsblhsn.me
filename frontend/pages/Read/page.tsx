@@ -5,6 +5,8 @@ import { ReaderContainer, ReaderSkeleton } from '../../components/Reader'
 import useRead from '../../hooks/read'
 import { useStyletron } from 'baseui'
 import { Navbar } from '../../components/Navbar/navbar'
+import { Meta } from '../../components/SEO'
+import { Fragment } from 'react'
 
 export function Page() {
   const [, theme] = useStyletron()
@@ -19,7 +21,11 @@ export function Page() {
   } else if (error) {
     content = <ErrorScreen error={error} />
   } else if (data) {
-    content = <ReaderContainer item={data} />
+    content = (
+      <Fragment>
+        <Meta data={data} /> <ReaderContainer item={data} />
+      </Fragment>
+    )
   }
 
   const paddedContent = {

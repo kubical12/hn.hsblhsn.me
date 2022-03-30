@@ -7,7 +7,8 @@ import { useStyletron } from 'baseui'
 import { Navbar } from '../../components/Navbar/navbar'
 import useFeedStatus from '../../hooks/feedStatus'
 import useAppNavigator from '../../hooks/navigation'
-import { useCallback } from 'react'
+import { Fragment, useCallback } from 'react'
+import { Meta } from '../../components/SEO'
 
 export function Page() {
   const [, theme] = useStyletron()
@@ -39,11 +40,14 @@ export function Page() {
     content = <ErrorScreen error={error} />
   } else if (data) {
     content = (
-      <FeedListContainer
-        feed={data}
-        onBack={page && page > 1 ? onBack : undefined}
-        onForward={onForward}
-      />
+      <Fragment>
+        <Meta data={data} />
+        <FeedListContainer
+          feed={data}
+          onBack={page && page > 1 ? onBack : undefined}
+          onForward={onForward}
+        />
+      </Fragment>
     )
   }
 
