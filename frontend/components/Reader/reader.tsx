@@ -53,7 +53,12 @@ function ui(props: ReaderUIPropsT) {
       </Label4>
       <a href={props.hackerNewsUrl} target="_blank" rel="noreferrer">
         <HeadingLarge>{props.title}</HeadingLarge>
-        <Label4 color={theme.colors.contentTertiary}>
+        <Label4
+          $style={{
+            'text-decoration-line': 'underline',
+            color: theme.colors.contentTertiary,
+          }}
+        >
           Open #{props.id} in HackerNews.
         </Label4>
       </a>
