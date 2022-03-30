@@ -52,7 +52,7 @@ func (resp *ResponseWriter) process(r *http.Request, m DurationMap, def time.Dur
 		return
 	}
 	cacheMaxAge := m.Get(ext, def)
-	cacheControlVal := fmt.Sprintf("public, max-age=%d, s-maxage=%d", cacheMaxAge, cacheMaxAge)
+	cacheControlVal := fmt.Sprintf("public, max-age=%d", cacheMaxAge)
 	resp.Header().Set("Cache-Control", cacheControlVal)
 }
 
