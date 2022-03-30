@@ -1,3 +1,4 @@
+import { useStyletron } from 'baseui'
 import { Helmet } from 'react-helmet-async'
 import { Empty } from '../Empty'
 
@@ -14,6 +15,7 @@ type SEOFriendly = {
 }
 
 export function Meta(props: { data: SEOFriendly }) {
+  const [, theme] = useStyletron()
   if (!props || !props.data || !props.data.seo) {
     return <Empty />
   }
@@ -34,6 +36,7 @@ export function Meta(props: { data: SEOFriendly }) {
       <meta name="twitter:image:alt" content={seo.title} />
       <meta name="description" content={seo.description} />
       <meta name="robots" content="index,follow" />
+      <meta name="theme-color" content={theme.colors.backgroundPrimary} />
     </Helmet>
   )
 }
