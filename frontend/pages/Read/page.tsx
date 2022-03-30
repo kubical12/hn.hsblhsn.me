@@ -29,7 +29,7 @@ export function Page() {
   }
 
   const paddedContent = {
-    paddingTop: theme.sizing.scale1600,
+    paddingTop: theme.sizing.scale700,
     paddingBottom: theme.sizing.scale1600,
     paddingRight: theme.sizing.scale700,
     paddingLeft: theme.sizing.scale700,

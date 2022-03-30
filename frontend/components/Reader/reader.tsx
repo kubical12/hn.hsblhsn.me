@@ -15,6 +15,7 @@ export type ReaderViewProps = {
 }
 
 type ReaderUIPropsT = {
+  id: number
   title: string
   domain: string
   url: string
@@ -31,16 +32,16 @@ type ReaderPropsT = {
 function ui(props: ReaderUIPropsT) {
   const [, theme] = useStyletron()
   const backBtnContent = (
-    <>
+    <Fragment>
       <ChevronLeft />
       Back
-    </>
+    </Fragment>
   )
   const forwardBtnContent = (
-    <>
-      HackerNews
+    <Fragment>
+      Read
       <ChevronRight />
-    </>
+    </Fragment>
   )
 
   return (
@@ -50,11 +51,12 @@ function ui(props: ReaderUIPropsT) {
           {props.domain}
         </a>
       </Label4>
-      <HeadingLarge>
-        <a href={props.url} target="_blank" rel="noreferrer">
-          {props.title}
-        </a>
-      </HeadingLarge>
+      <a href={props.hackerNewsUrl} target="_blank" rel="noreferrer">
+        <HeadingLarge>{props.title}</HeadingLarge>
+        <Label4 color={theme.colors.contentTertiary}>
+          Open #{props.id} in HackerNews.
+        </Label4>
+      </a>
       <Block>
         <div
           id="reader-view-content"
@@ -77,6 +79,7 @@ function prelude(props: ReaderPropsT): ReaderUIPropsT | undefined {
   }
   const item = props.item
   return {
+    id: item.id,
     title: item.title,
     content: item.content,
     domain: item.domain,
@@ -86,7 +89,7 @@ function prelude(props: ReaderPropsT): ReaderUIPropsT | undefined {
       window.history.back()
     },
     onForward: () => {
-      window.open(item.hackerNewsUrl, '_blank')
+      window.open(item.url, '_blank')
     },
   }
 }
