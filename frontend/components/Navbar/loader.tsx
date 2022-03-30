@@ -21,6 +21,7 @@ export function Loader({ isLoading }: { isLoading: boolean | undefined }) {
   return (
     <LoadingBar
       color={theme.colors.accent}
+      waitingTime={10}
       height={3}
       ref={ref}
       shadow={true}
