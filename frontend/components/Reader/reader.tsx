@@ -39,7 +39,7 @@ function ui(props: ReaderUIPropsT) {
   )
   const forwardBtnContent = (
     <Fragment>
-      Read
+      Open
       <ChevronRight />
     </Fragment>
   )
