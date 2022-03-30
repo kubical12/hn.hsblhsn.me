@@ -6,7 +6,7 @@ import useFeedStatus from './feedStatus'
 function useFeed() {
   const feedStatus = useFeedStatus()
   const [data, setData] = useState<FeedT | undefined>(undefined)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState<ErrorT | undefined>(undefined)
 
   const fetchData = async (url: string) => {
