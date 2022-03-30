@@ -1,13 +1,11 @@
 import { BaseProvider, DarkTheme, LightTheme, styled } from 'baseui'
-import { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { Loader } from './components/Navbar'
 import { useDarkMode } from './hooks/theme'
 
-const FeedPage = lazy(() => import('./pages/Feed'))
-const HomePage = lazy(() => import('./pages/Home'))
-const ReadPage = lazy(() => import('./pages/Read'))
-const NotFoundPage = lazy(() => import('./pages/NotFound'))
+import FeedPage from './pages/Feed'
+import HomePage from './pages/Home'
+import ReadPage from './pages/Read'
+import NotFoundPage from './pages/NotFound'
 
 const StyledAppShell = styled('div', ({ $theme }) => ({
   backgroundColor: $theme.colors.backgroundPrimary,
@@ -22,14 +20,12 @@ function App() {
   return (
     <BaseProvider theme={isDark ? DarkTheme : LightTheme}>
       <StyledAppShell>
-        <Suspense fallback={<Loader isLoading={true} />}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/read/:id" element={<ReadPage />} />
-            <Route path="/feed/:kind" element={<FeedPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </Suspense>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/read/:id" element={<ReadPage />} />
+          <Route path="/feed/:kind" element={<FeedPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
       </StyledAppShell>
     </BaseProvider>
   )
