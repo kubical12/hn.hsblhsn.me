@@ -72,7 +72,17 @@ func (s *service) GetListByType(ctx context.Context, typ types.ListType, page ui
 
 	// wait and return the items when fetched.
 	q.Wait()
-	return &types.List{Type: typ, Page: page, Items: items}, nil
+	seo := &types.SEO{
+		Title:       fmt.Sprintf("HackerNews - %s submissions", typ),
+		Description: `HackerNews reader designed for humans.`,
+	}
+
+	return &types.List{
+		Type:  typ,
+		Page:  page,
+		Items: items,
+		SEO:   seo,
+	}, nil
 }
 
 // GetItemByID fetches a single item with the given id.
