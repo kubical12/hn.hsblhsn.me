@@ -2,6 +2,20 @@ package caches
 
 import "time"
 
+func NewDurationMap() DurationMap {
+	var (
+		day  = time.Hour * 24
+		week = day * 7
+	)
+	return DurationMap{
+		".json": time.Hour,
+		".html": day,
+		".jpeg": week,
+		".js":   week,
+		".css":  week,
+	}
+}
+
 type DurationMap map[string]time.Duration
 
 func (m DurationMap) Get(ext string, def time.Duration) int {
@@ -17,13 +31,4 @@ type CacheOptions struct {
 	Cache           Cache
 	DefaultDuration time.Duration
 	DurationMap     DurationMap
-}
-
-func NewDurationMap() DurationMap {
-	return DurationMap{
-		".json": time.Hour,
-		".jpeg": time.Hour * 72,
-		".html": time.Hour * 72,
-		".js":   time.Hour * 24,
-	}
 }
