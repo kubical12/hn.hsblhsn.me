@@ -1,5 +1,6 @@
 import { HeadingLarge, Label4 } from 'baseui/typography'
 import { Block } from 'baseui/block'
+import { StyledLink } from 'baseui/link'
 import { FeedItemT } from '../../types'
 import { ChevronLeft, ChevronRight } from 'baseui/icon'
 import { LeftRightButtons } from '../ButtonGroup'
@@ -30,7 +31,7 @@ type ReaderPropsT = {
 }
 
 function ui(props: ReaderUIPropsT) {
-  const [, theme] = useStyletron()
+  const [css, theme] = useStyletron()
   const backBtnContent = (
     <Fragment>
       <ChevronLeft />
@@ -39,7 +40,7 @@ function ui(props: ReaderUIPropsT) {
   )
   const forwardBtnContent = (
     <Fragment>
-      Open
+      Go
       <ChevronRight />
     </Fragment>
   )
@@ -54,10 +55,10 @@ function ui(props: ReaderUIPropsT) {
       <a href={props.hackerNewsUrl} target="_blank" rel="noreferrer">
         <HeadingLarge>{props.title}</HeadingLarge>
         <Label4
-          $style={{
-            'text-decoration-line': 'underline',
+          className={css({
+            textDecorationLine: 'underline',
             color: theme.colors.contentTertiary,
-          }}
+          })}
         >
           Open #{props.id} in HackerNews.
         </Label4>
@@ -74,6 +75,19 @@ function ui(props: ReaderUIPropsT) {
         leftContent={backBtnContent}
         rightContent={forwardBtnContent}
       />
+      <Block
+        className={css({
+          textAlign: 'center',
+          marginTop: theme.sizing.scale800,
+          marginBottom: theme.sizing.scale800,
+          color: theme.colors.contentTertiary,
+        })}
+      >
+        Or,&nbsp;
+        <StyledLink href={props.hackerNewsUrl} target="_blank">
+          Open in HackerNews.
+        </StyledLink>
+      </Block>
     </Block>
   )
 }
