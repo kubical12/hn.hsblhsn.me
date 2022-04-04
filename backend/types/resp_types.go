@@ -26,7 +26,7 @@ type GetResizedImageResponse = image.Image
 func EncodeGetResizedImageResponse(_ context.Context, w http.ResponseWriter, d any) error {
 	response, ok := d.(image.Image)
 	if !ok {
-		log.Printf("unexpected type in image encoder %T", d)
+		log.Printf("types: unexpected type in image encoder %T", d)
 	}
 	return jpeg.Encode(w, response, &jpeg.Options{
 		Quality: 90,

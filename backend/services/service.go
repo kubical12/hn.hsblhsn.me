@@ -59,7 +59,7 @@ func (s *service) GetListByType(ctx context.Context, typ types.ListType, page ui
 		ctx = disableSEO(ctx)
 		item, err := s.GetItemByID(ctx, id)
 		if err != nil {
-			log.Println(err)
+			log.Printf("service: could not get item by id: %d: %v", id, err)
 		}
 		items[index] = item
 	}

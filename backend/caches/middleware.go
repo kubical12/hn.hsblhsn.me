@@ -95,7 +95,7 @@ func Middleware(hn http.Handler, opts CacheOptions) http.Handler {
 			return
 		}
 		if err := opts.Cache.Set(cacheKey, w.output.Bytes()); err != nil {
-			log.Println(err)
+			log.Println("caches: could not cache response", err)
 		}
 	})
 }

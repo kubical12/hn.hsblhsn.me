@@ -33,7 +33,7 @@ type Error interface {
 }
 
 func EncodeErrorMessage(ctx context.Context, err error, w http.ResponseWriter) {
-	log.Println("error occurred", err)
+	log.Printf("types: encoding error message: %v", err)
 	val, ok := err.(Error)
 	if !ok {
 		val = NewEncodeableError(err, "Internal server error. Please try again.")

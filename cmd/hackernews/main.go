@@ -27,6 +27,6 @@ func main() {
 		DurationMap:     caches.NewDurationMap(),
 	})
 	if err := http.ListenAndServe("0.0.0.0:8080", handler); err != nil {
-		log.Fatal(err)
+		log.Printf("main: could not start server: %v", err)
 	}
 }

@@ -41,7 +41,7 @@ func initialize() {
 	}
 	defer os.RemoveAll(dir)
 	if err := copyembed.CopyDirectory(content, ".", dir); err != nil {
-		log.Println(err)
+		crashErr = err
 		return
 	}
 
