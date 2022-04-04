@@ -7,7 +7,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend"
-	"github.com/hsblhsn/hn.hsblhsn.me/caches"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/caches"
 	"github.com/hsblhsn/hn.hsblhsn.me/frontend"
 )
 
