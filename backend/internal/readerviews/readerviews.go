@@ -9,12 +9,13 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/bionify"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/grpc/readabilityclient"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/images"
 	"github.com/pkg/errors"
 )
 
-func Sanitize(ctx context.Context, content []byte, link string) (string, error) {
+func Convert(ctx context.Context, content []byte, link string) (string, error) {
 	// convert the webpage to a readable html document
 	ready := isReadabilityClientReady(ctx, time.Second*3)
 	if !ready {
@@ -52,6 +53,9 @@ func Sanitize(ctx context.Context, content []byte, link string) (string, error) 
 		absLink := toAbs(link, href)
 		s.SetAttr("href", absLink)
 		s.SetAttr("target", "_blank")
+	})
+	doc.Find("p").Each(func(i int, s *goquery.Selection) {
+		s.SetHtml(bionify.Text(s.Text()))
 	})
 	htmlContent, err := doc.Html()
 	if err != nil {

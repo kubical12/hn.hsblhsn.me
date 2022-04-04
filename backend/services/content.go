@@ -74,7 +74,7 @@ func getReadableContent(ctx context.Context, item *types.Item, content []byte) e
 		return nil
 	}
 
-	readableContent, err := readerviews.Sanitize(ctx, content, item.URL)
+	readableContent, err := readerviews.Convert(ctx, content, item.URL)
 	if err != nil {
 		return err
 	}
