@@ -1,12 +1,12 @@
 import { Block } from 'baseui/block'
 import { Label3, Paragraph2 } from 'baseui/typography'
-import moment from 'moment'
 import { useStyletron } from 'baseui'
 import { CommentThread } from '../CommentThread'
 import { useState } from 'react'
 import './Comment.css'
 import { Comment as CommentT } from '../../types'
 import { StyleProps } from '../../types'
+import { fromNow } from '../commonutils'
 
 interface CommentProps {
   comment: CommentT
@@ -52,7 +52,7 @@ const Comment: React.FC<CommentProps> = ({ comment }: CommentProps) => {
         <span className={color(theme.colors.accent)}>@{comment.by}</span>
         <span className={color(theme.colors.colorSecondary)}>
           &nbsp;commented&nbsp;
-          {comment.time ? moment(comment.time * 1000).fromNow() : 'unknown'}
+          {comment.time ? fromNow(comment.time * 1000) : 'unknown'}
         </span>
         <span className={color(theme.colors.colorSecondary)}>
           &nbsp;&nbsp;[{isExpanded ? 'close' : 'show'}]&nbsp;&nbsp;

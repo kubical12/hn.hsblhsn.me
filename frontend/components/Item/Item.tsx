@@ -7,11 +7,10 @@ import {
   Label4,
   Paragraph4,
 } from 'baseui/typography'
-import moment from 'moment'
 import { Link } from 'react-router-dom'
 import { Job, NodeT, Story } from '../../types'
 import { CommentThread } from '../CommentThread'
-import { getHost, getLink } from '../commonutils'
+import { fromNow, getHost, getLink } from '../commonutils'
 import './Item.css'
 
 interface ItemProps {
@@ -47,7 +46,7 @@ const Header: React.FC<ItemProps> = ({ item }: ItemProps) => {
       <Label4>
         <span className={color(theme.colors.accent)}>@{item.by}</span>&nbsp;
         <span className={color(theme.colors.colorSecondary)}>
-          {item.time ? moment(item.time * 1000).fromNow() : 'unknown'}
+          {item.time ? fromNow(item.time * 1000) : 'unknown'}
         </span>
       </Label4>
       <HeadingLarge>
