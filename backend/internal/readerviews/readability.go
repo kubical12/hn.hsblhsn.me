@@ -13,6 +13,7 @@ import (
 )
 
 // readabilityClient returns a grpc client for the readability service.
+// nolint:ireturn // readabilityclient.NewReadabilityClient returns interface.
 func readabilityClient() readabilityclient.ReadabilityClient {
 	addr := os.Getenv("READABILITY_SERVER_ADDR")
 	if addr == "" {
@@ -49,7 +50,8 @@ func isReadabilityClientReady(ctx context.Context, timeout time.Duration) bool {
 
 // readinessCheck retries and checks if the readability client is ready.
 func readinessCheck(ctx context.Context, resultChan chan struct{}) {
-	rc := readabilityClient()
+	const retryInterval = time.Millisecond * 10
+	client := readabilityClient()
 	for {
 		deadline, ok := ctx.Deadline()
 		if ok {
@@ -57,13 +59,13 @@ func readinessCheck(ctx context.Context, resultChan chan struct{}) {
 				break
 			}
 		}
-		info, err := rc.GetReadinessInfo(
+		info, err := client.GetReadinessInfo(
 			ctx, &readabilityclient.GetReadinessInfoRequest{
 				Identifier: "readability-client",
 			},
 		)
 		if err != nil || !info.GetReady() {
-			time.Sleep(time.Millisecond * 10)
+			time.Sleep(retryInterval)
 			continue
 		}
 		close(resultChan)

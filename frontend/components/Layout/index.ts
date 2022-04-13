@@ -1,1 +1,2 @@
-export { Container } from './container'
+export { Container } from './Container'
+export { PaddedBlock } from './PaddedBlock'

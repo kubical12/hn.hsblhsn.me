@@ -1,0 +1,34 @@
+type StoryConnection {
+  pageInfo: PageInfo!
+  edges: [StoryEdge!]!
+  totalCount: Int!
+}
+
+type StoryEdge {
+  node: Story
+  cursor: Cursor!
+}
+
+type Story implements Node {
+  id: ID!
+  databaseId: Int!
+  deleted: Boolean!
+  type: String!
+  by: String!
+  time: Int!
+  dead: Boolean!
+  kids: [Int!]!
+  comments(
+    after: Cursor
+    first: Int
+    before: Cursor
+    last: Int
+  ): CommentConnection! @goField(forceResolver: true)
+  descendants: Int!
+  score: Int!
+  url: String!
+  title: String!
+  text: String!
+  openGraph: OpenGraph
+  html: String
+}

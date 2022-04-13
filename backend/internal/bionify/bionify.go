@@ -6,6 +6,8 @@ import (
 	"unicode"
 	"unicode/utf8"
 
+	"github.com/PuerkitoBio/goquery"
+	"github.com/pkg/errors"
 	"golang.org/x/exp/utf8string"
 )
 
@@ -15,6 +17,7 @@ func Word(word string) string {
 		return word
 	}
 	utf8str := utf8string.NewString(word)
+	// nolint:gomnd // this is pure magic.
 	numBold := int(math.Ceil(float64(charCount) * float64(0.3)))
 	numBold = moveIfMark(utf8str, numBold)
 
@@ -23,8 +26,7 @@ func Word(word string) string {
 }
 
 func moveIfMark(str *utf8string.String, index int) int {
-	charCount := str.RuneCount()
-	if index >= charCount {
+	if charCount := str.RuneCount(); index >= charCount {
 		return charCount
 	}
 	if unicode.IsMark(str.At(index)) {
@@ -35,7 +37,8 @@ func moveIfMark(str *utf8string.String, index int) int {
 
 func Text(text string) string {
 	charCount := utf8.RuneCountInString(text)
-	if charCount < 10 {
+	const minimumSentenceLength = 10
+	if charCount < minimumSentenceLength {
 		return text
 	}
 	res := ""
@@ -44,4 +47,23 @@ func Text(text string) string {
 		res += Word(word) + " "
 	}
 	return res
+}
+
+func HTMLText(content string) (string, error) {
+	doc, err := goquery.NewDocumentFromReader(strings.NewReader(content))
+	if err != nil {
+		return "", errors.Wrap(err, "bionify: could not parse html from reader")
+	}
+	all := doc.Find("*").Each(func(i int, s *goquery.Selection) {
+		children := s.Children()
+		if len(children.Nodes) == 0 {
+			s.SetHtml(Text(s.Text()))
+		}
+	})
+	body := all.Find("body")
+	str, err := body.Html()
+	if err != nil {
+		return "", errors.Wrap(err, "bionify: could not render html node to string")
+	}
+	return str, nil
 }

@@ -1,0 +1,25 @@
+type JobConnection {
+  pageInfo: PageInfo!
+  edges: [JobEdge!]!
+  totalCount: Int!
+}
+
+type JobEdge {
+  node: Job
+  cursor: Cursor!
+}
+
+type Job implements Node {
+  id: ID!
+  databaseId: Int!
+  deleted: Boolean!
+  type: String!
+  by: String!
+  time: Int!
+  dead: Boolean!
+  text: String!
+  url: String!
+  title: String!
+  openGraph: OpenGraph
+  html: String
+}

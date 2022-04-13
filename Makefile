@@ -8,6 +8,14 @@ dep:
 	@make dep-backend dep-readability dep-frontend
 
 
+lint-backend:
+	@golangci-lint run --fix ./...
+lint-frontend:
+	@npm run lint
+lint:
+	@make lint-backend lint-frontend
+
+
 build-backend:
 	@go build ./backend/...
 build-frontend:
@@ -21,6 +29,9 @@ docker-build:
 	@docker build -t hackernews -f ./Dockerfile .
 
 
+
+gql:
+	@go run github.com/99designs/gqlgen
 
 proto-backend:
 	@cd backend/internal/grpc/readabilityclient && \

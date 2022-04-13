@@ -2,12 +2,12 @@ package frontend
 
 import (
 	"embed"
-	"errors"
 	"io/fs"
 	"net/http"
 	"path/filepath"
 
 	"github.com/gorilla/mux"
+	"github.com/pkg/errors"
 )
 
 // RegisterRoutes registers routes for the server.
@@ -22,8 +22,8 @@ func RegisterRoutes(r *mux.Router) {
 // It can serve files from any directory in an embedded fs.
 // And, it resolves to /index.html if any file is not found in the fs.
 type spaFS struct {
-	dir      string
 	internal embed.FS
+	dir      string
 }
 
 // newSpaFS returns a new fs that roots to th given dir.
@@ -36,11 +36,15 @@ func newSpaFS(root fs.FS, dir string) fs.FS {
 
 // Open implements fs.FS.
 func (a *spaFS) Open(name string) (fs.File, error) {
-	f, err := a.internal.Open(filepath.Join(a.dir, name))
+	file, err := a.internal.Open(filepath.Join(a.dir, name))
 	if errors.Is(err, fs.ErrNotExist) {
+		// nolint:wrapcheck // too much nested code.
 		return a.internal.Open(filepath.Join(a.dir, "index.html"))
 	}
-	return f, err
+	if err != nil {
+		return nil, errors.Wrap(err, "frontend: could not open file")
+	}
+	return file, nil
 }
 
 // staticFileServer is an implementation of http.Handler,

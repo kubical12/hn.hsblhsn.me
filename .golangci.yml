@@ -1,0 +1,35 @@
+run:
+  concurrency: 4
+  timeout: 10m
+  skip-dirs:
+    - vendor
+    - backend/ent
+    - backend/graph/generated
+    - backend/internal/grpc/readabilityclient
+
+linters-settings:
+  govet:
+    check-shadowing: true
+    enable-all: true
+  wrapcheck:
+    ignoreSigs:
+      - "errors.Wrap("
+      - "errors.New("
+      - "errors.Errorf("
+linters:
+  enable-all: true
+  disable-all: false
+  disable:
+    - nlreturn
+    - testpackage
+    - wsl
+    - lll
+    - exhaustivestruct
+    - ireturn
+    - dupl
+
+issues:
+  exclude-rules:
+    - path: backend/graph/
+      linters:
+        - ireturn

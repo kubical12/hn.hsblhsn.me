@@ -1,8 +1,10 @@
 package readerviews
 
 import (
+	"bytes"
 	"context"
 	"fmt"
+	"io"
 	"net/url"
 	"path"
 	"strings"
@@ -15,51 +17,58 @@ import (
 	"github.com/pkg/errors"
 )
 
-func Convert(ctx context.Context, content []byte, link string) (string, error) {
+const (
+	ClientReadinessTimeout = time.Second * 3
+)
+
+func Convert(ctx context.Context, link string, content *bytes.Buffer) (string, error) {
 	// convert the webpage to a readable html document
-	ready := isReadabilityClientReady(ctx, time.Second*3)
+	ready := isReadabilityClientReady(ctx, ClientReadinessTimeout)
 	if !ready {
 		return "", errors.New("hackernews: readability client not ready")
 	}
 	rc := readabilityClient()
 	resp, err := rc.GetReadableDocument(ctx, &readabilityclient.GetReadableDocumentRequest{
-		Html:       string(content),
+		Html:       content.String(),
 		Identifier: link,
 	})
 	if err != nil {
-		return "", errors.Wrap(err, "hackernews: error while calling readability")
+		return "", errors.Wrap(err, "hackernews: could not call readability server")
 	}
+	return TransformHTML(link, strings.NewReader(resp.GetBody()))
+}
 
-	doc, err := goquery.NewDocumentFromReader(strings.NewReader(resp.GetBody()))
+func TransformHTML(link string, content io.Reader) (string, error) {
+	doc, err := goquery.NewDocumentFromReader(content)
 	if err != nil {
-		return "", err
+		return "", errors.Wrap(err, "readerviews: could not parse html")
 	}
-	doc.Find("img").Each(func(i int, s *goquery.Selection) {
-		src, ok := s.Attr("src")
+	doc.Find("img").Each(func(i int, selection *goquery.Selection) {
+		src, ok := selection.Attr("src")
 		if !ok || src == "" {
-			s.Remove()
+			selection.Remove()
 			return
 		}
 		absSrc := toAbs(link, src)
 		proxied := images.ProxiedURL(absSrc, images.ImageSizeFull)
-		s.SetAttr("src", proxied)
+		selection.SetAttr("src", proxied)
 	})
-	doc.Find("a").Each(func(i int, s *goquery.Selection) {
-		href, ok := s.Attr("href")
+	doc.Find("a").Each(func(i int, selection *goquery.Selection) {
+		href, ok := selection.Attr("href")
 		if !ok || href == "" {
-			s.Remove()
+			selection.Remove()
 			return
 		}
 		absLink := toAbs(link, href)
-		s.SetAttr("href", absLink)
-		s.SetAttr("target", "_blank")
+		selection.SetAttr("href", absLink)
+		selection.SetAttr("target", "_blank")
 	})
-	doc.Find("p").Each(func(i int, s *goquery.Selection) {
-		s.SetHtml(bionify.Text(s.Text()))
+	doc.Find("p").Each(func(i int, selection *goquery.Selection) {
+		selection.SetHtml(bionify.Text(selection.Text()))
 	})
 	htmlContent, err := doc.Html()
 	if err != nil {
-		return "", err
+		return "", errors.Wrap(err, "readerviews: error while rendering html")
 	}
 	return sanitizationPolicy.Sanitize(htmlContent), nil
 }

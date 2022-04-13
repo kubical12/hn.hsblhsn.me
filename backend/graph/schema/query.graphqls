@@ -1,0 +1,12 @@
+type Query {
+  node(id: ID!): Node
+  story(id: ID!): Story!
+  job(id: ID!): Job!
+  poll(id: ID!): Poll!
+  pollOption(id: ID!): PollOption!
+  topStories(after: Cursor, first: Int): StoryConnection!
+  newStories(after: Cursor, first: Int): StoryConnection!
+  askStories(after: Cursor, first: Int): StoryConnection!
+  showStories(after: Cursor, first: Int): StoryConnection!
+  jobStories(after: Cursor, first: Int): JobConnection!
+}

@@ -6,8 +6,14 @@ import (
 	"github.com/allegro/bigcache/v3"
 )
 
-func NewInMemoryCache() Cache {
-	cache, err := bigcache.NewBigCache(bigcache.DefaultConfig(10 * time.Minute))
+const (
+	CacheExpiration = 10 * time.Minute
+)
+
+var _ Cache = (*bigcache.BigCache)(nil)
+
+func NewInMemoryCache() *bigcache.BigCache {
+	cache, err := bigcache.NewBigCache(bigcache.DefaultConfig(CacheExpiration))
 	if err != nil {
 		panic(err)
 	}

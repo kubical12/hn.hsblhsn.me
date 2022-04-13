@@ -11,6 +11,7 @@ func (f ImageSize) String() string {
 	}
 }
 
+// nolint:gomnd // dimensions are magic numbers.
 func (f ImageSize) Dimension() (height, width uint) {
 	switch f {
 	case ImageSizeThumbnail:

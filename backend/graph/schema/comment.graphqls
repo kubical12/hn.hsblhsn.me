@@ -1,0 +1,25 @@
+type CommentConnection {
+  pageInfo: PageInfo!
+  edges: [CommentEdge!]!
+  totalCount: Int!
+}
+
+type CommentEdge {
+  node: Comment
+  cursor: Cursor!
+}
+
+type Comment implements Node {
+  id: ID!
+  databaseId: Int!
+  type: String!
+  by: String!
+  deleted: Boolean!
+  dead: Boolean!
+  time: Int!
+  kids: [Int!]!
+  comments(after: Cursor, first: Int): CommentConnection!
+    @goField(forceResolver: true)
+  parent: ID!
+  text: String
+}

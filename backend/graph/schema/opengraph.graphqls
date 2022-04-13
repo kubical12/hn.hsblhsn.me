@@ -1,0 +1,23 @@
+type Image {
+  url: String
+  type: String
+  width: Int
+  height: Int
+  alt: String
+}
+
+type Favicon {
+  url: String
+}
+
+type OpenGraph {
+  title: String
+  type: String
+  url: String
+  siteName: String
+  description: String
+  determiner: String
+  locale: String
+  favicon: Favicon
+  image: [Image]
+}

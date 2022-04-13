@@ -1,72 +1,51 @@
+import { Block } from 'baseui/block'
 import {
   HeaderNavigation,
-  ALIGN,
-  StyledNavigationList,
   StyledNavigationItem,
+  StyledNavigationList,
+  ALIGN,
 } from 'baseui/header-navigation'
-import { Block } from 'baseui/block'
-import { HeadingSmall } from 'baseui/typography'
-import { ArrowLeft } from 'baseui/icon'
-import { FEED_KIND } from '../../hooks/navigation'
-import { ArrowRight } from 'baseui/icon'
-import { NavBtn } from './navBtn'
 import { Link } from 'react-router-dom'
-import { Loader } from './loader'
 
-type NavbarPropsT = {
-  onBack?: () => void
-  onForward?: () => void
-  feedKind?: FEED_KIND
-  isLoading?: boolean
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface NavBarProps {}
 
-export function Navbar(props: NavbarPropsT) {
-  const { onBack, onForward, isLoading } = props
-
-  const BackBtn = (
-    <NavBtn onClick={onBack}>
-      <ArrowLeft />
-    </NavBtn>
-  )
-
-  const ForwardBtn = (
-    <NavBtn onClick={onForward}>
-      <ArrowRight />
-    </NavBtn>
-  )
-
+const NavBar: React.FC<NavBarProps> = () => {
   return (
     <Block>
-      <Loader isLoading={isLoading} />
       <HeaderNavigation
         overrides={{
           Root: {
-            style: ({ $theme }) => ({
-              backgroundColor: $theme.colors.backgroundPrimary,
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              zIndex: 10,
-            }),
+            style: {
+              backgroundColor: '#ff6600',
+            },
           },
         }}
       >
         <StyledNavigationList $align={ALIGN.left}>
-          <StyledNavigationItem>{BackBtn}</StyledNavigationItem>
-          <StyledNavigationItem>{ForwardBtn}</StyledNavigationItem>
+          <StyledNavigationItem className="hidden">
+            <Link to="/"> HackerNews</Link>
+          </StyledNavigationItem>
           <StyledNavigationItem>
-            <HeadingSmall>
-              <Link to="/">HackerNews</Link>
-            </HeadingSmall>
+            <Link to="/">Top</Link>
+          </StyledNavigationItem>
+          <StyledNavigationItem>
+            <Link to="/newest">New</Link>
+          </StyledNavigationItem>
+          <StyledNavigationItem>
+            <Link to="/ask">Ask</Link>
+          </StyledNavigationItem>
+          <StyledNavigationItem>
+            <Link to="/show">Show</Link>
+          </StyledNavigationItem>
+          <StyledNavigationItem>
+            <Link to="/jobs">Jobs</Link>
           </StyledNavigationItem>
         </StyledNavigationList>
       </HeaderNavigation>
-      <Block
-        $style={{
-          marginBottom: '3.8rem',
-        }}
-      />
     </Block>
   )
 }
+
+export { NavBar }
+export type { NavBarProps }

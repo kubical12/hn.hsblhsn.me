@@ -2,8 +2,12 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 const proxyConfig = {
-  '/api': {
-    target: 'https://hn.hsblhsn.me/',
+  '/graphql': {
+    target: 'http://localhost:8080/',
+    changeOrigin: true,
+  },
+  '/images.jpeg': {
+    target: 'http://localhost:8080/',
     changeOrigin: true,
   },
 }

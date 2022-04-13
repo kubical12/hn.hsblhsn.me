@@ -1,0 +1,43 @@
+type Poll implements Node {
+  id: ID!
+  databaseId: Int!
+  deleted: Boolean!
+  type: String!
+  by: String!
+  time: Int!
+  dead: Boolean!
+  kids: [Int!]!
+  comments(after: Cursor, first: Int): CommentConnection!
+    @goField(forceResolver: true)
+  parts: [Int!]!
+  pollOptions(after: Cursor, first: Int): PollOptionConnection!
+    @goField(forceResolver: true)
+  descendants: Int!
+  score: Int!
+  url: String!
+  title: String!
+}
+
+type PollOption implements Node {
+  id: ID!
+  databaseId: Int!
+  deleted: Boolean!
+  type: String!
+  by: String!
+  time: Int!
+  dead: Boolean!
+  kids: [Int!]!
+  parent: ID!
+  score: Int!
+}
+
+type PollOptionConnection {
+  pageInfo: PageInfo!
+  edges: [PollOptionEdge!]!
+  totalCount: Int!
+}
+
+type PollOptionEdge {
+  node: PollOption
+  cursor: Cursor!
+}
