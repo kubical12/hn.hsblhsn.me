@@ -8,9 +8,9 @@ import (
 	"strconv"
 
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/generated"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/msgerr"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/relays"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/model"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/msgerr"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/relays"
 )
 
 func (r *pollResolver) Type(ctx context.Context, obj *model.Poll) (string, error) {

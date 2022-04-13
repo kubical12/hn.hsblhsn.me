@@ -1,9 +1,10 @@
 package graph
 
 import (
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/grpc/readabilityserver"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/hackernews"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/httpclient"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/model"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/hackernews"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/httpclient"
 	"go.uber.org/fx"
 )
 
@@ -12,7 +13,9 @@ func Module() fx.Option {
 		model.Module(),
 		httpclient.Module(),
 		hackernews.Module(),
+		readabilityserver.Module(),
 		fx.Provide(NewResolver),
-		fx.Provide(NewServer),
+		fx.Provide(NewImageHandler),
+		fx.Provide(NewGraphQLHandler),
 	)
 }

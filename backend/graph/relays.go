@@ -3,9 +3,9 @@ package graph
 import (
 	"context"
 
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/hackernews"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/relays"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/model"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/hackernews"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/relays"
 	"github.com/pkg/errors"
 )
 

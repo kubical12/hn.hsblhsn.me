@@ -9,10 +9,10 @@ import (
 	"fmt"
 
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/generated"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/hackernews"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/msgerr"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/relays"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/model"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/hackernews"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/msgerr"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/relays"
 )
 
 func (r *queryResolver) Node(ctx context.Context, id string) (model.Node, error) {

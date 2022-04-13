@@ -3,7 +3,7 @@ package hackernews
 import (
 	"strconv"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/relays"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/relays"
 	"github.com/pkg/errors"
 )
 

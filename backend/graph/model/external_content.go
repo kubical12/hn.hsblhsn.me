@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/httpclient"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/opengraphs"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/readerviews"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/httpclient"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/opengraphs"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/readerviews"
 	"github.com/pkg/errors"
 )
 

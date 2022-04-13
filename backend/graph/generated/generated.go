@@ -14,7 +14,7 @@ import (
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/model"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/relays"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/relays"
 	opengraph "github.com/otiai10/opengraph/v2"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"

@@ -5,8 +5,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/grpc/readabilityclient"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/grpc/readabilityserver"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/grpc/readabilityclient"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/grpc/readabilityserver"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

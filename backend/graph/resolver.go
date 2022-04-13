@@ -1,6 +1,6 @@
 package graph
 
-import "github.com/hsblhsn/hn.hsblhsn.me/backend/internal/hackernews"
+import "github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/hackernews"
 
 // This file will not be regenerated automatically.
 //

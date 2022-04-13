@@ -11,9 +11,9 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/bionify"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/grpc/readabilityclient"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/images"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/bionify"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/grpc/readabilityclient"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/images"
 	"github.com/pkg/errors"
 )
 

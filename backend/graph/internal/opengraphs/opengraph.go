@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"strings"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/images"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/readerviews"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/images"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/readerviews"
 	"github.com/otiai10/opengraph/v2"
 	"github.com/pkg/errors"
 )

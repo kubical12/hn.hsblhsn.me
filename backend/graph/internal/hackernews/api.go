@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/bionify"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/httpclient"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/bionify"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/httpclient"
 	"github.com/pkg/errors"
 )
 
