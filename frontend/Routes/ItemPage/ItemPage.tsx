@@ -7,7 +7,8 @@ import { useSearchParams } from 'react-router-dom'
 import { PaddedBlock } from '../../Components/Layout'
 import { LoadingScreen } from './LoadingScreen'
 import { ErrorScreen } from './ErrorScreen'
-import { Item as ItemT } from '../../types'
+import { Job, NodeT, Story } from '../../types'
+import { Fragment } from 'react'
 
 const GET_ITEM_QUERY = gql`
   ${ITEM_FIELDS}
@@ -20,7 +21,7 @@ const GET_ITEM_QUERY = gql`
 `
 
 interface GetItemQueryData {
-  item: ItemT
+  item: NodeT<Story | Job>
 }
 
 interface GetItemQueryVars {
@@ -37,22 +38,19 @@ const ItemPage: React.FC = () => {
       },
     }
   )
+  let children: React.ReactNode = <Fragment />
+  if (!data && loading) {
+    children = <LoadingScreen />
+  } else if (!data && error) {
+    children = <ErrorScreen error={error} />
+  } else if (data) {
+    children = <Item item={data.item} />
+  }
   return (
     <Container
       top={<NavBar />}
       left={<Block />}
-      center={
-        <PaddedBlock>
-          {loading ? (
-            <LoadingScreen />
-          ) : error ? (
-            <ErrorScreen error={error} />
-          ) : data ? (
-            <Item item={data.item} />
-          ) : // eslint-disable-next-line unicorn/no-null
-          null}
-        </PaddedBlock>
-      }
+      center={<PaddedBlock>{children}</PaddedBlock>}
       right={<Block />}
     />
   )
