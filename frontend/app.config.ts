@@ -1,5 +1,5 @@
 const config = {
-  apiBasePath: '/api/v1',
+  graphqlEndpoint: '/graphql',
 }
 
 export default config

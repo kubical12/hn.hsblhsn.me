@@ -9,6 +9,7 @@ import { HelmetProvider } from 'react-helmet-async'
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 import { relayStylePagination } from '@apollo/client/utilities'
 import { Routes } from './Routes'
+import config from './app.config'
 
 const engine = new Styletron()
 
@@ -26,7 +27,7 @@ const client = new ApolloClient({
       },
     },
   }),
-  uri: '/graphql',
+  uri: config.graphqlEndpoint,
 })
 
 ReactDOM.render(
