@@ -1,5 +1,5 @@
 import { CommentConnection } from './Comment'
-import { OpenGraph } from './Opengraph'
+import { OpenGraph } from './OpenGraph'
 
 export interface Story {
   by: string

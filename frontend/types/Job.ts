@@ -1,4 +1,4 @@
-import { OpenGraph } from "./Opengraph"
+import { OpenGraph } from "./OpenGraph"
 
 export interface Job {
   id: string
