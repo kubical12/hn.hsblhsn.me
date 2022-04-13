@@ -1,7 +1,7 @@
 export type { NodeT, EdgeT, ConnectionT, Item } from './Node'
 export type { Comment, CommentConnection } from './Comment'
 export type { Story } from './Story'
-export type { Job } from './job'
+export type { Job } from './Job'
 export type { StyleProps } from './Helper'
 export type { Image } from './OpenGraph'
 export type { PageInfo } from './PageInfo'
