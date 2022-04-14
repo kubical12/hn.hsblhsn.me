@@ -1,7 +1,5 @@
 import { Helmet } from 'react-helmet-async'
 import config from '../../app.config'
-import { getBestImage } from '../../Components/commonutils'
-import { OpenGraph } from '../../types'
 
 interface HeadProps {
   path: string
@@ -9,22 +7,22 @@ interface HeadProps {
 
 const Head: React.FC<HeadProps> = ({ path }: HeadProps) => {
   const typ = getStoryType(path)
-  const openGraph: OpenGraph = {
+  const og = {
     title: `${typ} | Hacker News`,
     description:
-      'Hacker News is a social news website' +
+      'Hacker News is a social news website ' +
       'focusing on computer science and entrepreneurship.',
     url: config.host,
+    imageUrl: '',
   }
-  const image = getBestImage(openGraph?.image)
   return (
     <Helmet>
-      <title>{openGraph.title}</title>
-      <meta name="description" content={openGraph.description} />
-      <meta property="og:title" content={openGraph.title} />
-      <meta property="og:description" content={openGraph.description} />
-      <meta property="og:image" content={image?.url} />
-      <meta property="og:url" content={openGraph.url} />
+      <title>{og.title}</title>
+      <meta property="og:title" content={og.title} />
+      <meta name="description" content={og.description} />
+      <meta property="og:description" content={og.description} />
+      <meta property="og:image" content={og.imageUrl} />
+      <meta property="og:url" content={og.url} />
     </Helmet>
   )
 }
