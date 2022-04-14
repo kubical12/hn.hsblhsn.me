@@ -9,7 +9,7 @@ dep:
 
 
 lint-backend:
-	@golangci-lint run --fix ./...
+	@golangci-lint run --fix ./... && go mod tidy
 lint-frontend:
 	@npm run lint
 lint:

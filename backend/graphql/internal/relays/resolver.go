@@ -1,10 +1,18 @@
 package relays
 
 import (
-	"log"
-
 	"github.com/hsblhsn/queues"
+	"go.uber.org/zap"
 )
+
+// nolint:gochecknoglobals // global client to call from ExternalContentLoader.
+var (
+	logger *zap.Logger
+)
+
+func registerDependencies(l *zap.Logger) {
+	logger = l.With(zap.String("component", "relays_resolver"))
+}
 
 type ResolverFunc[K int, V any] func(K) (V, error)
 
@@ -38,7 +46,7 @@ func (r *Resolver[K, V]) Resolve(before, after *string, first, last *int) (*Conn
 		defer q.Done()
 		node, err := r.resolve(id)
 		if err != nil {
-			log.Println("relay: could not resolve", err)
+			logger.Error("relays: could not resolve node", zap.Error(err))
 			// not returning here.
 			// because return will stop the func.
 			// and the edge[index] will be nil.
