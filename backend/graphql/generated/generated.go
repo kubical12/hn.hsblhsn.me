@@ -40,6 +40,7 @@ type Config struct {
 type ResolverRoot interface {
 	Comment() CommentResolver
 	Job() JobResolver
+	OpenGraph() OpenGraphResolver
 	Poll() PollResolver
 	PollOption() PollOptionResolver
 	Query() QueryResolver
@@ -117,6 +118,7 @@ type ComplexityRoot struct {
 		Description func(childComplexity int) int
 		Determiner  func(childComplexity int) int
 		Favicon     func(childComplexity int) int
+		ID          func(childComplexity int) int
 		Image       func(childComplexity int) int
 		Locale      func(childComplexity int) int
 		SiteName    func(childComplexity int) int
@@ -237,6 +239,9 @@ type CommentResolver interface {
 }
 type JobResolver interface {
 	Type(ctx context.Context, obj *model.Job) (string, error)
+}
+type OpenGraphResolver interface {
+	ID(ctx context.Context, obj *opengraph.OpenGraph) (string, error)
 }
 type PollResolver interface {
 	Type(ctx context.Context, obj *model.Poll) (string, error)
@@ -581,6 +586,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.OpenGraph.Favicon(childComplexity), true
+
+	case "OpenGraph.id":
+		if e.complexity.OpenGraph.ID == nil {
+			break
+		}
+
+		return e.complexity.OpenGraph.ID(childComplexity), true
 
 	case "OpenGraph.image":
 		if e.complexity.OpenGraph.Image == nil {
@@ -1315,6 +1327,7 @@ type Favicon {
 }
 
 type OpenGraph {
+  id: String!
   title: String
   type: String
   url: String
@@ -3151,6 +3164,41 @@ func (ec *executionContext) _JobEdge_cursor(ctx context.Context, field graphql.C
 	res := resTmp.(string)
 	fc.Result = res
 	return ec.marshalNCursor2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _OpenGraph_id(ctx context.Context, field graphql.CollectedField, obj *opengraph.OpenGraph) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "OpenGraph",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.OpenGraph().ID(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _OpenGraph_title(ctx context.Context, field graphql.CollectedField, obj *opengraph.OpenGraph) (ret graphql.Marshaler) {
@@ -7976,6 +8024,26 @@ func (ec *executionContext) _OpenGraph(ctx context.Context, sel ast.SelectionSet
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("OpenGraph")
+		case "id":
+			field := field
+
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._OpenGraph_id(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			}
+
+			out.Concurrently(i, func() graphql.Marshaler {
+				return innerFunc(ctx)
+
+			})
 		case "title":
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._OpenGraph_title(ctx, field, obj)

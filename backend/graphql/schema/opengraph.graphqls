@@ -11,6 +11,7 @@ type Favicon {
 }
 
 type OpenGraph {
+  id: String!
   title: String
   type: String
   url: String
