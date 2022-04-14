@@ -9,12 +9,13 @@ import {
   Label4,
   Paragraph4,
 } from 'baseui/typography'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Job, NodeT, Story } from '../../types'
 import { CommentThread } from '../CommentThread'
 import { fromNow, getHost, getLink } from '../commonutils'
 import { ChevronLeft, ChevronRight } from 'baseui/icon'
 import './Item.css'
+import { useEffect } from 'react'
 
 interface ItemProps {
   item: NodeT<Story | Job>
@@ -22,6 +23,12 @@ interface ItemProps {
 
 const Item: React.FC<ItemProps> = ({ item }: ItemProps) => {
   const [, theme] = useStyletron()
+  const location = useLocation()
+  useEffect(() => {
+    if (location.hash === '#comments') {
+      document.getElementById('comments')?.scrollIntoView()
+    }
+  }, [location.key])
 
   if (!item || (item.type !== 'story' && item.type !== 'job')) {
     // eslint-disable-next-line unicorn/no-null
@@ -141,7 +148,7 @@ const ActionButtons: React.FC<ItemProps> = ({ item }: ItemProps) => {
 const Comments: React.FC<ItemProps> = ({ item }: ItemProps) => {
   const [, theme] = useStyletron()
   return (
-    <Block>
+    <Block id="comments">
       {'descendants' in item && (
         <HeadingSmall paddingTop={theme.sizing.scale600}>
           {item.descendants} comments
