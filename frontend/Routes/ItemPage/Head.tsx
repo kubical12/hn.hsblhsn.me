@@ -16,7 +16,7 @@ const Head: React.FC<HeadProps> = ({ item: { id, openGraph } }: HeadProps) => {
     return <Fragment />
   }
   const image = getBestImage(openGraph?.image)
-  const link = `${config.host}/item?id=${id}`
+  const link = `${config.host}/items?id=${id}`
   return (
     <Helmet>
       <title>{openGraph.title}</title>
