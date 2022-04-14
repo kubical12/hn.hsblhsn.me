@@ -7,7 +7,7 @@ interface HeadProps {
   item: {
     id: string
     title: string
-    text: string
+    text?: string
     openGraph?: OpenGraph
   }
 }
@@ -17,7 +17,7 @@ const Head: React.FC<HeadProps> = ({
 }: HeadProps) => {
   const og = {
     title: `${openGraph?.title || title} | Hacker News`,
-    description: openGraph?.description || text,
+    description: openGraph?.description || text || '',
     imageUrl: getBestImage(openGraph?.image)?.url || '',
     url: `${config.host}/items?id=${id}`,
   }
