@@ -7,7 +7,6 @@ import (
 	"io/fs"
 	"log"
 	"net/http"
-	"net/url"
 	"path/filepath"
 	"strings"
 
@@ -73,7 +72,7 @@ func prerender(next http.Handler) http.Handler {
 		// process bot requests here.
 		request.URL.Host = request.Host
 		request.URL.Scheme = "https"
-		endpoint := fmt.Sprintf("https://service.prerender.cloud/%s", url.PathEscape(request.URL.String()))
+		endpoint := fmt.Sprintf("https://service.prerender.cloud/%s", request.URL.String())
 		log.Println("frontend: prerendering endpoint", endpoint)
 		req, err := http.NewRequestWithContext(request.Context(), http.MethodGet, endpoint, nil)
 		if err != nil {
