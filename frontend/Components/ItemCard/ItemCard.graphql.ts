@@ -8,6 +8,7 @@ const ITEM_CARD_STORY_FIELDS = gql`
     text
     descendants
     openGraph {
+      id
       title
       description
       image {

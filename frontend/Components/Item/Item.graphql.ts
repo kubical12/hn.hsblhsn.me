@@ -17,6 +17,7 @@ const ITEM_FIELDS = gql`
       ...CommentThreadFields
     }
     openGraph {
+      id
       title
       description
       url
@@ -35,6 +36,7 @@ const ITEM_FIELDS = gql`
     html
     type
     openGraph {
+      id
       title
       description
       url
