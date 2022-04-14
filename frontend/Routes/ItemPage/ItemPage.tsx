@@ -9,6 +9,7 @@ import { LoadingScreen } from './LoadingScreen'
 import { ErrorScreen } from './ErrorScreen'
 import { Job, NodeT, Story } from '../../types'
 import { Fragment } from 'react'
+import { Head } from './Head'
 
 const GET_ITEM_QUERY = gql`
   ${ITEM_FIELDS}
@@ -44,7 +45,11 @@ const ItemPage: React.FC = () => {
   } else if (!data && error) {
     children = <ErrorScreen error={error} />
   } else if (data) {
-    children = <Item item={data.item} />
+    children = (
+      <Fragment>
+        <Head item={data.item} /> <Item item={data.item} />
+      </Fragment>
+    )
   }
   return (
     <Container

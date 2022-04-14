@@ -5,7 +5,7 @@ import (
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph"
 )
 
-func RegisterRoutes(router *mux.Router, gql *graph.GraphQLHandler, img *graph.ImageHandler) {
+func RegisterRoutes(router *mux.Router, gql *graph.GQLHandler, img *graph.ImageHandler) {
 	router.Handle("/graphql", gql)
 	router.Handle("/images.jpeg", img)
 }

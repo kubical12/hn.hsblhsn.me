@@ -16,14 +16,14 @@ const ItemCardList: React.FC<ItemCardListProps> = ({
 }: ItemCardListProps) => {
   return (
     <Block>
-      {items.edges.map((edge) => {
+      {items.edges.map((edge, index) => {
         const item = edge.node
         if (!item) {
           // eslint-disable-next-line unicorn/no-null
           return null
         }
         return (
-          <StyledItemCardListItem key={item.id}>
+          <StyledItemCardListItem key={index}>
             <ItemCard item={item} />
           </StyledItemCardListItem>
         )

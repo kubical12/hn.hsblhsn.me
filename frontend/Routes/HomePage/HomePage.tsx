@@ -12,6 +12,7 @@ import { ErrorScreen } from './ErrorScreen'
 import { LoadingScreen } from './LoadingScreen'
 import { ConnectionT, Job, Story } from '../../types'
 import { Fragment } from 'react'
+import { Head } from './Head'
 
 const PAGE_INFO_FIELDS = gql`
   fragment PageInfoFields on PageInfo {
@@ -99,7 +100,7 @@ const HomePage: React.FC = () => {
   let graphqlQuery = GET_TOP_STORIES
   switch (getBasePath(location.pathname)) {
     case '/':
-      graphqlQuery = GET_NEW_STORIES
+      graphqlQuery = GET_TOP_STORIES
       break
     case '/newest':
       graphqlQuery = GET_NEW_STORIES
@@ -114,13 +115,17 @@ const HomePage: React.FC = () => {
       graphqlQuery = GET_JOBS
       break
   }
+  const head = <Head path={getBasePath(location.pathname)} />
   return (
-    <Container
-      top={<NavBar />}
-      left={<Block />}
-      center={<InfiniteScroll query={graphqlQuery} />}
-      right={<Block />}
-    />
+    <Fragment>
+      {head}
+      <Container
+        top={<NavBar />}
+        left={<Block />}
+        center={<InfiniteScroll query={graphqlQuery} />}
+        right={<Block />}
+      />
+    </Fragment>
   )
 }
 

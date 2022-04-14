@@ -7,5 +7,6 @@ export interface Image {
 export interface OpenGraph {
   title?: string
   description?: string
+  url?: string
   image?: Array<Image>
 }

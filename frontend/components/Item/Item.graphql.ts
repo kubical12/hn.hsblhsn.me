@@ -16,6 +16,14 @@ const ITEM_FIELDS = gql`
     comments {
       ...CommentThreadFields
     }
+    openGraph {
+      title
+      description
+      url
+      image {
+        url
+      }
+    }
   }
   fragment JobFields on Job {
     id
@@ -29,6 +37,10 @@ const ITEM_FIELDS = gql`
     openGraph {
       title
       description
+      url
+      image {
+        url
+      }
     }
   }
 `

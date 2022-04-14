@@ -16,6 +16,6 @@ func Module() fx.Option {
 		readabilityserver.Module(),
 		fx.Provide(NewResolver),
 		fx.Provide(NewImageHandler),
-		fx.Provide(NewGraphQLHandler),
+		fx.Provide(NewGQLHandler),
 	)
 }

@@ -15,15 +15,15 @@ import (
 )
 
 type (
-	ImageHandler   = images.ImageResizeHandler
-	GraphQLHandler = handler.Server
+	ImageHandler = images.ImageResizeHandler
+	GQLHandler   = handler.Server
 )
 
 func NewImageHandler(client *httpclient.CachedClient, logger *zap.Logger) *ImageHandler {
 	return images.NewImageResizeHandler(client, logger)
 }
 
-func NewGraphQLHandler(resolver *Resolver, logger *zap.Logger) *GraphQLHandler {
+func NewGQLHandler(resolver *Resolver, logger *zap.Logger) *GQLHandler {
 	server := handler.NewDefaultServer(
 		generated.NewExecutableSchema(
 			generated.Config{Resolvers: resolver},

@@ -26,8 +26,8 @@ const CommentThread: React.FC<CommentThreadProps> = ({
   }
   return (
     <div>
-      {comments.edges.map(({ node }) => (
-        <Block className={threadStyle(isChild)} key={node.id}>
+      {comments.edges.map(({ node }, index) => (
+        <Block className={threadStyle(isChild)} key={index}>
           <Comment comment={node} />
         </Block>
       ))}
