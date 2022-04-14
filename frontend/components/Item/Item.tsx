@@ -1,5 +1,7 @@
 import { useStyletron } from 'baseui'
 import { Block } from 'baseui/block'
+import { Button } from 'baseui/button'
+import { Cell, Grid } from 'baseui/layout-grid'
 import { StyledLink } from 'baseui/link'
 import {
   HeadingLarge,
@@ -11,6 +13,7 @@ import { Link } from 'react-router-dom'
 import { Job, NodeT, Story } from '../../types'
 import { CommentThread } from '../CommentThread'
 import { fromNow, getHost, getLink } from '../commonutils'
+import { ChevronLeft, ChevronRight } from 'baseui/icon'
 import './Item.css'
 
 interface ItemProps {
@@ -28,6 +31,7 @@ const Item: React.FC<ItemProps> = ({ item }: ItemProps) => {
     <Block paddingTop={theme.sizing.scale600}>
       <Header item={item} />
       <Content item={item} />
+      <ActionButtons item={item} />
       <Comments item={item} />
       <ContentLinks item={item} />
     </Block>
@@ -88,12 +92,58 @@ const Content: React.FC<ItemProps> = ({ item }: ItemProps) => {
   )
 }
 
+const ActionButtons: React.FC<ItemProps> = ({ item }: ItemProps) => {
+  const [, theme] = useStyletron()
+  const btnOverrides = {
+    BaseButton: {
+      style: {
+        width: '100%',
+      },
+    },
+  }
+  const back = () => {
+    window.history.back()
+  }
+  const open = () => {
+    window.open(item.url, '_blank')
+  }
+  return (
+    <Block
+      paddingTop={theme.sizing.scale1200}
+      paddingBottom={theme.sizing.scale600}
+    >
+      <Grid gridColumns={12} gridGaps={0} gridMargins={0}>
+        <Cell span={6}>
+          <Button
+            onClick={back}
+            kind="secondary"
+            overrides={btnOverrides}
+            startEnhancer={<ChevronLeft />}
+          >
+            Back
+          </Button>
+        </Cell>
+        <Cell span={6}>
+          <Button
+            onClick={open}
+            kind="secondary"
+            overrides={btnOverrides}
+            endEnhancer={<ChevronRight />}
+          >
+            Open
+          </Button>
+        </Cell>
+      </Grid>
+    </Block>
+  )
+}
+
 const Comments: React.FC<ItemProps> = ({ item }: ItemProps) => {
   const [, theme] = useStyletron()
   return (
     <Block>
       {'descendants' in item && (
-        <HeadingSmall paddingTop={theme.sizing.scale1200}>
+        <HeadingSmall paddingTop={theme.sizing.scale600}>
           {item.descendants} comments
           <Label4 color={theme.colors.contentTertiary}>
             Posted on&nbsp;
