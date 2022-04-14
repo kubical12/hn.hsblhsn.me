@@ -39,9 +39,11 @@ const ItemCard: React.FC<ItemCardProps> = ({ item }: ItemCardProps) => {
 
       <StyledBody>
         {'text' in item && item.text !== '' ? (
-          <section dangerouslySetInnerHTML={{ __html: item.text }} />
+          <section
+            dangerouslySetInnerHTML={{ __html: ellipsis(item.text, 360) }}
+          />
         ) : (
-          <section>{item.openGraph?.description}</section>
+          <section>{ellipsis(item.openGraph?.description, 360)}</section>
         )}
       </StyledBody>
 
@@ -63,6 +65,14 @@ const ItemCard: React.FC<ItemCardProps> = ({ item }: ItemCardProps) => {
       </StyledAction>
     </Card>
   )
+}
+
+const ellipsis = (str: string |undefined, max: number) => {
+  if (!str) return ''
+  if (str.length <= max) {
+    return str
+  }
+  return str.substring(0, max) + '...'
 }
 
 export { ItemCard }
