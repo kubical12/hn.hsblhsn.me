@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/bionify"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/grpc/readabilityclient"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/images"
 	"github.com/pkg/errors"
@@ -62,9 +61,6 @@ func TransformHTML(link string, content io.Reader) (string, error) {
 		absLink := toAbs(link, href)
 		selection.SetAttr("href", absLink)
 		selection.SetAttr("target", "_blank")
-	})
-	doc.Find("p").Each(func(i int, selection *goquery.Selection) {
-		selection.SetHtml(bionify.Text(selection.Text()))
 	})
 	htmlContent, err := doc.Html()
 	if err != nil {
