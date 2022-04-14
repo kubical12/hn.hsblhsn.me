@@ -1,13 +1,7 @@
 import { useStyletron } from 'baseui'
 import { Button, SHAPE, KIND, SIZE } from 'baseui/button'
-import {
-  Card,
-  StyledAction,
-  StyledBody,
-  StyledThumbnail,
-  StyledTitle,
-} from 'baseui/card'
-import { Label4 } from 'baseui/typography'
+import { Card, StyledAction, StyledBody, StyledThumbnail } from 'baseui/card'
+import { HeadingSmall, Label4 } from 'baseui/typography'
 import { Link } from 'react-router-dom'
 import { Job, Story } from '../../types'
 import { getBestImage, getHost, getLink } from '../commonutils'
@@ -20,7 +14,15 @@ const ItemCard: React.FC<ItemCardProps> = ({ item }: ItemCardProps) => {
   const [, theme] = useStyletron()
   const thumbnail = getBestImage(item.openGraph?.image)
   return (
-    <Card>
+    <Card
+      overrides={{
+        Root: {
+          style: {
+            backgroundColor: theme.colors.backgroundSecondary,
+          },
+        },
+      }}
+    >
       <Label4 color={theme.colors.contentTertiary}>
         <a href={getLink(item.id, item.url)} target="_blank" rel="noreferrer">
           {getHost(item.id, item.url)}
@@ -29,11 +31,11 @@ const ItemCard: React.FC<ItemCardProps> = ({ item }: ItemCardProps) => {
 
       {thumbnail && <StyledThumbnail src={thumbnail.url} alt={thumbnail.alt} />}
 
-      <StyledTitle>
+      <HeadingSmall paddingBottom={theme.sizing.scale600}>
         <Link to={`/items?id=${item.id}`}>
           {item.openGraph?.title || item.title}
         </Link>
-      </StyledTitle>
+      </HeadingSmall>
 
       <StyledBody>
         {'text' in item && item.text !== '' ? (

@@ -42,7 +42,7 @@ const Comment: React.FC<CommentProps> = ({ comment }: CommentProps) => {
                 borderRadius: $theme.borders.radius300,
                 cursor: 'pointer',
                 backgroundColor: isExpanded
-                  ? $theme.colors.backgroundPrimary
+                  ? $theme.colors.backgroundSecondary
                   : $theme.colors.backgroundTertiary,
               }
             },
