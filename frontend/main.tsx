@@ -6,7 +6,12 @@ import './index.css'
 import { App } from './Components/App'
 import { BrowserRouter } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
-import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
+import {
+  ApolloProvider,
+  ApolloClient,
+  InMemoryCache,
+  HttpLink,
+} from '@apollo/client'
 import { relayStylePagination } from '@apollo/client/utilities'
 import { Routes } from './Routes'
 import config from './app.config'
@@ -27,7 +32,10 @@ const client = new ApolloClient({
       },
     },
   }),
-  uri: config.graphqlEndpoint,
+  link: new HttpLink({
+    uri: config.graphqlEndpoint,
+    useGETForQueries: true,
+  }),
 })
 
 ReactDOM.render(
