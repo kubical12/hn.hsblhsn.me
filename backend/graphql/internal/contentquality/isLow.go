@@ -3,11 +3,16 @@ package contentquality
 import "strings"
 
 var lowQualityIndicators = []string{
-	"Are you a robot",       // bloomberg
-	"You have been blocked", // cloudflare
-	"You signed in with another tab or window. to refresh your session", // github
-	"switch to a supported browser to continue using twitter.com",       //twitter                                    // twitter
-	"https://www.youtube.com/howyoutubeworks",                           // youtube
+	// bloomberg
+	"Are you a robot",
+	// cloudflare
+	"You have been blocked",
+	// github
+	"You can’t perform that action at this time.",
+	//twitter
+	"switch to a supported browser to continue using twitter.com",
+	// youtube
+	"https://www.youtube.com/howyoutubeworks",
 }
 
 func IsLow(content []byte) bool {
