@@ -45,7 +45,7 @@ func (c *CachedClient) Get(ctx context.Context, uri string) (*http.Response, err
 func (c *CachedClient) Do(request *http.Request) (*http.Response, error) {
 	uri := request.URL.String()
 	if cachedVal, err := c.cache.Get(uri); err == nil {
-		c.logger.Info("httpclient: found cached response", zap.String("uri", uri))
+		c.logger.Debug("httpclient: found cached response", zap.String("uri", uri))
 		reader := bufio.NewReader(bytes.NewReader(cachedVal))
 		resp, err := http.ReadResponse(reader, nil)
 		if err != nil {
@@ -53,7 +53,7 @@ func (c *CachedClient) Do(request *http.Request) (*http.Response, error) {
 		}
 		return resp, nil
 	}
-	c.logger.Info("httpclient: sending http request", zap.String("uri", uri))
+	c.logger.Debug("httpclient: sending http request", zap.String("uri", uri))
 	resp, err := c.httpClient.Do(request)
 	if err != nil {
 		return nil, errors.Wrap(err, "httpclient: could not send request")
