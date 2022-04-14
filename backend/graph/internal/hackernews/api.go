@@ -4,8 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/httpclient"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/readerviews"
 	"github.com/pkg/errors"
 )
 
@@ -103,5 +105,12 @@ func (h *HackerNews) GetItem(ctx context.Context, id int) (*ItemResponse, error)
 		out      = new(ItemResponse)
 		err      = h.API(ctx, endpoint, out)
 	)
-	return out, err
+	if err != nil {
+		return nil, err
+	}
+	out.Text, err = readerviews.TransformHTML(out.URL, strings.NewReader(out.Text))
+	if err != nil {
+		return nil, errors.Wrap(err, "hackernews: could not transform item text")
+	}
+	return out, nil
 }
