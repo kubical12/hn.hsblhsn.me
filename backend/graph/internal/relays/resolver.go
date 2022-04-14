@@ -38,7 +38,7 @@ func (r *Resolver[K, V]) Resolve(before, after *string, first, last *int) (*Conn
 		defer q.Done()
 		node, err := r.resolve(id)
 		if err != nil {
-			log.Println(err)
+			log.Println("relay: could not resolve", err)
 			// not returning here.
 			// because return will stop the func.
 			// and the edge[index] will be nil.
