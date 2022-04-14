@@ -6,6 +6,7 @@ require (
 	github.com/99designs/gqlgen v0.17.2
 	github.com/PuerkitoBio/goquery v1.8.0
 	github.com/allegro/bigcache/v3 v3.0.2
+	github.com/blendle/zapdriver v1.3.1
 	github.com/gorilla/mux v1.8.0
 	github.com/hsblhsn/copyembed v0.0.0-20220328163434-238f11a4d15c
 	github.com/hsblhsn/queues v0.0.0-20220219165404-d2097de75d81

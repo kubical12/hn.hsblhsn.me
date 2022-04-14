@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/blendle/zapdriver"
 	"github.com/gorilla/mux"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/caches"
@@ -34,18 +35,7 @@ func main() {
 }
 
 func newLogger() (*zap.Logger, error) {
-	encoderCfg := zap.NewProductionEncoderConfig()
-	encoderCfg.MessageKey = "message"
-	cfg := zap.Config{
-		Level:            zap.NewAtomicLevelAt(zap.InfoLevel),
-		Development:      false,
-		Sampling:         nil,
-		Encoding:         "json",
-		EncoderConfig:    encoderCfg,
-		OutputPaths:      []string{"stderr"},
-		ErrorOutputPaths: []string{"stderr"},
-	}
-	logger, err := cfg.Build()
+	logger, err := zapdriver.NewProduction()
 	if err != nil {
 		return nil, errors.Wrap(err, "main: failed to build logger")
 	}
