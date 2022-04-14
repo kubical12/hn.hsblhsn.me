@@ -21,6 +21,8 @@ const Head: React.FC<HeadProps> = ({
     imageUrl: getBestImage(openGraph?.image)?.url || '',
     url: `${config.host}/items?id=${id}`,
   }
+  og.description = og.description.replace(/<\/?[^>]+(>|$)/g, '')
+
   return (
     <Helmet>
       <title>{og.title}</title>
