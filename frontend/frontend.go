@@ -2,9 +2,14 @@ package frontend
 
 import (
 	"embed"
+	"fmt"
+	"io"
 	"io/fs"
+	"log"
 	"net/http"
+	"net/url"
 	"path/filepath"
+	"strings"
 
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
@@ -15,7 +20,7 @@ func RegisterRoutes(r *mux.Router) {
 	h := &staticFileServer{
 		FS: newSpaFS(assetFS, "build"),
 	}
-	r.PathPrefix("/").Handler(h)
+	r.PathPrefix("/").Handler(prerender(h))
 }
 
 // spaFS is an optimized filesystem implementation for single page application.
@@ -56,4 +61,34 @@ type staticFileServer struct {
 // ServeHTTP implements http.Handler.
 func (f *staticFileServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	http.FileServer(http.FS(f)).ServeHTTP(w, r)
+}
+
+func prerender(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
+		ua := strings.ToLower(request.UserAgent())
+		isBot := strings.Contains(ua, "bot") && !strings.Contains(ua, "google")
+		if !isBot {
+			next.ServeHTTP(response, request)
+			return
+		}
+
+		request.URL.Host = request.Host
+		endpoint := fmt.Sprintf("https://service.prerender.cloud/%s", url.PathEscape(request.URL.String()))
+		log.Println("frontend: prerendering endpoint", endpoint)
+		req, err := http.NewRequestWithContext(request.Context(), http.MethodGet, endpoint, nil)
+		if err != nil {
+			log.Println("frontend: could not create request", err)
+			next.ServeHTTP(response, request)
+			return
+		}
+		resp, err := http.DefaultClient.Do(req)
+		if err != nil {
+			log.Println("frontend: could not send request", err)
+			next.ServeHTTP(response, request)
+			return
+		}
+		defer resp.Body.Close()
+		response.WriteHeader(resp.StatusCode)
+		_, _ = io.Copy(response, resp.Body)
+	})
 }
