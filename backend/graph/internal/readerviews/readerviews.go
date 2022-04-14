@@ -64,7 +64,7 @@ func TransformHTML(link string, content io.Reader) (string, error) {
 		selection.SetAttr("target", "_blank")
 	})
 	doc.Find("p").Each(func(i int, selection *goquery.Selection) {
-		selection.SetHtml(bionify.Paragraph(selection.Text()))
+		selection.SetHtml(bionify.Text(selection.Text()))
 	})
 	htmlContent, err := doc.Html()
 	if err != nil {

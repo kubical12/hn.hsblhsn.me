@@ -1,7 +1,10 @@
 package bionify
 
 import (
+	"strings"
 	"testing"
+
+	"github.com/PuerkitoBio/goquery"
 )
 
 // nolint:funlen // test cases are long.
@@ -76,9 +79,52 @@ func TestWord(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			if got := Word(tt.args.word); got != tt.want {
-				t.Errorf("Word() = %v, want %v", got, tt.want)
+			if got := word(tt.args.word); got != tt.want {
+				t.Errorf("Word() = %q, want %q", got, tt.want)
 			}
 		})
 	}
+}
+
+// nolint:paralleltest // t.Setenv is not parallelizable.
+func TestFeatureFlag(t *testing.T) {
+	t.Setenv("FEATURE_FLAG_BIONIFY", "on")
+	out := Text("quick")
+	if out != "<b bionic-bold>qu</b><span bionic-span>ick</span>" {
+		t.Errorf("Text() = %q, want %q", out, "<b bionic-bold>qu</b><span bionic-span>ick</span>")
+	}
+	t.Setenv("FEATURE_FLAG_BIONIFY", "off")
+	out = Text("quick")
+	if out != "quick" {
+		t.Errorf("Text() = %q, want %q", out, "quick")
+	}
+	t.Setenv("FEATURE_FLAG_BIONIFY", "")
+	out = Text("quick")
+	if out != "quick" {
+		t.Errorf("Text() = %q, want %q", out, "quick")
+	}
+}
+
+func FuzzText(f *testing.F) {
+	f.Setenv("FEATURE_FLAG_BIONIFY", "on")
+	f.Add("quick brown fox jumps over the lazy dog")
+	f.Add("привет мир")
+	f.Add("আমি")
+	f.Add("শ্রীমতি")
+	f.Add("মতিশ্রী")
+	f.Add("")
+
+	f.Fuzz(func(t *testing.T, input string) {
+		t.Helper()
+		out := Text(input)
+		if out == "" && input != "" {
+			t.Errorf("Text(%q) = %q, want non-empty", input, out)
+			return
+		}
+		_, err := goquery.NewDocumentFromReader(strings.NewReader(out))
+		if err != nil {
+			t.Errorf("Text(%q) = %q, want valid HTML", input, out)
+			return
+		}
+	})
 }

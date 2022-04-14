@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/bionify"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/httpclient"
 	"github.com/pkg/errors"
 )
@@ -104,12 +103,5 @@ func (h *HackerNews) GetItem(ctx context.Context, id int) (*ItemResponse, error)
 		out      = new(ItemResponse)
 		err      = h.API(ctx, endpoint, out)
 	)
-	if err != nil {
-		return nil, err
-	}
-	out.Text, err = bionify.HTMLText(out.Text)
-	if err != nil {
-		return nil, errors.Wrap(err, "hackernews: could not bionify item text")
-	}
-	return out, nil
+	return out, err
 }
