@@ -1,4 +1,4 @@
-package graph
+package graphql
 
 // This file will be automatically regenerated based on the schema, any resolver implementations
 // will be copied through when generating and any unknown code will be moved to the end.
@@ -6,10 +6,10 @@ package graph
 import (
 	"context"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/generated"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/msgerr"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/relays"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/model"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/generated"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/msgerr"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/relays"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/model"
 )
 
 func (r *storyResolver) Type(ctx context.Context, obj *model.Story) (string, error) {

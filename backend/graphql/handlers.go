@@ -1,14 +1,14 @@
-package graph
+package graphql
 
 import (
 	"context"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/handler"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/generated"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/httpclient"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/images"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/msgerr"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/generated"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/httpclient"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/images"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/msgerr"
 	"github.com/pkg/errors"
 	"github.com/vektah/gqlparser/v2/gqlerror"
 	"go.uber.org/zap"

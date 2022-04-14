@@ -5,21 +5,22 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
-	"log"
 	"net/http"
 	"path/filepath"
 	"strings"
 
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 )
 
 // RegisterRoutes registers routes for the server.
-func RegisterRoutes(r *mux.Router) {
+func RegisterRoutes(r *mux.Router, logger *zap.Logger) {
 	h := &staticFileServer{
 		FS: newSpaFS(assetFS, "build"),
 	}
-	r.PathPrefix("/").Handler(prerender(h))
+	r.PathPrefix("/").
+		Handler(PrerenderIfBot(h, logger))
 }
 
 // spaFS is an optimized filesystem implementation for single page application.
@@ -62,30 +63,34 @@ func (f *staticFileServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	http.FileServer(http.FS(f)).ServeHTTP(w, r)
 }
 
-func prerender(next http.Handler) http.Handler {
+func PrerenderIfBot(next http.Handler, logger *zap.Logger) http.Handler {
 	return http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
 		// pass all non-bot requests.
 		if !isBot(request.UserAgent()) {
 			next.ServeHTTP(response, request)
 			return
 		}
+
 		// process bot requests here.
 		request.URL.Host = request.Host
 		request.URL.Scheme = "https"
 		endpoint := fmt.Sprintf("https://service.prerender.cloud/%s", request.URL.String())
-		log.Println("frontend: prerendering endpoint", endpoint)
+		logger.Debug("frontend: prerendering endpoint", zap.String("url", endpoint))
+
 		req, err := http.NewRequestWithContext(request.Context(), http.MethodGet, endpoint, nil)
 		if err != nil {
-			log.Println("frontend: could not create request", err)
+			logger.Error("frontend: could not create request", zap.Error(err))
 			next.ServeHTTP(response, request)
 			return
 		}
+
 		resp, err := http.DefaultClient.Do(req)
 		if err != nil {
-			log.Println("frontend: could not send request", err)
+			logger.Error("frontend: could not prerender", zap.Error(err))
 			next.ServeHTTP(response, request)
 			return
 		}
+
 		defer resp.Body.Close()
 		response.WriteHeader(resp.StatusCode)
 		_, _ = io.Copy(response, resp.Body)

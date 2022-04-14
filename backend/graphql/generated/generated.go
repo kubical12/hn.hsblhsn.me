@@ -13,8 +13,8 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/relays"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/model"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/relays"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/model"
 	opengraph "github.com/otiai10/opengraph/v2"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
@@ -1250,7 +1250,7 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var sources = []*ast.Source{
-	{Name: "backend/graph/schema/comment.graphqls", Input: `type CommentConnection {
+	{Name: "backend/graphql/schema/comment.graphqls", Input: `type CommentConnection {
   pageInfo: PageInfo!
   edges: [CommentEdge!]!
   totalCount: Int!
@@ -1276,7 +1276,7 @@ type Comment implements Node {
   text: String
 }
 `, BuiltIn: false},
-	{Name: "backend/graph/schema/job.graphqls", Input: `type JobConnection {
+	{Name: "backend/graphql/schema/job.graphqls", Input: `type JobConnection {
   pageInfo: PageInfo!
   edges: [JobEdge!]!
   totalCount: Int!
@@ -1302,7 +1302,7 @@ type Job implements Node {
   html: String
 }
 `, BuiltIn: false},
-	{Name: "backend/graph/schema/opengraph.graphqls", Input: `type Image {
+	{Name: "backend/graphql/schema/opengraph.graphqls", Input: `type Image {
   url: String
   type: String
   width: Int
@@ -1326,7 +1326,7 @@ type OpenGraph {
   image: [Image]
 }
 `, BuiltIn: false},
-	{Name: "backend/graph/schema/poll.graphqls", Input: `type Poll implements Node {
+	{Name: "backend/graphql/schema/poll.graphqls", Input: `type Poll implements Node {
   id: ID!
   databaseId: Int!
   deleted: Boolean!
@@ -1370,7 +1370,7 @@ type PollOptionEdge {
   cursor: Cursor!
 }
 `, BuiltIn: false},
-	{Name: "backend/graph/schema/query.graphqls", Input: `type Query {
+	{Name: "backend/graphql/schema/query.graphqls", Input: `type Query {
   node(id: ID!): Node
   story(id: ID!): Story!
   job(id: ID!): Job!
@@ -1383,7 +1383,7 @@ type PollOptionEdge {
   jobStories(after: Cursor, first: Int): JobConnection!
 }
 `, BuiltIn: false},
-	{Name: "backend/graph/schema/story.graphqls", Input: `type StoryConnection {
+	{Name: "backend/graphql/schema/story.graphqls", Input: `type StoryConnection {
   pageInfo: PageInfo!
   edges: [StoryEdge!]!
   totalCount: Int!
@@ -1418,7 +1418,7 @@ type Story implements Node {
   html: String
 }
 `, BuiltIn: false},
-	{Name: "backend/graph/schema/types.graphqls", Input: `interface Node {
+	{Name: "backend/graphql/schema/types.graphqls", Input: `interface Node {
   id: ID!
 }
 scalar Cursor
@@ -1435,7 +1435,7 @@ directive @goField(
   name: String
 ) on INPUT_FIELD_DEFINITION | FIELD_DEFINITION
 `, BuiltIn: false},
-	{Name: "backend/graph/schema/user.graphqls", Input: `type User {
+	{Name: "backend/graphql/schema/user.graphqls", Input: `type User {
   id: ID!
   databaseId: Int!
   delay: Int!
@@ -2133,7 +2133,7 @@ func (ec *executionContext) _Comment_comments(ctx context.Context, field graphql
 	}
 	res := resTmp.(*relays.Connection[*model.Comment])
 	fc.Result = res
-	return ec.marshalNCommentConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐConnection(ctx, field.Selections, res)
+	return ec.marshalNCommentConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Comment_parent(ctx context.Context, field graphql.CollectedField, obj *model.Comment) (ret graphql.Marshaler) {
@@ -2235,7 +2235,7 @@ func (ec *executionContext) _CommentConnection_pageInfo(ctx context.Context, fie
 	}
 	res := resTmp.(*relays.PageInfo)
 	fc.Result = res
-	return ec.marshalNPageInfo2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐPageInfo(ctx, field.Selections, res)
+	return ec.marshalNPageInfo2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐPageInfo(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _CommentConnection_edges(ctx context.Context, field graphql.CollectedField, obj *relays.Connection[*model.Comment]) (ret graphql.Marshaler) {
@@ -2270,7 +2270,7 @@ func (ec *executionContext) _CommentConnection_edges(ctx context.Context, field 
 	}
 	res := resTmp.([]*relays.Edge[*model.Comment])
 	fc.Result = res
-	return ec.marshalNCommentEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐEdgeᚄ(ctx, field.Selections, res)
+	return ec.marshalNCommentEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐEdgeᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _CommentConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *relays.Connection[*model.Comment]) (ret graphql.Marshaler) {
@@ -2337,7 +2337,7 @@ func (ec *executionContext) _CommentEdge_node(ctx context.Context, field graphql
 	}
 	res := resTmp.(*model.Comment)
 	fc.Result = res
-	return ec.marshalOComment2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐComment(ctx, field.Selections, res)
+	return ec.marshalOComment2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐComment(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _CommentEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *relays.Edge[*model.Comment]) (ret graphql.Marshaler) {
@@ -3013,7 +3013,7 @@ func (ec *executionContext) _JobConnection_pageInfo(ctx context.Context, field g
 	}
 	res := resTmp.(*relays.PageInfo)
 	fc.Result = res
-	return ec.marshalNPageInfo2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐPageInfo(ctx, field.Selections, res)
+	return ec.marshalNPageInfo2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐPageInfo(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _JobConnection_edges(ctx context.Context, field graphql.CollectedField, obj *relays.Connection[*model.Job]) (ret graphql.Marshaler) {
@@ -3048,7 +3048,7 @@ func (ec *executionContext) _JobConnection_edges(ctx context.Context, field grap
 	}
 	res := resTmp.([]*relays.Edge[*model.Job])
 	fc.Result = res
-	return ec.marshalNJobEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐEdgeᚄ(ctx, field.Selections, res)
+	return ec.marshalNJobEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐEdgeᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _JobConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *relays.Connection[*model.Job]) (ret graphql.Marshaler) {
@@ -3115,7 +3115,7 @@ func (ec *executionContext) _JobEdge_node(ctx context.Context, field graphql.Col
 	}
 	res := resTmp.(*model.Job)
 	fc.Result = res
-	return ec.marshalOJob2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐJob(ctx, field.Selections, res)
+	return ec.marshalOJob2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐJob(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _JobEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *relays.Edge[*model.Job]) (ret graphql.Marshaler) {
@@ -3935,7 +3935,7 @@ func (ec *executionContext) _Poll_comments(ctx context.Context, field graphql.Co
 	}
 	res := resTmp.(*relays.Connection[*model.Comment])
 	fc.Result = res
-	return ec.marshalNCommentConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐConnection(ctx, field.Selections, res)
+	return ec.marshalNCommentConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Poll_parts(ctx context.Context, field graphql.CollectedField, obj *model.Poll) (ret graphql.Marshaler) {
@@ -4012,7 +4012,7 @@ func (ec *executionContext) _Poll_pollOptions(ctx context.Context, field graphql
 	}
 	res := resTmp.(*relays.Connection[*model.PollOption])
 	fc.Result = res
-	return ec.marshalNPollOptionConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐConnection(ctx, field.Selections, res)
+	return ec.marshalNPollOptionConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Poll_descendants(ctx context.Context, field graphql.CollectedField, obj *model.Poll) (ret graphql.Marshaler) {
@@ -4537,7 +4537,7 @@ func (ec *executionContext) _PollOptionConnection_pageInfo(ctx context.Context, 
 	}
 	res := resTmp.(*relays.PageInfo)
 	fc.Result = res
-	return ec.marshalNPageInfo2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐPageInfo(ctx, field.Selections, res)
+	return ec.marshalNPageInfo2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐPageInfo(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _PollOptionConnection_edges(ctx context.Context, field graphql.CollectedField, obj *relays.Connection[*model.PollOption]) (ret graphql.Marshaler) {
@@ -4572,7 +4572,7 @@ func (ec *executionContext) _PollOptionConnection_edges(ctx context.Context, fie
 	}
 	res := resTmp.([]*relays.Edge[*model.PollOption])
 	fc.Result = res
-	return ec.marshalNPollOptionEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐEdgeᚄ(ctx, field.Selections, res)
+	return ec.marshalNPollOptionEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐEdgeᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _PollOptionConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *relays.Connection[*model.PollOption]) (ret graphql.Marshaler) {
@@ -4639,7 +4639,7 @@ func (ec *executionContext) _PollOptionEdge_node(ctx context.Context, field grap
 	}
 	res := resTmp.(*model.PollOption)
 	fc.Result = res
-	return ec.marshalOPollOption2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐPollOption(ctx, field.Selections, res)
+	return ec.marshalOPollOption2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐPollOption(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _PollOptionEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *relays.Edge[*model.PollOption]) (ret graphql.Marshaler) {
@@ -4713,7 +4713,7 @@ func (ec *executionContext) _Query_node(ctx context.Context, field graphql.Colle
 	}
 	res := resTmp.(model.Node)
 	fc.Result = res
-	return ec.marshalONode2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐNode(ctx, field.Selections, res)
+	return ec.marshalONode2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐNode(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_story(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -4755,7 +4755,7 @@ func (ec *executionContext) _Query_story(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.(*model.Story)
 	fc.Result = res
-	return ec.marshalNStory2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐStory(ctx, field.Selections, res)
+	return ec.marshalNStory2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐStory(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_job(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -4797,7 +4797,7 @@ func (ec *executionContext) _Query_job(ctx context.Context, field graphql.Collec
 	}
 	res := resTmp.(*model.Job)
 	fc.Result = res
-	return ec.marshalNJob2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐJob(ctx, field.Selections, res)
+	return ec.marshalNJob2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐJob(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_poll(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -4839,7 +4839,7 @@ func (ec *executionContext) _Query_poll(ctx context.Context, field graphql.Colle
 	}
 	res := resTmp.(*model.Poll)
 	fc.Result = res
-	return ec.marshalNPoll2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐPoll(ctx, field.Selections, res)
+	return ec.marshalNPoll2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐPoll(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_pollOption(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -4881,7 +4881,7 @@ func (ec *executionContext) _Query_pollOption(ctx context.Context, field graphql
 	}
 	res := resTmp.(*model.PollOption)
 	fc.Result = res
-	return ec.marshalNPollOption2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐPollOption(ctx, field.Selections, res)
+	return ec.marshalNPollOption2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐPollOption(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_topStories(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -4923,7 +4923,7 @@ func (ec *executionContext) _Query_topStories(ctx context.Context, field graphql
 	}
 	res := resTmp.(*relays.Connection[*model.Story])
 	fc.Result = res
-	return ec.marshalNStoryConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐConnection(ctx, field.Selections, res)
+	return ec.marshalNStoryConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_newStories(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -4965,7 +4965,7 @@ func (ec *executionContext) _Query_newStories(ctx context.Context, field graphql
 	}
 	res := resTmp.(*relays.Connection[*model.Story])
 	fc.Result = res
-	return ec.marshalNStoryConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐConnection(ctx, field.Selections, res)
+	return ec.marshalNStoryConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_askStories(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -5007,7 +5007,7 @@ func (ec *executionContext) _Query_askStories(ctx context.Context, field graphql
 	}
 	res := resTmp.(*relays.Connection[*model.Story])
 	fc.Result = res
-	return ec.marshalNStoryConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐConnection(ctx, field.Selections, res)
+	return ec.marshalNStoryConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_showStories(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -5049,7 +5049,7 @@ func (ec *executionContext) _Query_showStories(ctx context.Context, field graphq
 	}
 	res := resTmp.(*relays.Connection[*model.Story])
 	fc.Result = res
-	return ec.marshalNStoryConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐConnection(ctx, field.Selections, res)
+	return ec.marshalNStoryConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_jobStories(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -5091,7 +5091,7 @@ func (ec *executionContext) _Query_jobStories(ctx context.Context, field graphql
 	}
 	res := resTmp.(*relays.Connection[*model.Job])
 	fc.Result = res
-	return ec.marshalNJobConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐConnection(ctx, field.Selections, res)
+	return ec.marshalNJobConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -5484,7 +5484,7 @@ func (ec *executionContext) _Story_comments(ctx context.Context, field graphql.C
 	}
 	res := resTmp.(*relays.Connection[*model.Comment])
 	fc.Result = res
-	return ec.marshalNCommentConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐConnection(ctx, field.Selections, res)
+	return ec.marshalNCommentConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Story_descendants(ctx context.Context, field graphql.CollectedField, obj *model.Story) (ret graphql.Marshaler) {
@@ -5758,7 +5758,7 @@ func (ec *executionContext) _StoryConnection_pageInfo(ctx context.Context, field
 	}
 	res := resTmp.(*relays.PageInfo)
 	fc.Result = res
-	return ec.marshalNPageInfo2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐPageInfo(ctx, field.Selections, res)
+	return ec.marshalNPageInfo2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐPageInfo(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _StoryConnection_edges(ctx context.Context, field graphql.CollectedField, obj *relays.Connection[*model.Story]) (ret graphql.Marshaler) {
@@ -5793,7 +5793,7 @@ func (ec *executionContext) _StoryConnection_edges(ctx context.Context, field gr
 	}
 	res := resTmp.([]*relays.Edge[*model.Story])
 	fc.Result = res
-	return ec.marshalNStoryEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐEdgeᚄ(ctx, field.Selections, res)
+	return ec.marshalNStoryEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐEdgeᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _StoryConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *relays.Connection[*model.Story]) (ret graphql.Marshaler) {
@@ -5860,7 +5860,7 @@ func (ec *executionContext) _StoryEdge_node(ctx context.Context, field graphql.C
 	}
 	res := resTmp.(*model.Story)
 	fc.Result = res
-	return ec.marshalOStory2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐStory(ctx, field.Selections, res)
+	return ec.marshalOStory2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐStory(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _StoryEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *relays.Edge[*model.Story]) (ret graphql.Marshaler) {
@@ -9656,11 +9656,11 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) marshalNCommentConnection2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐConnection(ctx context.Context, sel ast.SelectionSet, v relays.Connection[*model.Comment]) graphql.Marshaler {
+func (ec *executionContext) marshalNCommentConnection2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx context.Context, sel ast.SelectionSet, v relays.Connection[*model.Comment]) graphql.Marshaler {
 	return ec._CommentConnection(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNCommentConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐConnection(ctx context.Context, sel ast.SelectionSet, v *relays.Connection[*model.Comment]) graphql.Marshaler {
+func (ec *executionContext) marshalNCommentConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx context.Context, sel ast.SelectionSet, v *relays.Connection[*model.Comment]) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -9670,7 +9670,7 @@ func (ec *executionContext) marshalNCommentConnection2ᚖgithubᚗcomᚋhsblhsn�
 	return ec._CommentConnection(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNCommentEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*relays.Edge[*model.Comment]) graphql.Marshaler {
+func (ec *executionContext) marshalNCommentEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*relays.Edge[*model.Comment]) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -9694,7 +9694,7 @@ func (ec *executionContext) marshalNCommentEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋh
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNCommentEdge2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐEdge(ctx, sel, v[i])
+			ret[i] = ec.marshalNCommentEdge2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐEdge(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -9714,7 +9714,7 @@ func (ec *executionContext) marshalNCommentEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋh
 	return ret
 }
 
-func (ec *executionContext) marshalNCommentEdge2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐEdge(ctx context.Context, sel ast.SelectionSet, v *relays.Edge[*model.Comment]) graphql.Marshaler {
+func (ec *executionContext) marshalNCommentEdge2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐEdge(ctx context.Context, sel ast.SelectionSet, v *relays.Edge[*model.Comment]) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -9833,11 +9833,11 @@ func (ec *executionContext) marshalNInt2ᚕintᚄ(ctx context.Context, sel ast.S
 	return ret
 }
 
-func (ec *executionContext) marshalNJob2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐJob(ctx context.Context, sel ast.SelectionSet, v model.Job) graphql.Marshaler {
+func (ec *executionContext) marshalNJob2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐJob(ctx context.Context, sel ast.SelectionSet, v model.Job) graphql.Marshaler {
 	return ec._Job(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNJob2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐJob(ctx context.Context, sel ast.SelectionSet, v *model.Job) graphql.Marshaler {
+func (ec *executionContext) marshalNJob2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐJob(ctx context.Context, sel ast.SelectionSet, v *model.Job) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -9847,11 +9847,11 @@ func (ec *executionContext) marshalNJob2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsn
 	return ec._Job(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNJobConnection2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐConnection(ctx context.Context, sel ast.SelectionSet, v relays.Connection[*model.Job]) graphql.Marshaler {
+func (ec *executionContext) marshalNJobConnection2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx context.Context, sel ast.SelectionSet, v relays.Connection[*model.Job]) graphql.Marshaler {
 	return ec._JobConnection(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNJobConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐConnection(ctx context.Context, sel ast.SelectionSet, v *relays.Connection[*model.Job]) graphql.Marshaler {
+func (ec *executionContext) marshalNJobConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx context.Context, sel ast.SelectionSet, v *relays.Connection[*model.Job]) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -9861,7 +9861,7 @@ func (ec *executionContext) marshalNJobConnection2ᚖgithubᚗcomᚋhsblhsnᚋhn
 	return ec._JobConnection(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNJobEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*relays.Edge[*model.Job]) graphql.Marshaler {
+func (ec *executionContext) marshalNJobEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*relays.Edge[*model.Job]) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -9885,7 +9885,7 @@ func (ec *executionContext) marshalNJobEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhnᚗ
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNJobEdge2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐEdge(ctx, sel, v[i])
+			ret[i] = ec.marshalNJobEdge2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐEdge(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -9905,7 +9905,7 @@ func (ec *executionContext) marshalNJobEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhnᚗ
 	return ret
 }
 
-func (ec *executionContext) marshalNJobEdge2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐEdge(ctx context.Context, sel ast.SelectionSet, v *relays.Edge[*model.Job]) graphql.Marshaler {
+func (ec *executionContext) marshalNJobEdge2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐEdge(ctx context.Context, sel ast.SelectionSet, v *relays.Edge[*model.Job]) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -9915,7 +9915,7 @@ func (ec *executionContext) marshalNJobEdge2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsb
 	return ec._JobEdge(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNPageInfo2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐPageInfo(ctx context.Context, sel ast.SelectionSet, v *relays.PageInfo) graphql.Marshaler {
+func (ec *executionContext) marshalNPageInfo2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐPageInfo(ctx context.Context, sel ast.SelectionSet, v *relays.PageInfo) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -9925,11 +9925,11 @@ func (ec *executionContext) marshalNPageInfo2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhs
 	return ec._PageInfo(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNPoll2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐPoll(ctx context.Context, sel ast.SelectionSet, v model.Poll) graphql.Marshaler {
+func (ec *executionContext) marshalNPoll2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐPoll(ctx context.Context, sel ast.SelectionSet, v model.Poll) graphql.Marshaler {
 	return ec._Poll(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNPoll2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐPoll(ctx context.Context, sel ast.SelectionSet, v *model.Poll) graphql.Marshaler {
+func (ec *executionContext) marshalNPoll2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐPoll(ctx context.Context, sel ast.SelectionSet, v *model.Poll) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -9939,11 +9939,11 @@ func (ec *executionContext) marshalNPoll2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhs
 	return ec._Poll(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNPollOption2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐPollOption(ctx context.Context, sel ast.SelectionSet, v model.PollOption) graphql.Marshaler {
+func (ec *executionContext) marshalNPollOption2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐPollOption(ctx context.Context, sel ast.SelectionSet, v model.PollOption) graphql.Marshaler {
 	return ec._PollOption(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNPollOption2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐPollOption(ctx context.Context, sel ast.SelectionSet, v *model.PollOption) graphql.Marshaler {
+func (ec *executionContext) marshalNPollOption2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐPollOption(ctx context.Context, sel ast.SelectionSet, v *model.PollOption) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -9953,11 +9953,11 @@ func (ec *executionContext) marshalNPollOption2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗ
 	return ec._PollOption(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNPollOptionConnection2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐConnection(ctx context.Context, sel ast.SelectionSet, v relays.Connection[*model.PollOption]) graphql.Marshaler {
+func (ec *executionContext) marshalNPollOptionConnection2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx context.Context, sel ast.SelectionSet, v relays.Connection[*model.PollOption]) graphql.Marshaler {
 	return ec._PollOptionConnection(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNPollOptionConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐConnection(ctx context.Context, sel ast.SelectionSet, v *relays.Connection[*model.PollOption]) graphql.Marshaler {
+func (ec *executionContext) marshalNPollOptionConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx context.Context, sel ast.SelectionSet, v *relays.Connection[*model.PollOption]) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -9967,7 +9967,7 @@ func (ec *executionContext) marshalNPollOptionConnection2ᚖgithubᚗcomᚋhsblh
 	return ec._PollOptionConnection(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNPollOptionEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*relays.Edge[*model.PollOption]) graphql.Marshaler {
+func (ec *executionContext) marshalNPollOptionEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*relays.Edge[*model.PollOption]) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -9991,7 +9991,7 @@ func (ec *executionContext) marshalNPollOptionEdge2ᚕᚖgithubᚗcomᚋhsblhsn�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNPollOptionEdge2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐEdge(ctx, sel, v[i])
+			ret[i] = ec.marshalNPollOptionEdge2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐEdge(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -10011,7 +10011,7 @@ func (ec *executionContext) marshalNPollOptionEdge2ᚕᚖgithubᚗcomᚋhsblhsn�
 	return ret
 }
 
-func (ec *executionContext) marshalNPollOptionEdge2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐEdge(ctx context.Context, sel ast.SelectionSet, v *relays.Edge[*model.PollOption]) graphql.Marshaler {
+func (ec *executionContext) marshalNPollOptionEdge2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐEdge(ctx context.Context, sel ast.SelectionSet, v *relays.Edge[*model.PollOption]) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -10021,11 +10021,11 @@ func (ec *executionContext) marshalNPollOptionEdge2ᚖgithubᚗcomᚋhsblhsnᚋh
 	return ec._PollOptionEdge(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNStory2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐStory(ctx context.Context, sel ast.SelectionSet, v model.Story) graphql.Marshaler {
+func (ec *executionContext) marshalNStory2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐStory(ctx context.Context, sel ast.SelectionSet, v model.Story) graphql.Marshaler {
 	return ec._Story(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNStory2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐStory(ctx context.Context, sel ast.SelectionSet, v *model.Story) graphql.Marshaler {
+func (ec *executionContext) marshalNStory2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐStory(ctx context.Context, sel ast.SelectionSet, v *model.Story) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -10035,11 +10035,11 @@ func (ec *executionContext) marshalNStory2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblh
 	return ec._Story(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNStoryConnection2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐConnection(ctx context.Context, sel ast.SelectionSet, v relays.Connection[*model.Story]) graphql.Marshaler {
+func (ec *executionContext) marshalNStoryConnection2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx context.Context, sel ast.SelectionSet, v relays.Connection[*model.Story]) graphql.Marshaler {
 	return ec._StoryConnection(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNStoryConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐConnection(ctx context.Context, sel ast.SelectionSet, v *relays.Connection[*model.Story]) graphql.Marshaler {
+func (ec *executionContext) marshalNStoryConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx context.Context, sel ast.SelectionSet, v *relays.Connection[*model.Story]) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -10049,7 +10049,7 @@ func (ec *executionContext) marshalNStoryConnection2ᚖgithubᚗcomᚋhsblhsnᚋ
 	return ec._StoryConnection(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNStoryEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*relays.Edge[*model.Story]) graphql.Marshaler {
+func (ec *executionContext) marshalNStoryEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*relays.Edge[*model.Story]) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -10073,7 +10073,7 @@ func (ec *executionContext) marshalNStoryEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhn�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNStoryEdge2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐEdge(ctx, sel, v[i])
+			ret[i] = ec.marshalNStoryEdge2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐEdge(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -10093,7 +10093,7 @@ func (ec *executionContext) marshalNStoryEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhn�
 	return ret
 }
 
-func (ec *executionContext) marshalNStoryEdge2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋinternalᚋrelaysᚐEdge(ctx context.Context, sel ast.SelectionSet, v *relays.Edge[*model.Story]) graphql.Marshaler {
+func (ec *executionContext) marshalNStoryEdge2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐEdge(ctx context.Context, sel ast.SelectionSet, v *relays.Edge[*model.Story]) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -10397,7 +10397,7 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return res
 }
 
-func (ec *executionContext) marshalOComment2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐComment(ctx context.Context, sel ast.SelectionSet, v *model.Comment) graphql.Marshaler {
+func (ec *executionContext) marshalOComment2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐComment(ctx context.Context, sel ast.SelectionSet, v *model.Comment) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -10495,14 +10495,14 @@ func (ec *executionContext) marshalOInt2ᚖint(ctx context.Context, sel ast.Sele
 	return res
 }
 
-func (ec *executionContext) marshalOJob2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐJob(ctx context.Context, sel ast.SelectionSet, v *model.Job) graphql.Marshaler {
+func (ec *executionContext) marshalOJob2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐJob(ctx context.Context, sel ast.SelectionSet, v *model.Job) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Job(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalONode2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐNode(ctx context.Context, sel ast.SelectionSet, v model.Node) graphql.Marshaler {
+func (ec *executionContext) marshalONode2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐNode(ctx context.Context, sel ast.SelectionSet, v model.Node) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -10516,14 +10516,14 @@ func (ec *executionContext) marshalOOpenGraph2ᚖgithubᚗcomᚋotiai10ᚋopengr
 	return ec._OpenGraph(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOPollOption2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐPollOption(ctx context.Context, sel ast.SelectionSet, v *model.PollOption) graphql.Marshaler {
+func (ec *executionContext) marshalOPollOption2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐPollOption(ctx context.Context, sel ast.SelectionSet, v *model.PollOption) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._PollOption(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOStory2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphᚋmodelᚐStory(ctx context.Context, sel ast.SelectionSet, v *model.Story) graphql.Marshaler {
+func (ec *executionContext) marshalOStory2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐStory(ctx context.Context, sel ast.SelectionSet, v *model.Story) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}

@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/httpclient"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/readerviews"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/httpclient"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/readerviews"
 	"github.com/pkg/errors"
 )
 

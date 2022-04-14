@@ -1,6 +1,6 @@
-package graph
+package graphql
 
-import "github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/hackernews"
+import "github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/hackernews"
 
 // This file will not be regenerated automatically.
 //

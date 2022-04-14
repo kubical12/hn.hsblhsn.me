@@ -5,7 +5,7 @@ import (
 	"image/jpeg"
 	"net/http"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/httpclient"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/httpclient"
 	"go.uber.org/zap"
 )
 

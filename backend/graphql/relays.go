@@ -1,11 +1,11 @@
-package graph
+package graphql
 
 import (
 	"context"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/hackernews"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/relays"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/model"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/hackernews"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/relays"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/model"
 	"github.com/pkg/errors"
 )
 
