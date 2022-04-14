@@ -8,7 +8,7 @@ COPY . .
 RUN make build-frontend
 
 FROM golang:1.18-bullseye AS backend-builder
-WORKDIR /api
+WORKDIR /backend
 COPY go.mod go.mod
 COPY go.sum go.sum
 COPY Makefile Makefile
@@ -29,7 +29,7 @@ COPY Makefile Makefile
 RUN make dep-readability
 WORKDIR /app
 RUN rm -rf /readability
-COPY --from=backend-builder /api/bin/hackernews /app/hackernews
+COPY --from=backend-builder /backend/bin/hackernews /app/hackernews
 
 EXPOSE 8080
 CMD ["/app/hackernews"]
