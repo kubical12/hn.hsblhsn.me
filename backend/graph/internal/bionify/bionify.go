@@ -1,6 +1,7 @@
 package bionify
 
 import (
+	"io"
 	"math"
 	"strings"
 	"unicode"
@@ -9,6 +10,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/pkg/errors"
 	"golang.org/x/exp/utf8string"
+	"golang.org/x/net/html"
 )
 
 func Word(word string) string {
@@ -35,12 +37,21 @@ func moveIfMark(str *utf8string.String, index int) int {
 	return index
 }
 
-func Text(text string) string {
+func Paragraph(text string) string {
 	charCount := utf8.RuneCountInString(text)
-	const minimumSentenceLength = 10
-	if charCount < minimumSentenceLength {
+	const minimumContentLength = 10
+	if charCount < minimumContentLength {
 		return text
 	}
+	res := ""
+	words := strings.Split(text, " ")
+	for _, word := range words {
+		res += Word(word) + " "
+	}
+	return res
+}
+
+func Text(text string) string {
 	res := ""
 	words := strings.Split(text, " ")
 	for _, word := range words {
@@ -54,16 +65,27 @@ func HTMLText(content string) (string, error) {
 	if err != nil {
 		return "", errors.Wrap(err, "bionify: could not parse html from reader")
 	}
-	all := doc.Find("*").Each(func(i int, s *goquery.Selection) {
-		children := s.Children()
-		if len(children.Nodes) == 0 {
-			s.SetHtml(Text(s.Text()))
-		}
-	})
-	body := all.Find("body")
+	output := &strings.Builder{}
+	full := doc.Find("*")
+	for i := range full.Nodes {
+		Node(full.Nodes[i], output)
+	}
+	body := full.Find("body")
+	body.SetHtml(output.String())
 	str, err := body.Html()
 	if err != nil {
 		return "", errors.Wrap(err, "bionify: could not render html node to string")
 	}
 	return str, nil
+}
+
+func Node(node *html.Node, buf io.Writer) {
+	if node == nil {
+		return
+	}
+	if node.Type == html.TextNode {
+		_, _ = buf.Write([]byte(Text(node.Data)))
+		return
+	}
+	Node(node.FirstChild, buf)
 }
