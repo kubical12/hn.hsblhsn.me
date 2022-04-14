@@ -58,22 +58,22 @@ type (
 	Favicon   = opengraphs.Favicon
 )
 
-func (s *Story) Opengraph(ctx context.Context) (*opengraphs.OpenGraph, error) {
+func (s *Story) Opengraph(ctx context.Context) *opengraphs.OpenGraph {
 	loader := s.GetLoader(s.URL)
 	return loader.Opengraph(ctx)
 }
 
-func (s *Story) HTML(ctx context.Context) (*string, error) {
+func (s *Story) HTML(ctx context.Context) *string {
 	loader := s.GetLoader(s.URL)
 	return loader.HTML(ctx)
 }
 
-func (s *Job) Opengraph(ctx context.Context) (*opengraphs.OpenGraph, error) {
+func (s *Job) Opengraph(ctx context.Context) *opengraphs.OpenGraph {
 	loader := s.GetLoader(s.URL)
 	return loader.Opengraph(ctx)
 }
 
-func (s *Job) HTML(ctx context.Context) (*string, error) {
+func (s *Job) HTML(ctx context.Context) *string {
 	loader := s.GetLoader(s.URL)
 	return loader.HTML(ctx)
 }

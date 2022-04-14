@@ -11,13 +11,18 @@ import (
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/opengraphs"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graph/internal/readerviews"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 )
 
 // nolint:gochecknoglobals // global client to call from ExternalContentLoader.
-var client *httpclient.CachedClient
+var (
+	client *httpclient.CachedClient
+	logger *zap.Logger
+)
 
-func registerClient(c *httpclient.CachedClient) {
+func registerDependencies(c *httpclient.CachedClient, l *zap.Logger) {
 	client = c
+	logger = l.With(zap.String("component", "model_external_content"))
 }
 
 type ExternalContentLoadable struct {
@@ -62,26 +67,30 @@ func (s *ExternalContentLoader) getContentFromURL(ctx context.Context) error {
 	return errors.Wrap(err, "model: could not get content from url")
 }
 
-func (s *ExternalContentLoader) Opengraph(ctx context.Context) (*opengraphs.OpenGraph, error) {
+func (s *ExternalContentLoader) Opengraph(ctx context.Context) *opengraphs.OpenGraph {
 	if err := s.getContentFromURL(ctx); err != nil {
-		return nil, err
+		logger.Error("model: could not get content from url", zap.Error(err))
+		return nil
 	}
-	// nolint:nilnil // ignore
+
 	if s.url == "" {
-		return nil, nil
+		return nil
 	}
 	out, err := opengraphs.GetOpengraphData(s.url, bytes.NewBuffer(s.content))
-	return out, errors.Wrap(err, "model: could not convert opengraph content")
+	logger.Error("model: could not convert opengraph content", zap.Error(err))
+	return out
 }
 
-func (s *ExternalContentLoader) HTML(ctx context.Context) (*string, error) {
+func (s *ExternalContentLoader) HTML(ctx context.Context) *string {
 	if err := s.getContentFromURL(ctx); err != nil {
-		return nil, err
+		logger.Error("model: could not get content from url", zap.Error(err))
+		return nil
 	}
-	// nolint:nilnil // ignore
+
 	if s.url == "" {
-		return nil, nil
+		return nil
 	}
 	out, err := readerviews.Convert(ctx, s.url, bytes.NewBuffer(s.content))
-	return &out, errors.Wrap(err, "model: could not convert readerview content")
+	logger.Error("model: could not convert readerview content", zap.Error(err))
+	return &out
 }
