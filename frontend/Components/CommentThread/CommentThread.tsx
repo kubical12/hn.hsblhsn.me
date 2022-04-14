@@ -21,7 +21,7 @@ const CommentThread: React.FC<CommentThreadProps> = ({
     return css({
       paddingTop: child ? theme.sizing.scale600 : theme.sizing.scale300,
       borderLeft: child ? `3px solid ${theme.colors.border}` : 'none',
-      paddingLeft: child ? theme.sizing.scale600 : theme.sizing.scale0,
+      paddingLeft: child ? theme.sizing.scale300 : theme.sizing.scale0,
     })
   }
   return (

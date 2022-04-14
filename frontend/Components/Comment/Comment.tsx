@@ -62,7 +62,7 @@ const Comment: React.FC<CommentProps> = ({ comment }: CommentProps) => {
         <Paragraph2 as="div" className="comment-reader-view-content">
           <div dangerouslySetInnerHTML={{ __html: comment.text || '' }} />
         </Paragraph2>
-        <Block className="pl-4">
+        <Block className="pl-3">
           <CommentThread isChild={true} comments={comment.comments} />
         </Block>
       </Block>
