@@ -65,13 +65,12 @@ func (f *staticFileServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func prerender(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
-		ua := strings.ToLower(request.UserAgent())
-		isBot := strings.Contains(ua, "bot") && !strings.Contains(ua, "google")
-		if !isBot {
+		// pass all non-bot requests.
+		if !isBot(request.UserAgent()) {
 			next.ServeHTTP(response, request)
 			return
 		}
-
+		// process bot requests here.
 		request.URL.Host = request.Host
 		endpoint := fmt.Sprintf("https://service.prerender.cloud/%s", url.PathEscape(request.URL.String()))
 		log.Println("frontend: prerendering endpoint", endpoint)
@@ -91,4 +90,28 @@ func prerender(next http.Handler) http.Handler {
 		response.WriteHeader(resp.StatusCode)
 		_, _ = io.Copy(response, resp.Body)
 	})
+}
+
+func isBot(useragent string) bool {
+	useragent = strings.ToLower(useragent)
+	bots := []string{
+		"bot",
+		"facebookexternalhit",
+		"twitterbot",
+		"googlebot",
+		"linkedinbot",
+		"embedly",
+		"bingbot",
+		"slurp",
+		"wordpress",
+		"wget",
+		"curl",
+		"pingdom",
+	}
+	for _, bot := range bots {
+		if strings.Contains(useragent, bot) {
+			return true
+		}
+	}
+	return false
 }
