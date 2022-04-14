@@ -1,6 +1,6 @@
-import { Helmet } from 'react-helmet-async'
 import config from '../../app.config'
 import { getBestImage } from '../../Components/commonutils'
+import { SEO } from '../../Components/SEO'
 import { OpenGraph } from '../../types'
 
 interface HeadProps {
@@ -15,23 +15,14 @@ interface HeadProps {
 const Head: React.FC<HeadProps> = ({
   item: { id, title, text, openGraph },
 }: HeadProps) => {
-  const og = {
-    title: `${openGraph?.title || title} | Hacker News`,
-    description: openGraph?.description || text || '',
-    imageUrl: getBestImage(openGraph?.image)?.url || '',
-    url: `${config.host}/items?id=${id}`,
-  }
-  og.description = og.description.replace(/<\/?[^>]+(>|$)/g, '')
-
+  const description = openGraph?.description || text || ''
   return (
-    <Helmet>
-      <title>{og.title}</title>
-      <meta property="og:title" content={og.title} />
-      <meta name="description" content={og.description} />
-      <meta property="og:description" content={og.description} />
-      <meta property="og:image" content={og.imageUrl} />
-      <meta property="og:url" content={og.url} />
-    </Helmet>
+    <SEO
+      title={`${openGraph?.title || title} | Hacker News`}
+      description={description.replace(/<\/?[^>]+(>|$)/g, '')}
+      imageUrl={getBestImage(openGraph?.image)?.url || ''}
+      url={`${config.host}/items?id=${id}`}
+    />
   )
 }
 

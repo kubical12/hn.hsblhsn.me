@@ -1,5 +1,5 @@
-import { Helmet } from 'react-helmet-async'
 import config from '../../app.config'
+import { SEO } from '../../Components/SEO'
 
 interface HeadProps {
   path: string
@@ -7,23 +7,13 @@ interface HeadProps {
 
 const Head: React.FC<HeadProps> = ({ path }: HeadProps) => {
   const typ = getStoryType(path)
-  const og = {
-    title: `${typ} | Hacker News`,
-    description:
-      'Hacker News is a social news website ' +
-      'focusing on computer science and entrepreneurship.',
-    url: config.host,
-    imageUrl: '',
-  }
   return (
-    <Helmet>
-      <title>{og.title}</title>
-      <meta property="og:title" content={og.title} />
-      <meta name="description" content={og.description} />
-      <meta property="og:description" content={og.description} />
-      <meta property="og:image" content={og.imageUrl} />
-      <meta property="og:url" content={og.url} />
-    </Helmet>
+    <SEO
+      title={`${typ} | Hacker News`}
+      description="Hacker News is a social news website focusing on computer science and entrepreneurship."
+      imageUrl={undefined}
+      url={config.host}
+    />
   )
 }
 
