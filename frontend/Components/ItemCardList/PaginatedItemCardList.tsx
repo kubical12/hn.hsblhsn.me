@@ -16,24 +16,22 @@ const PaginatedItemCardList: React.FC<PaginatedItemCardListProps> = ({
   return (
     <div>
       <ItemCardList items={items} />
-      {items.pageInfo?.hasNextPage && (
-        <Button
-          kind={KIND.secondary}
-          onClick={loadNext}
-          isLoading={loading}
-          disabled={loading}
-          overrides={{
-            Root: {
-              style: ({ $theme }: StyleProps) => ({
-                width: '100%',
-                marginTop: $theme.sizing.scale900,
-              }),
-            },
-          }}
-        >
-          {loading ? 'Loading...' : 'Load more'}
-        </Button>
-      )}
+      <Button
+        kind={KIND.secondary}
+        onClick={loadNext}
+        isLoading={loading}
+        disabled={loading || items.pageInfo?.hasNextPage === false}
+        overrides={{
+          Root: {
+            style: ({ $theme }: StyleProps) => ({
+              width: '100%',
+              marginTop: $theme.sizing.scale900,
+            }),
+          },
+        }}
+      >
+        {items.pageInfo?.hasNextPage ? 'Load more' : 'No more items'}
+      </Button>
     </div>
   )
 }
