@@ -20,7 +20,12 @@ const Head: React.FC<HeadProps> = ({
     <SEO
       title={`${openGraph?.title || title} | Hacker News`}
       description={description.replace(/<\/?[^>]+(>|$)/g, '')}
-      imageUrl={getBestImage(openGraph?.image)?.url || ''}
+      imageUrl={
+        getBestImage(openGraph?.image)?.url.replace(
+          '&size=thumbnail',
+          '&size=full'
+        ) || ''
+      }
       url={`${config.host}/items?id=${id}`}
     />
   )
