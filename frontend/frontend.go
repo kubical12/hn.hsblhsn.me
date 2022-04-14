@@ -72,6 +72,7 @@ func prerender(next http.Handler) http.Handler {
 		}
 		// process bot requests here.
 		request.URL.Host = request.Host
+		request.URL.Scheme = "https"
 		endpoint := fmt.Sprintf("https://service.prerender.cloud/%s", url.PathEscape(request.URL.String()))
 		log.Println("frontend: prerendering endpoint", endpoint)
 		req, err := http.NewRequestWithContext(request.Context(), http.MethodGet, endpoint, nil)
@@ -97,16 +98,10 @@ func isBot(useragent string) bool {
 	bots := []string{
 		"bot",
 		"facebookexternalhit",
-		"twitterbot",
-		"googlebot",
-		"linkedinbot",
 		"embedly",
-		"bingbot",
-		"slurp",
 		"wordpress",
-		"wget",
 		"curl",
-		"pingdom",
+		"Go-http-client",
 	}
 	for _, bot := range bots {
 		if strings.Contains(useragent, bot) {
