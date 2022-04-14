@@ -105,7 +105,7 @@ const ActionButtons: React.FC<ItemProps> = ({ item }: ItemProps) => {
     window.history.back()
   }
   const open = () => {
-    window.open(item.url, '_blank')
+    window.open(getLink(item.id, item.url), '_blank')
   }
   return (
     <Block
