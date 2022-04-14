@@ -41,7 +41,7 @@ func NewGQLHandler(resolver *Resolver, logger *zap.Logger) *GQLHandler {
 		} else {
 			gqlErr.Message = "Internal server error"
 		}
-		log.Error("graphql error", zap.String("message", gqlErr.Message))
+		log.Error("graphql error", zap.String("response", gqlErr.Message))
 		return gqlErr
 	})
 	server.SetRecoverFunc(func(ctx context.Context, err interface{}) error {

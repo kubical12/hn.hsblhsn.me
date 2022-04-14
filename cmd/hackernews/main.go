@@ -23,7 +23,7 @@ func main() {
 	app := fx.New(
 		fx.Supply(client),
 		fx.Supply(router),
-		fx.Provide(zap.NewProduction),
+		fx.Provide(newLogger),
 		caches.Module(),
 		graph.Module(),
 		backend.Module(),
@@ -31,6 +31,25 @@ func main() {
 		fx.Invoke(startHTTPServer),
 	)
 	app.Run()
+}
+
+func newLogger() (*zap.Logger, error) {
+	encoderCfg := zap.NewProductionEncoderConfig()
+	encoderCfg.MessageKey = "message"
+	cfg := zap.Config{
+		Level:            zap.NewAtomicLevelAt(zap.InfoLevel),
+		Development:      false,
+		Sampling:         nil,
+		Encoding:         "json",
+		EncoderConfig:    encoderCfg,
+		OutputPaths:      []string{"stderr"},
+		ErrorOutputPaths: []string{"stderr"},
+	}
+	logger, err := cfg.Build()
+	if err != nil {
+		return nil, errors.Wrap(err, "main: failed to build logger")
+	}
+	return logger, nil
 }
 
 func startHTTPServer(lc fx.Lifecycle, router *mux.Router, logger *zap.Logger) {
