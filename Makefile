@@ -3,7 +3,7 @@ dep-backend:
 dep-readability:
 	@pip3 install -r requirements.txt
 dep-frontend:
-	@npm install
+	@npm ci
 dep:
 	@make dep-backend dep-readability dep-frontend
 
