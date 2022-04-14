@@ -37,7 +37,7 @@ func word(word string) string {
 const MinimumTextLength = 5
 
 func Text(text string) string {
-	if !featureflags.Check("BIONIFY", false) {
+	if !featureflags.IsOn(featureflags.FeatureBionify, false) {
 		return text
 	}
 	charCount := utf8.RuneCountInString(text)

@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/hsblhsn/hn.hsblhsn.me/featureflags"
 )
 
 // nolint:funlen // test cases are long.
@@ -88,17 +89,17 @@ func TestWord(t *testing.T) {
 
 // nolint:paralleltest // t.Setenv is not parallelizable.
 func TestFeatureFlag(t *testing.T) {
-	t.Setenv("FEATURE_FLAG_BIONIFY", "on")
+	t.Setenv(featureflags.FeatureBionify.String(), "on")
 	out := Text("quick")
 	if out != "<b bionic-bold>qu</b><span bionic-span>ick</span>" {
 		t.Errorf("Text() = %q, want %q", out, "<b bionic-bold>qu</b><span bionic-span>ick</span>")
 	}
-	t.Setenv("FEATURE_FLAG_BIONIFY", "off")
+	t.Setenv(featureflags.FeatureBionify.String(), "off")
 	out = Text("quick")
 	if out != "quick" {
 		t.Errorf("Text() = %q, want %q", out, "quick")
 	}
-	t.Setenv("FEATURE_FLAG_BIONIFY", "")
+	t.Setenv(featureflags.FeatureBionify.String(), "")
 	out = Text("quick")
 	if out != "quick" {
 		t.Errorf("Text() = %q, want %q", out, "quick")

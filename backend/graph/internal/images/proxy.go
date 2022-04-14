@@ -4,9 +4,14 @@ import (
 	"fmt"
 	"net/url"
 	"os"
+
+	"github.com/hsblhsn/hn.hsblhsn.me/featureflags"
 )
 
 func ProxiedURL(src string, size ImageSize) string {
+	if !featureflags.IsOn(featureflags.FeatureImgProxy, false) {
+		return src
+	}
 	if src == "" {
 		return ""
 	}

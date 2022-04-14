@@ -2,11 +2,10 @@ package featureflags
 
 import (
 	"os"
-	"strings"
 )
 
-func Check(feature string, def bool) bool {
-	val := os.Getenv("FEATURE_FLAG_" + strings.ToUpper(feature))
+func IsOn(feature Feature, def bool) bool {
+	val := os.Getenv(feature.String())
 	switch val {
 	case "on":
 		return true
