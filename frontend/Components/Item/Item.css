@@ -1,6 +1,5 @@
 #reader-view-content {
   @apply text-lg font-sans mt-3 break-words;
-  #word-spacing: 0.5em;
 }
 
 #reader-view-content h1 {
