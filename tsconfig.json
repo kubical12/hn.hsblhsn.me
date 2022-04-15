@@ -24,12 +24,12 @@
     "frontend/**/*.ts",
     "frontend/**/*.tsx",
     "frontend/**/*.js",
-    "frontend/**/*.json",
+    "frontend/**/*.json"
   ],
   "exclude": [
     "node_modules",
     ".vscode",
-    "frontend/build",
+    "frontend/build"
   ],
   "references": [
     {
