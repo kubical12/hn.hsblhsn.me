@@ -1,4 +1,4 @@
-import { CommentConnection } from "./Comment"
+import { CommentConnection } from './Comment'
 
 export interface Poll {
   by: string

@@ -1,5 +1,5 @@
-import { Theme } from "baseui";
+import { Theme } from 'baseui'
 
 export interface StyleProps {
-    $theme: Theme
+  $theme: Theme
 }

@@ -10,7 +10,7 @@ export type NodeT<T> = T
 export interface EdgeT<T> {
   node: NodeT<T>
 }
-export interface ConnectionT<T>{
+export interface ConnectionT<T> {
   edges: EdgeT<T>[]
   pageInfo: PageInfo
 }

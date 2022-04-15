@@ -44,6 +44,9 @@ const Comment: React.FC<CommentProps> = ({ comment }: CommentProps) => {
                 backgroundColor: isExpanded
                   ? $theme.colors.backgroundSecondary
                   : $theme.colors.backgroundTertiary,
+                ':hover': {
+                  opacity: '0.7',
+                },
               }
             },
           },
