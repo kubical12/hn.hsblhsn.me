@@ -32,6 +32,9 @@ func GetOpengraphData(uri string, content *bytes.Buffer) (*OpenGraph, error) {
 	for i := range data.Image {
 		data.Image[i].URL = images.ProxiedURL(data.Image[i].URL, images.ImageSizeThumbnail)
 	}
+	if data.URL == "" {
+		data.URL = uri
+	}
 
 	return data, nil
 }
