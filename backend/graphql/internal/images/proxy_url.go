@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/url"
 	"os"
+	"strings"
 
 	"github.com/hsblhsn/hn.hsblhsn.me/featureflags"
 )
@@ -19,10 +20,17 @@ func ProxiedURL(src string, size ImageSize) string {
 	if host != "" {
 		host = "https://" + host
 	}
+	escaped := url.QueryEscape(src)
 	return fmt.Sprintf(
 		"%s/images.jpeg?src=%s&size=%s",
 		host,
-		url.QueryEscape(src),
+		unescape(escaped),
 		size,
 	)
+}
+
+func unescape(str string) string {
+	str = strings.ReplaceAll(str, "%2C", `,`)
+	str = strings.ReplaceAll(str, "%25", `%`)
+	return str
 }
