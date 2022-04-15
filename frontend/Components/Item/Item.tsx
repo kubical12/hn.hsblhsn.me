@@ -61,7 +61,7 @@ const Header: React.FC<ItemProps> = ({ item }: ItemProps) => {
         </span>
       </Label4>
       <HeadingLarge>
-        <Link to={`/items?id=${item.id}`}>
+        <Link to={`/item?id=${item.id}`}>
           {item.openGraph?.title || item.title}
         </Link>
       </HeadingLarge>

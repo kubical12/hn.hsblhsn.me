@@ -8,7 +8,7 @@ const Routes = () => (
     <Route path="/newest" element={<HomePage />} />
     <Route path="/ask" element={<HomePage />} />
     <Route path="/jobs" element={<HomePage />} />
-    <Route path="/items" element={<ItemPage />} />
+    <Route path="/item" element={<ItemPage />} />
     <Route path="*" element={<HomePage />} />
   </ReactRouterRoutes>
 )

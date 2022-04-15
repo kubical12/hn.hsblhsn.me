@@ -32,7 +32,7 @@ const ItemCard: React.FC<ItemCardProps> = ({ item }: ItemCardProps) => {
       {thumbnail && <StyledThumbnail src={thumbnail.url} alt={thumbnail.alt} />}
 
       <HeadingSmall paddingBottom={theme.sizing.scale600}>
-        <Link to={`/items?id=${item.id}`}>
+        <Link to={`/item?id=${item.id}`}>
           {item.openGraph?.title || item.title}
         </Link>
       </HeadingSmall>
@@ -56,7 +56,7 @@ const ItemCard: React.FC<ItemCardProps> = ({ item }: ItemCardProps) => {
           </a>
         )}
         {'descendants' in item && (
-          <Link to={`/items?id=${item.id}#comments`}>
+          <Link to={`/item?id=${item.id}#comments`}>
             <Button shape={SHAPE.pill} kind={KIND.tertiary} size={SIZE.mini}>
               {item.descendants || 0} comments
             </Button>

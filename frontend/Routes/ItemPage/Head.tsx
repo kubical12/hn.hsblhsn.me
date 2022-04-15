@@ -26,7 +26,7 @@ const Head: React.FC<HeadProps> = ({
           '&size=full'
         ) || ''
       }
-      url={`${config.host}/items?id=${id}`}
+      url={`${config.host}/item?id=${id}`}
     />
   )
 }
