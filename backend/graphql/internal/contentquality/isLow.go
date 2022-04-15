@@ -24,6 +24,12 @@ func getIndicators() []string {
 			"switch to a supported browser to continue using twitter.com",
 			// youtube
 			"https://www.youtube.com/howyoutubeworks",
+			// 404
+			"Page not found",
+			// 500
+			"Internal Server Error",
+			//	Cloudflare bot check
+			"Checking your browser before accessing",
 		}
 	})
 	return lowQualityIndicators
@@ -33,7 +39,7 @@ func IsLow(content []byte) bool {
 	str := string(content)
 	indicators := getIndicators()
 	for _, indicator := range indicators {
-		if strings.Contains(str, indicator) {
+		if strings.ContainsAny(str, indicator) {
 			return true
 		}
 	}
