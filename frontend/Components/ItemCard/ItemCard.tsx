@@ -27,7 +27,7 @@ const ItemCard: React.FC<ItemCardProps> = ({ item }: ItemCardProps) => {
         <a href={getLink(item.id, item.url)} target="_blank" rel="noreferrer">
           {getHost(item.id, item.url)}
         </a>
-        &nbsp;&nbsp; {fromNow(item.time * 1000) || 'unknown'}
+        &nbsp;-&nbsp;&nbsp;{fromNow(item.time * 1000) || 'unknown time'}
       </Label4>
 
       {thumbnail && <StyledThumbnail src={thumbnail.url} alt={thumbnail.alt} />}
