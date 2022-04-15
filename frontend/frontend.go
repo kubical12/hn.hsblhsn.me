@@ -32,10 +32,10 @@ type spaFS struct {
 }
 
 // newSpaFS returns a new fs that roots to th given dir.
-func newSpaFS(root fs.FS, dir string) fs.FS {
+func newSpaFS(root embed.FS, dir string) fs.FS {
 	return &spaFS{
 		dir:      dir,
-		internal: assetFS,
+		internal: root,
 	}
 }
 
@@ -90,8 +90,14 @@ func PrerenderIfBot(next http.Handler, logger *zap.Logger) http.Handler {
 			next.ServeHTTP(response, request)
 			return
 		}
-
-		defer resp.Body.Close()
+		defer func(Body io.ReadCloser) {
+			_ = Body.Close()
+		}(resp.Body)
+		if resp.StatusCode != http.StatusOK {
+			logger.Error("frontend: prerender failed", zap.Int("status", resp.StatusCode))
+			next.ServeHTTP(response, request)
+			return
+		}
 		response.WriteHeader(resp.StatusCode)
 		_, _ = io.Copy(response, resp.Body)
 	})
