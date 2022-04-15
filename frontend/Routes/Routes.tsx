@@ -8,6 +8,7 @@ const Routes = () => (
     <Route path="/" element={<HomePage />} />
     <Route path="/newest" element={<HomePage />} />
     <Route path="/ask" element={<HomePage />} />
+    <Route path="/show" element={<HomePage />} />
     <Route path="/jobs" element={<HomePage />} />
     <Route path="/item" element={<ItemPage />} />
     <Route path="*" element={<NotFoundPage />} />
