@@ -20,13 +20,13 @@ func getIndicators() []string {
 			"You have been blocked",
 			// github
 			"You can’t perform that action at this time.",
-
+			// twitter
 			"switch to a supported browser to continue using twitter.com",
 			// youtube
 			"https://www.youtube.com/howyoutubeworks",
 			// 404
 			"Page not found",
-			//	Cloudflare bot check
+			// Cloudflare bot check
 			"Checking your browser before accessing",
 		}
 	})
@@ -37,16 +37,9 @@ func IsLow(content []byte) bool {
 	str := string(content)
 	indicators := getIndicators()
 	for _, indicator := range indicators {
-		if contains(str, indicator) {
+		if strings.Contains(str, indicator) {
 			return true
 		}
 	}
 	return false
-}
-
-func contains(a string, b string) bool {
-	return strings.Contains(
-		strings.ToLower(a),
-		strings.ToLower(b),
-	)
 }
