@@ -8,6 +8,7 @@ const ITEM_CARD_STORY_FIELDS = gql`
     text
     descendants
     score
+    time
     openGraph {
       id
       title
@@ -25,6 +26,7 @@ const ITEM_CARD_JOB_FIELDS = gql`
     id
     url
     title
+    time
     openGraph {
       title
       description

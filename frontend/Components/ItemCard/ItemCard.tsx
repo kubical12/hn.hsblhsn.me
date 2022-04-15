@@ -4,7 +4,7 @@ import { Card, StyledAction, StyledBody, StyledThumbnail } from 'baseui/card'
 import { HeadingSmall, Label4 } from 'baseui/typography'
 import { Link } from 'react-router-dom'
 import { Job, Story } from '../../Types'
-import { getBestImage, getHost, getLink } from '../commonutils'
+import { fromNow, getBestImage, getHost, getLink } from '../commonutils'
 
 interface ItemCardProps {
   item: Story | Job
@@ -27,6 +27,7 @@ const ItemCard: React.FC<ItemCardProps> = ({ item }: ItemCardProps) => {
         <a href={getLink(item.id, item.url)} target="_blank" rel="noreferrer">
           {getHost(item.id, item.url)}
         </a>
+        &nbsp;&nbsp; {fromNow(item.time * 1000) || 'unknown'}
       </Label4>
 
       {thumbnail && <StyledThumbnail src={thumbnail.url} alt={thumbnail.alt} />}
@@ -67,7 +68,7 @@ const ItemCard: React.FC<ItemCardProps> = ({ item }: ItemCardProps) => {
   )
 }
 
-const ellipsis = (str: string |undefined, max: number) => {
+const ellipsis = (str: string | undefined, max: number) => {
   if (!str) return ''
   if (str.length <= max) {
     return str
