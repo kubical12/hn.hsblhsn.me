@@ -39,9 +39,16 @@ func IsLow(content []byte) bool {
 	str := string(content)
 	indicators := getIndicators()
 	for _, indicator := range indicators {
-		if strings.ContainsAny(str, indicator) {
+		if contains(str, indicator) {
 			return true
 		}
 	}
 	return false
+}
+
+func contains(a string, b string) bool {
+	return strings.Contains(
+		strings.ToLower(a),
+		strings.ToLower(b),
+	)
 }
