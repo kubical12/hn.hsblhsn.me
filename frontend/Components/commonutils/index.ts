@@ -1,4 +1,4 @@
-import { Image } from '../../types'
+import { Image } from '../../Types'
 
 export const getHost = (id: string, url?: string) => {
   if (!url) {

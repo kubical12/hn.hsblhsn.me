@@ -1,7 +1,7 @@
 import config from '../../app.config'
 import { getBestImage } from '../../Components/commonutils'
 import { SEO } from '../../Components/SEO'
-import { OpenGraph } from '../../types'
+import { OpenGraph } from '../../Types'
 
 interface HeadProps {
   item: {

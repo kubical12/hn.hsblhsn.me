@@ -1,6 +1,6 @@
 import { styled } from 'baseui'
 import { Block } from 'baseui/block'
-import { ConnectionT, Job, Story } from '../../types'
+import { ConnectionT, Job, Story } from '../../Types'
 import { ItemCard } from '../ItemCard'
 
 const StyledItemCardListItem = styled(Block, ({ $theme }) => ({

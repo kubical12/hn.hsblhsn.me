@@ -1,6 +1,6 @@
 import { useStyletron } from 'baseui'
 import { Block } from 'baseui/block'
-import { CommentConnection } from '../../types'
+import { CommentConnection } from '../../Types'
 import { Comment } from '../Comment'
 
 interface CommentThreadProps {

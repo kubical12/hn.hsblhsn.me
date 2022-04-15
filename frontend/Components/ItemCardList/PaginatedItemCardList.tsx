@@ -1,5 +1,5 @@
 import { Button, KIND } from 'baseui/button'
-import { ConnectionT, Job, Story, StyleProps } from '../../types'
+import { ConnectionT, Job, Story, StyleProps } from '../../Types'
 import { ItemCardList } from './ItemCardList'
 
 interface PaginatedItemCardListProps {

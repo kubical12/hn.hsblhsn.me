@@ -4,8 +4,8 @@ import { useStyletron } from 'baseui'
 import { CommentThread } from '../CommentThread'
 import { useState } from 'react'
 import './Comment.css'
-import { Comment as CommentT } from '../../types'
-import { StyleProps } from '../../types'
+import { Comment as CommentT } from '../../Types'
+import { StyleProps } from '../../Types'
 import { fromNow } from '../commonutils'
 
 interface CommentProps {

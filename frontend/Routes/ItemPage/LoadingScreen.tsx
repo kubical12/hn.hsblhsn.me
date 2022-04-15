@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 import { Skeleton } from 'baseui/skeleton'
-import { StyleProps } from '../../types'
+import { StyleProps } from '../../Types'
 
 const LoadingScreen: React.FC = () => (
   <Fragment>

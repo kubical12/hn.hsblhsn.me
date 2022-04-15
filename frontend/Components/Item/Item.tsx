@@ -10,7 +10,7 @@ import {
   Paragraph4,
 } from 'baseui/typography'
 import { Link, useLocation } from 'react-router-dom'
-import { Job, NodeT, Story } from '../../types'
+import { Job, NodeT, Story } from '../../Types'
 import { CommentThread } from '../CommentThread'
 import { fromNow, getHost, getLink } from '../commonutils'
 import { ChevronLeft, ChevronRight } from 'baseui/icon'

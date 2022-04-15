@@ -10,7 +10,7 @@ import {
 } from '../../Components/ItemCardList'
 import { ErrorScreen } from './ErrorScreen'
 import { LoadingScreen } from './LoadingScreen'
-import { ConnectionT, Job, Story } from '../../types'
+import { ConnectionT, Job, Story } from '../../Types'
 import { Fragment } from 'react'
 import { Head } from './Head'
 

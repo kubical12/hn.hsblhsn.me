@@ -3,7 +3,7 @@ import { Button, SHAPE, KIND, SIZE } from 'baseui/button'
 import { Card, StyledAction, StyledBody, StyledThumbnail } from 'baseui/card'
 import { HeadingSmall, Label4 } from 'baseui/typography'
 import { Link } from 'react-router-dom'
-import { Job, Story } from '../../types'
+import { Job, Story } from '../../Types'
 import { getBestImage, getHost, getLink } from '../commonutils'
 
 interface ItemCardProps {

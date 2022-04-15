@@ -7,7 +7,7 @@ import { useSearchParams } from 'react-router-dom'
 import { PaddedBlock } from '../../Components/Layout'
 import { LoadingScreen } from './LoadingScreen'
 import { ErrorScreen } from './ErrorScreen'
-import { Job, NodeT, Story } from '../../types'
+import { Job, NodeT, Story } from '../../Types'
 import { Fragment } from 'react'
 import { Head } from './Head'
 
