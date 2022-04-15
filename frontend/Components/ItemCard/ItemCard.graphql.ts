@@ -7,6 +7,7 @@ const ITEM_CARD_STORY_FIELDS = gql`
     title
     text
     descendants
+    score
     openGraph {
       id
       title
