@@ -23,4 +23,5 @@ export default defineConfig({
   preview: {
     proxy: proxyConfig,
   },
+  publicDir: './frontend/public',
 })

@@ -15,7 +15,6 @@ const ITEM_CARD_STORY_FIELDS = gql`
       description
       image {
         url
-        alt
         width
       }
     }
@@ -32,7 +31,6 @@ const ITEM_CARD_JOB_FIELDS = gql`
       description
       image {
         url
-        alt
         width
       }
     }

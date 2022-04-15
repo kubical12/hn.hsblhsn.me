@@ -26,7 +26,7 @@ const GET_TOP_STORIES = gql`
   ${ITEM_CARD_LIST_STORY_FIELDS}
   ${PAGE_INFO_FIELDS}
   query GetTopStories($after: Cursor) {
-    items: topStories(after: $after) {
+    items: topStories(after: $after, first: 9) {
       pageInfo {
         ...PageInfoFields
       }
@@ -39,7 +39,7 @@ const GET_NEW_STORIES = gql`
   ${ITEM_CARD_LIST_STORY_FIELDS}
   ${PAGE_INFO_FIELDS}
   query GetNewStories($after: Cursor) {
-    items: newStories(after: $after) {
+    items: newStories(after: $after, first: 9) {
       pageInfo {
         ...PageInfoFields
       }
@@ -52,7 +52,7 @@ const GET_ASK_STORIES = gql`
   ${ITEM_CARD_LIST_STORY_FIELDS}
   ${PAGE_INFO_FIELDS}
   query GetAskStories($after: Cursor) {
-    items: askStories(after: $after) {
+    items: askStories(after: $after, first: 9) {
       pageInfo {
         ...PageInfoFields
       }
@@ -65,7 +65,7 @@ const GET_SHOW_STORIES = gql`
   ${ITEM_CARD_LIST_STORY_FIELDS}
   ${PAGE_INFO_FIELDS}
   query GetShowStories($after: Cursor) {
-    items: showStories(after: $after) {
+    items: showStories(after: $after, first: 9) {
       pageInfo {
         ...PageInfoFields
       }
