@@ -1,7 +1,7 @@
 .comment-reader-view-content a {
-  @apply underline text-orange-800 dark:text-orange-300
+  @apply underline text-orange-800 dark:text-orange-300;
 }
 
 .comment-reader-view-content {
-  @apply pl-3
+  @apply pl-3;
 }
