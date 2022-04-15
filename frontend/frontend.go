@@ -99,6 +99,11 @@ func PrerenderIfBot(next http.Handler, logger *zap.Logger) http.Handler {
 
 func isBot(useragent string) bool {
 	useragent = strings.ToLower(useragent)
+	// google bot can render react page.
+	// no need to prerender.
+	if strings.Contains(useragent, "+http://www.google.com/bot.html") {
+		return false
+	}
 	bots := []string{
 		"bot",
 		"facebookexternalhit",
