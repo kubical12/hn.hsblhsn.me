@@ -41,6 +41,7 @@ func (c *Extension) InterceptResponse(ctx context.Context, next graphql.Response
 	if err != nil {
 		panic(err)
 	}
+	counter.MakeReady()
 	resp.Extensions = map[string]interface{}{
 		"complexity":      counter.Value(),
 		"complexityLimit": counter.Limit(),

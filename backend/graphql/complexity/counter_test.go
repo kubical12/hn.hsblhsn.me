@@ -33,7 +33,7 @@ func TestCounter_Limit_Exceeded(t *testing.T) {
 func TestCounter_Value_Empty(t *testing.T) {
 	t.Parallel()
 	counter := NewCounter(10)
-	counter.Calculated()
+	counter.MakeReady()
 	require.EqualValues(t, 0, counter.Value())
 }
 
@@ -42,7 +42,7 @@ func TestCounter_Value_Incremented(t *testing.T) {
 	counter := NewCounter(10)
 	err := counter.Add(5)
 	require.NoError(t, err)
-	counter.Calculated()
+	counter.MakeReady()
 	require.EqualValues(t, 5, counter.Value())
 }
 
@@ -79,7 +79,7 @@ func TestCounter_Value_Concurrent(t *testing.T) {
 	// waiting for the increment goroutines to finish
 	incWg.Wait()
 	// calculating the counter
-	counter.Calculated()
+	counter.MakeReady()
 	// waiting for the value goroutines to finish the assertions.
 	valWg.Wait()
 }
