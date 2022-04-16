@@ -15,7 +15,7 @@ require (
 	github.com/otiai10/opengraph/v2 v2.1.0
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.7.1
-	github.com/vektah/gqlparser/v2 v2.4.0
+	github.com/vektah/gqlparser/v2 v2.4.1
 	go.uber.org/fx v1.17.1
 	go.uber.org/zap v1.21.0
 	golang.org/x/exp v0.0.0-20200224162631-6cc2880d07d6
