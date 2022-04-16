@@ -62,7 +62,9 @@ func (s *ExternalContentLoader) getContentFromURL(ctx context.Context) error {
 		if err != nil {
 			return
 		}
-		defer resp.Body.Close()
+		defer func(Body io.ReadCloser) {
+			_ = Body.Close()
+		}(resp.Body)
 		s.content, err = io.ReadAll(resp.Body)
 	})
 	if err != nil {
