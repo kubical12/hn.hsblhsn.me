@@ -1,4 +1,4 @@
-## Development
+# Development
 
 This project is written in Go, Typescript, React and Python.
 

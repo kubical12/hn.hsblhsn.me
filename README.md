@@ -2,6 +2,11 @@
 
 A [HackerNews](https://news.ycombinator.com/) reader written in Go and React. It focuses on content and readability.
 
+## Demo
+
+You can check the final result here at [hn.hsblhsn.me](https://hn.hsblhsn.me/).
+
+
 ## Why?
 
 I like Hacker News and I find it cool. But when it comes to readability and content I struggle a lot. I have to click
