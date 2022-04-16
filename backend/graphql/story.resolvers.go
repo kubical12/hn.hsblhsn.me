@@ -16,9 +16,9 @@ func (r *storyResolver) Type(ctx context.Context, obj *model.Story) (string, err
 	return obj.Type.String(), nil
 }
 
-func (r *storyResolver) Comments(ctx context.Context, obj *model.Story, after *string, first *int, before *string, last *int) (*relays.Connection[*model.Comment], error) {
+func (r *storyResolver) Comments(ctx context.Context, obj *model.Story, after *string, first *int) (*relays.Connection[*model.Comment], error) {
 	relayResolver := r.NewRelayComments(ctx, obj.Kids)
-	comments, err := relayResolver.Resolve(before, after, first, last)
+	comments, err := relayResolver.Resolve(nil, after, first, nil)
 	if err != nil {
 		return nil, msgerr.New(err, "Could not paginate comments on the story")
 	}

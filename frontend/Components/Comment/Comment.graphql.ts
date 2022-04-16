@@ -12,11 +12,11 @@ const COMMENT_FIELDS = gql`
   }
   fragment CommentFields on Comment {
     ...CommentContentFields
-    comments {
+    comments(first: 5) {
       edges {
         node {
           ...CommentContentFields
-          comments {
+          comments(first: 5) {
             edges {
               node {
                 ...CommentContentFields

@@ -20,7 +20,7 @@ func (r *queryResolver) Node(ctx context.Context, id string) (model.Node, error)
 	if err != nil {
 		return nil, msgerr.New(err, "Invalid ID")
 	}
-	result, err := r.hackernews.GetItem(ctx, idN)
+	result, err := r.hackerNews.GetItem(ctx, idN)
 	if err != nil {
 		return nil, msgerr.New(err, "Could not get item")
 	}
@@ -42,40 +42,8 @@ func (r *queryResolver) Node(ctx context.Context, id string) (model.Node, error)
 	}
 }
 
-func (r *queryResolver) Story(ctx context.Context, id string) (*model.Story, error) {
-	result, err := r.hackernews.GetTypedItem(ctx, hackernews.ItemTypeStory, id)
-	if err != nil {
-		return nil, msgerr.New(err, "Could not get story")
-	}
-	return &model.Story{ItemResponse: result}, nil
-}
-
-func (r *queryResolver) Job(ctx context.Context, id string) (*model.Job, error) {
-	result, err := r.hackernews.GetTypedItem(ctx, hackernews.ItemTypeJob, id)
-	if err != nil {
-		return nil, msgerr.New(err, "Could not get job")
-	}
-	return &model.Job{ItemResponse: result}, nil
-}
-
-func (r *queryResolver) Poll(ctx context.Context, id string) (*model.Poll, error) {
-	result, err := r.hackernews.GetTypedItem(ctx, hackernews.ItemTypePoll, id)
-	if err != nil {
-		return nil, msgerr.New(err, "Could not get poll")
-	}
-	return &model.Poll{ItemResponse: result}, nil
-}
-
-func (r *queryResolver) PollOption(ctx context.Context, id string) (*model.PollOption, error) {
-	result, err := r.hackernews.GetTypedItem(ctx, hackernews.ItemTypePollOption, id)
-	if err != nil {
-		return nil, msgerr.New(err, "Could not get poll option")
-	}
-	return &model.PollOption{ItemResponse: result}, nil
-}
-
 func (r *queryResolver) TopStories(ctx context.Context, after *string, first *int) (*relays.Connection[*model.Story], error) {
-	list, err := r.hackernews.GetTopStories(ctx)
+	list, err := r.hackerNews.GetTopStories(ctx)
 	if err != nil {
 		return nil, msgerr.New(err, "Could not get top stories.")
 	}
@@ -88,7 +56,7 @@ func (r *queryResolver) TopStories(ctx context.Context, after *string, first *in
 }
 
 func (r *queryResolver) NewStories(ctx context.Context, after *string, first *int) (*relays.Connection[*model.Story], error) {
-	list, err := r.hackernews.GetNewStories(ctx)
+	list, err := r.hackerNews.GetNewStories(ctx)
 	if err != nil {
 		return nil, msgerr.New(err, "Could not get new stories.")
 	}
@@ -101,7 +69,7 @@ func (r *queryResolver) NewStories(ctx context.Context, after *string, first *in
 }
 
 func (r *queryResolver) AskStories(ctx context.Context, after *string, first *int) (*relays.Connection[*model.Story], error) {
-	list, err := r.hackernews.GetAskStories(ctx)
+	list, err := r.hackerNews.GetAskStories(ctx)
 	if err != nil {
 		return nil, msgerr.New(err, "Could not get ask HN.")
 	}
@@ -114,7 +82,7 @@ func (r *queryResolver) AskStories(ctx context.Context, after *string, first *in
 }
 
 func (r *queryResolver) ShowStories(ctx context.Context, after *string, first *int) (*relays.Connection[*model.Story], error) {
-	list, err := r.hackernews.GetShowStories(ctx)
+	list, err := r.hackerNews.GetShowStories(ctx)
 	if err != nil {
 		return nil, msgerr.New(err, "Could not get show HN.")
 	}
@@ -127,7 +95,7 @@ func (r *queryResolver) ShowStories(ctx context.Context, after *string, first *i
 }
 
 func (r *queryResolver) JobStories(ctx context.Context, after *string, first *int) (*relays.Connection[*model.Job], error) {
-	list, err := r.hackernews.GetJobStories(ctx)
+	list, err := r.hackerNews.GetJobStories(ctx)
 	if err != nil {
 		return nil, msgerr.New(err, "Could not get jobs.")
 	}

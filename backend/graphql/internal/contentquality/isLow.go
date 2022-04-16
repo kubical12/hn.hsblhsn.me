@@ -25,7 +25,7 @@ func getIndicators() []string {
 			// youtube
 			"https://www.youtube.com/howyoutubeworks",
 			// 404
-			"Page not found",
+			"Page Not Found",
 			// Cloudflare bot check
 			"Checking your browser before accessing",
 		}

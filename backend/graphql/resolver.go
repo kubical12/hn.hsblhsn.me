@@ -7,9 +7,9 @@ import "github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/hackernews"
 // It serves as dependency injection for your app, add any dependencies you require here.
 
 type Resolver struct {
-	hackernews *hackernews.HackerNews
+	hackerNews *hackernews.HackerNews
 }
 
-func NewResolver(hackernews *hackernews.HackerNews) *Resolver {
-	return &Resolver{hackernews: hackernews}
+func NewResolver(hackerNews *hackernews.HackerNews) *Resolver {
+	return &Resolver{hackerNews: hackerNews}
 }

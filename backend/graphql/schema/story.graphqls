@@ -18,12 +18,8 @@ type Story implements Node {
   time: Int!
   dead: Boolean!
   kids: [Int!]!
-  comments(
-    after: Cursor
-    first: Int
-    before: Cursor
-    last: Int
-  ): CommentConnection! @goField(forceResolver: true)
+  comments(after: Cursor, first: Int): CommentConnection!
+    @goField(forceResolver: true)
   descendants: Int!
   score: Int!
   url: String!

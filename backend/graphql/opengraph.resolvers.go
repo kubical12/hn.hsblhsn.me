@@ -5,7 +5,8 @@ package graphql
 
 import (
 	"context"
-	"crypto/md5" // nolint:gosec // not a cryptographic operation
+	// nolint:gosec
+	"crypto/md5"
 	"encoding/hex"
 
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/generated"

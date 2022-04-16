@@ -47,7 +47,7 @@ func startHTTPServer(lc fx.Lifecycle, router *mux.Router, logger *zap.Logger) {
 		OnStart: func(context.Context) error {
 			go func() {
 				logger.Info("starting http server", zap.String("addr", ":8080"))
-				if err := server.ListenAndServe(); err != nil {
+				if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 					log.Fatal("main: error starting server", err)
 				}
 			}()

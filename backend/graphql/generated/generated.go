@@ -179,20 +179,16 @@ type ComplexityRoot struct {
 
 	Query struct {
 		AskStories  func(childComplexity int, after *string, first *int) int
-		Job         func(childComplexity int, id string) int
 		JobStories  func(childComplexity int, after *string, first *int) int
 		NewStories  func(childComplexity int, after *string, first *int) int
 		Node        func(childComplexity int, id string) int
-		Poll        func(childComplexity int, id string) int
-		PollOption  func(childComplexity int, id string) int
 		ShowStories func(childComplexity int, after *string, first *int) int
-		Story       func(childComplexity int, id string) int
 		TopStories  func(childComplexity int, after *string, first *int) int
 	}
 
 	Story struct {
 		By          func(childComplexity int) int
-		Comments    func(childComplexity int, after *string, first *int, before *string, last *int) int
+		Comments    func(childComplexity int, after *string, first *int) int
 		DatabaseID  func(childComplexity int) int
 		Dead        func(childComplexity int) int
 		Deleted     func(childComplexity int) int
@@ -257,10 +253,6 @@ type PollOptionResolver interface {
 }
 type QueryResolver interface {
 	Node(ctx context.Context, id string) (model.Node, error)
-	Story(ctx context.Context, id string) (*model.Story, error)
-	Job(ctx context.Context, id string) (*model.Job, error)
-	Poll(ctx context.Context, id string) (*model.Poll, error)
-	PollOption(ctx context.Context, id string) (*model.PollOption, error)
 	TopStories(ctx context.Context, after *string, first *int) (*relays.Connection[*model.Story], error)
 	NewStories(ctx context.Context, after *string, first *int) (*relays.Connection[*model.Story], error)
 	AskStories(ctx context.Context, after *string, first *int) (*relays.Connection[*model.Story], error)
@@ -270,7 +262,7 @@ type QueryResolver interface {
 type StoryResolver interface {
 	Type(ctx context.Context, obj *model.Story) (string, error)
 
-	Comments(ctx context.Context, obj *model.Story, after *string, first *int, before *string, last *int) (*relays.Connection[*model.Comment], error)
+	Comments(ctx context.Context, obj *model.Story, after *string, first *int) (*relays.Connection[*model.Comment], error)
 }
 
 type executableSchema struct {
@@ -903,18 +895,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.AskStories(childComplexity, args["after"].(*string), args["first"].(*int)), true
 
-	case "Query.job":
-		if e.complexity.Query.Job == nil {
-			break
-		}
-
-		args, err := ec.field_Query_job_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.Job(childComplexity, args["id"].(string)), true
-
 	case "Query.jobStories":
 		if e.complexity.Query.JobStories == nil {
 			break
@@ -951,30 +931,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Node(childComplexity, args["id"].(string)), true
 
-	case "Query.poll":
-		if e.complexity.Query.Poll == nil {
-			break
-		}
-
-		args, err := ec.field_Query_poll_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.Poll(childComplexity, args["id"].(string)), true
-
-	case "Query.pollOption":
-		if e.complexity.Query.PollOption == nil {
-			break
-		}
-
-		args, err := ec.field_Query_pollOption_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.PollOption(childComplexity, args["id"].(string)), true
-
 	case "Query.showStories":
 		if e.complexity.Query.ShowStories == nil {
 			break
@@ -986,18 +942,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.ShowStories(childComplexity, args["after"].(*string), args["first"].(*int)), true
-
-	case "Query.story":
-		if e.complexity.Query.Story == nil {
-			break
-		}
-
-		args, err := ec.field_Query_story_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.Story(childComplexity, args["id"].(string)), true
 
 	case "Query.topStories":
 		if e.complexity.Query.TopStories == nil {
@@ -1028,7 +972,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Story.Comments(childComplexity, args["after"].(*string), args["first"].(*int), args["before"].(*string), args["last"].(*int)), true
+		return e.complexity.Story.Comments(childComplexity, args["after"].(*string), args["first"].(*int)), true
 
 	case "Story.databaseId":
 		if e.complexity.Story.DatabaseID == nil {
@@ -1385,10 +1329,6 @@ type PollOptionEdge {
 `, BuiltIn: false},
 	{Name: "backend/graphql/schema/query.graphqls", Input: `type Query {
   node(id: ID!): Node
-  story(id: ID!): Story!
-  job(id: ID!): Job!
-  poll(id: ID!): Poll!
-  pollOption(id: ID!): PollOption!
   topStories(after: Cursor, first: Int): StoryConnection!
   newStories(after: Cursor, first: Int): StoryConnection!
   askStories(after: Cursor, first: Int): StoryConnection!
@@ -1416,12 +1356,8 @@ type Story implements Node {
   time: Int!
   dead: Boolean!
   kids: [Int!]!
-  comments(
-    after: Cursor
-    first: Int
-    before: Cursor
-    last: Int
-  ): CommentConnection! @goField(forceResolver: true)
+  comments(after: Cursor, first: Int): CommentConnection!
+    @goField(forceResolver: true)
   descendants: Int!
   score: Int!
   url: String!
@@ -1600,21 +1536,6 @@ func (ec *executionContext) field_Query_jobStories_args(ctx context.Context, raw
 	return args, nil
 }
 
-func (ec *executionContext) field_Query_job_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 string
-	if tmp, ok := rawArgs["id"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-		arg0, err = ec.unmarshalNID2string(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["id"] = arg0
-	return args, nil
-}
-
 func (ec *executionContext) field_Query_newStories_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -1654,36 +1575,6 @@ func (ec *executionContext) field_Query_node_args(ctx context.Context, rawArgs m
 	return args, nil
 }
 
-func (ec *executionContext) field_Query_pollOption_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 string
-	if tmp, ok := rawArgs["id"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-		arg0, err = ec.unmarshalNID2string(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["id"] = arg0
-	return args, nil
-}
-
-func (ec *executionContext) field_Query_poll_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 string
-	if tmp, ok := rawArgs["id"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-		arg0, err = ec.unmarshalNID2string(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["id"] = arg0
-	return args, nil
-}
-
 func (ec *executionContext) field_Query_showStories_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -1705,21 +1596,6 @@ func (ec *executionContext) field_Query_showStories_args(ctx context.Context, ra
 		}
 	}
 	args["first"] = arg1
-	return args, nil
-}
-
-func (ec *executionContext) field_Query_story_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 string
-	if tmp, ok := rawArgs["id"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-		arg0, err = ec.unmarshalNID2string(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["id"] = arg0
 	return args, nil
 }
 
@@ -1768,24 +1644,6 @@ func (ec *executionContext) field_Story_comments_args(ctx context.Context, rawAr
 		}
 	}
 	args["first"] = arg1
-	var arg2 *string
-	if tmp, ok := rawArgs["before"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
-		arg2, err = ec.unmarshalOCursor2ᚖstring(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["before"] = arg2
-	var arg3 *int
-	if tmp, ok := rawArgs["last"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
-		arg3, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["last"] = arg3
 	return args, nil
 }
 
@@ -4764,174 +4622,6 @@ func (ec *executionContext) _Query_node(ctx context.Context, field graphql.Colle
 	return ec.marshalONode2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐNode(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Query_story(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   true,
-		IsResolver: true,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Query_story_args(ctx, rawArgs)
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	fc.Args = args
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Story(rctx, args["id"].(string))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*model.Story)
-	fc.Result = res
-	return ec.marshalNStory2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐStory(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Query_job(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   true,
-		IsResolver: true,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Query_job_args(ctx, rawArgs)
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	fc.Args = args
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Job(rctx, args["id"].(string))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*model.Job)
-	fc.Result = res
-	return ec.marshalNJob2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐJob(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Query_poll(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   true,
-		IsResolver: true,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Query_poll_args(ctx, rawArgs)
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	fc.Args = args
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Poll(rctx, args["id"].(string))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*model.Poll)
-	fc.Result = res
-	return ec.marshalNPoll2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐPoll(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Query_pollOption(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   true,
-		IsResolver: true,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Query_pollOption_args(ctx, rawArgs)
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	fc.Args = args
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().PollOption(rctx, args["id"].(string))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*model.PollOption)
-	fc.Result = res
-	return ec.marshalNPollOption2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐPollOption(ctx, field.Selections, res)
-}
-
 func (ec *executionContext) _Query_topStories(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -5518,7 +5208,7 @@ func (ec *executionContext) _Story_comments(ctx context.Context, field graphql.C
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Story().Comments(rctx, obj, args["after"].(*string), args["first"].(*int), args["before"].(*string), args["last"].(*int))
+		return ec.resolvers.Story().Comments(rctx, obj, args["after"].(*string), args["first"].(*int))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -8659,98 +8349,6 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 			out.Concurrently(i, func() graphql.Marshaler {
 				return rrm(innerCtx)
 			})
-		case "story":
-			field := field
-
-			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_story(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
-				return res
-			}
-
-			rrm := func(ctx context.Context) graphql.Marshaler {
-				return ec.OperationContext.RootResolverMiddleware(ctx, innerFunc)
-			}
-
-			out.Concurrently(i, func() graphql.Marshaler {
-				return rrm(innerCtx)
-			})
-		case "job":
-			field := field
-
-			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_job(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
-				return res
-			}
-
-			rrm := func(ctx context.Context) graphql.Marshaler {
-				return ec.OperationContext.RootResolverMiddleware(ctx, innerFunc)
-			}
-
-			out.Concurrently(i, func() graphql.Marshaler {
-				return rrm(innerCtx)
-			})
-		case "poll":
-			field := field
-
-			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_poll(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
-				return res
-			}
-
-			rrm := func(ctx context.Context) graphql.Marshaler {
-				return ec.OperationContext.RootResolverMiddleware(ctx, innerFunc)
-			}
-
-			out.Concurrently(i, func() graphql.Marshaler {
-				return rrm(innerCtx)
-			})
-		case "pollOption":
-			field := field
-
-			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_pollOption(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
-				return res
-			}
-
-			rrm := func(ctx context.Context) graphql.Marshaler {
-				return ec.OperationContext.RootResolverMiddleware(ctx, innerFunc)
-			}
-
-			out.Concurrently(i, func() graphql.Marshaler {
-				return rrm(innerCtx)
-			})
 		case "topStories":
 			field := field
 
@@ -9901,20 +9499,6 @@ func (ec *executionContext) marshalNInt2ᚕintᚄ(ctx context.Context, sel ast.S
 	return ret
 }
 
-func (ec *executionContext) marshalNJob2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐJob(ctx context.Context, sel ast.SelectionSet, v model.Job) graphql.Marshaler {
-	return ec._Job(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNJob2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐJob(ctx context.Context, sel ast.SelectionSet, v *model.Job) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	return ec._Job(ctx, sel, v)
-}
-
 func (ec *executionContext) marshalNJobConnection2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx context.Context, sel ast.SelectionSet, v relays.Connection[*model.Job]) graphql.Marshaler {
 	return ec._JobConnection(ctx, sel, &v)
 }
@@ -9993,34 +9577,6 @@ func (ec *executionContext) marshalNPageInfo2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhs
 	return ec._PageInfo(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNPoll2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐPoll(ctx context.Context, sel ast.SelectionSet, v model.Poll) graphql.Marshaler {
-	return ec._Poll(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNPoll2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐPoll(ctx context.Context, sel ast.SelectionSet, v *model.Poll) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	return ec._Poll(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalNPollOption2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐPollOption(ctx context.Context, sel ast.SelectionSet, v model.PollOption) graphql.Marshaler {
-	return ec._PollOption(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNPollOption2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐPollOption(ctx context.Context, sel ast.SelectionSet, v *model.PollOption) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	return ec._PollOption(ctx, sel, v)
-}
-
 func (ec *executionContext) marshalNPollOptionConnection2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx context.Context, sel ast.SelectionSet, v relays.Connection[*model.PollOption]) graphql.Marshaler {
 	return ec._PollOptionConnection(ctx, sel, &v)
 }
@@ -10087,20 +9643,6 @@ func (ec *executionContext) marshalNPollOptionEdge2ᚖgithubᚗcomᚋhsblhsnᚋh
 		return graphql.Null
 	}
 	return ec._PollOptionEdge(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalNStory2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐStory(ctx context.Context, sel ast.SelectionSet, v model.Story) graphql.Marshaler {
-	return ec._Story(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNStory2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐStory(ctx context.Context, sel ast.SelectionSet, v *model.Story) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	return ec._Story(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNStoryConnection2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx context.Context, sel ast.SelectionSet, v relays.Connection[*model.Story]) graphql.Marshaler {
