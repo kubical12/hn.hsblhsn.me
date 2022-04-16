@@ -24,9 +24,9 @@ This project is written in Go, Typescript, React and Python.
 - [styletron](https://styletron.org) is used for the styling.
 - [tailwindcss](https://tailwindcss.com) is used for the styling.
 - [react-router-dom](https://www.npmjs.com/package/react-router-dom) is used for the routing.
-- [react-helmet](https://www.npmjs.com/package/react-helmet) is used for the meta data.
+- [react-helmet-async](https://www.npmjs.com/package/react-helmet-async) is used for the meta data.
 - [vite](https://vitejs.dev) is used for building and developing the frontend..
-- [apollo](https://www.apollographql.com) is used for the sending graphql queries.
+- [@apollo/client](https://www.apollographql.com) is used for the sending graphql queries.
 
 ## Python
 

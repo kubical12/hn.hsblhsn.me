@@ -1,7 +1,7 @@
 import { Button, KIND } from 'baseui/button'
 import { Accordion, Panel } from 'baseui/accordion'
 import { Block } from 'baseui/block'
-import { HeadingXXLarge, Paragraph1 } from 'baseui/typography'
+import { HeadingXXLarge, ParagraphLarge } from 'baseui/typography'
 import { useStyletron, styled } from 'baseui'
 import { Cell, Grid } from 'baseui/layout-grid'
 import { useCallback } from 'react'
@@ -34,11 +34,11 @@ export function ErrorScreen({ error }: { error: ApolloError | unknown }) {
           marginBottom: theme.sizing.scale1000,
         })}
       >
-        <Paragraph1>An error occurred!</Paragraph1>
-        <Paragraph1>
+        <ParagraphLarge>An error occurred!</ParagraphLarge>
+        <ParagraphLarge>
           We have received the details and will be looking into it.
-        </Paragraph1>
-        <Paragraph1>Sorry for the inconvenience!</Paragraph1>
+        </ParagraphLarge>
+        <ParagraphLarge>Sorry for the inconvenience!</ParagraphLarge>
         <br />
         <br />
         <br />
@@ -55,7 +55,7 @@ export function ErrorScreen({ error }: { error: ApolloError | unknown }) {
           </Button>
         </Cell>
         <Cell>
-          <Button kind={KIND.minimal} onClick={goToHomePage}>
+          <Button kind={KIND.tertiary} onClick={goToHomePage}>
             Go To Homepage
           </Button>
         </Cell>

@@ -6,8 +6,8 @@ import { StyledLink } from 'baseui/link'
 import {
   HeadingLarge,
   HeadingSmall,
-  Label4,
-  Paragraph4,
+  LabelXSmall,
+  ParagraphXSmall,
 } from 'baseui/typography'
 import { Link, useLocation } from 'react-router-dom'
 import { Job, NodeT, Story } from '../../Types'
@@ -54,18 +54,18 @@ const Header: React.FC<ItemProps> = ({ item }: ItemProps) => {
     })
   return (
     <Block>
-      <Label4>
+      <LabelXSmall>
         <span className={color(theme.colors.accent)}>@{item.by}</span>&nbsp;
-        <span className={color(theme.colors.colorSecondary)}>
+        <span className={color(theme.colors.contentSecondary)}>
           {item.time ? fromNow(item.time * 1000) : 'unknown'}
         </span>
-      </Label4>
+      </LabelXSmall>
       <HeadingLarge>
         <Link to={`/item?id=${item.id}`}>
           {getTitle(item.title, item.openGraph?.title)}
         </Link>
       </HeadingLarge>
-      <Label4
+      <LabelXSmall
         color={theme.colors.contentTertiary}
         paddingBottom={theme.sizing.scale800}
       >
@@ -77,7 +77,7 @@ const Header: React.FC<ItemProps> = ({ item }: ItemProps) => {
         >
           {getHost(item.id, item.url)}
         </StyledLink>
-      </Label4>
+      </LabelXSmall>
     </Block>
   )
 }
@@ -152,7 +152,7 @@ const Comments: React.FC<ItemProps> = ({ item }: ItemProps) => {
       {'descendants' in item && (
         <HeadingSmall paddingTop={theme.sizing.scale600}>
           {item.descendants} comments
-          <Label4 color={theme.colors.contentTertiary}>
+          <LabelXSmall color={theme.colors.contentTertiary}>
             Posted on&nbsp;
             <StyledLink
               href={getLink(item.id, undefined)}
@@ -161,7 +161,7 @@ const Comments: React.FC<ItemProps> = ({ item }: ItemProps) => {
             >
               {getHost(item.id, undefined)}
             </StyledLink>
-          </Label4>
+          </LabelXSmall>
         </HeadingSmall>
       )}
       {'comments' in item && (
@@ -177,24 +177,24 @@ const ContentLinks: React.FC<ItemProps> = ({ item }: ItemProps) => {
   const [, theme] = useStyletron()
   return (
     <Block>
-      <Paragraph4
+      <ParagraphXSmall
         as="div"
         paddingTop={theme.sizing.scale2400}
         paddingBottom={theme.sizing.scale2400}
       >
-        <Label4>
+        <LabelXSmall>
           Contents loaded from&nbsp;&nbsp;
           <StyledLink href={getLink(item.id, item.url)}>
             {getLink(item.id, item.url)}
           </StyledLink>
-        </Label4>
-        <Label4>
+        </LabelXSmall>
+        <LabelXSmall>
           Comments loaded from&nbsp;&nbsp;
           <StyledLink href={getLink(item.id, undefined)}>
             {getLink(item.id, undefined)}
           </StyledLink>
-        </Label4>
-      </Paragraph4>
+        </LabelXSmall>
+      </ParagraphXSmall>
     </Block>
   )
 }

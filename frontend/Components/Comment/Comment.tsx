@@ -1,5 +1,5 @@
 import { Block } from 'baseui/block'
-import { Label3, Paragraph2 } from 'baseui/typography'
+import { LabelSmall, ParagraphSmall } from 'baseui/typography'
 import { useStyletron } from 'baseui'
 import { CommentThread } from '../CommentThread'
 import { useState } from 'react'
@@ -28,7 +28,7 @@ const Comment: React.FC<CommentProps> = ({ comment }: CommentProps) => {
 
   return (
     <Block>
-      <Label3
+      <LabelSmall
         onClick={() => {
           setIsExpanded(!isExpanded)
         }}
@@ -53,18 +53,18 @@ const Comment: React.FC<CommentProps> = ({ comment }: CommentProps) => {
         }}
       >
         <span className={color(theme.colors.accent)}>@{comment.by}</span>
-        <span className={color(theme.colors.colorSecondary)}>
+        <span className={color(theme.colors.contentSecondary)}>
           &nbsp;commented&nbsp;
           {comment.time ? fromNow(comment.time * 1000) : 'unknown'}
         </span>
-        <span className={color(theme.colors.colorSecondary)}>
+        <span className={color(theme.colors.contentSecondary)}>
           &nbsp;&nbsp;[{isExpanded ? 'close' : 'show'}]&nbsp;&nbsp;
         </span>
-      </Label3>
+      </LabelSmall>
       <Block display={isExpanded ? 'block' : 'none'}>
-        <Paragraph2 as="div" className="comment-reader-view-content">
+        <ParagraphSmall as="div" className="comment-reader-view-content">
           <div dangerouslySetInnerHTML={{ __html: comment.text || '' }} />
-        </Paragraph2>
+        </ParagraphSmall>
         <Block className="pl-3">
           <CommentThread isChild={true} comments={comment.comments} />
         </Block>
