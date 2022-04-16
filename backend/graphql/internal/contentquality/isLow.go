@@ -28,6 +28,8 @@ func getIndicators() []string {
 			"Page Not Found",
 			// Cloudflare bot check
 			"Checking your browser before accessing",
+			// nytimes
+			"Please enable JS and disable any ad blocker",
 		}
 	})
 	return lowQualityIndicators
