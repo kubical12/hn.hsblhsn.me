@@ -6,7 +6,6 @@ A [HackerNews](https://news.ycombinator.com/) reader written in Go and React. It
 
 You can check the final result here at [https://hn.hsblhsn.me/](https://hn.hsblhsn.me/).
 
-
 ## Why?
 
 I like Hacker News and I find it cool. But when it comes to readability and content I struggle a lot. I have to click
@@ -29,7 +28,7 @@ to report any broken content.
 ## Links
 
 - [Development](docs/development.md).
-- [Contributors](docs/contributors.md).
+- [Contributing](CONTRIBUTING.md).
 - [Security](SECURITY.md).
 - [License](LICENSE).
 
