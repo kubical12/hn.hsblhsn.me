@@ -4,7 +4,7 @@ A [HackerNews](https://news.ycombinator.com/) reader written in Go and React. It
 
 ## Demo
 
-You can check the final result here at [hn.hsblhsn.me](https://hn.hsblhsn.me/).
+You can check the final result here at [https://hn.hsblhsn.me/](https://hn.hsblhsn.me/).
 
 
 ## Why?
