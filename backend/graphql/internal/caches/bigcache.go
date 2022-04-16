@@ -7,13 +7,14 @@ import (
 )
 
 const (
-	CacheExpiration = 10 * time.Minute
+	DefaultCacheExpiration = 10 * time.Minute
 )
 
 var _ Cache = (*bigcache.BigCache)(nil)
 
 func NewInMemoryCache() *bigcache.BigCache {
-	cache, err := bigcache.NewBigCache(bigcache.DefaultConfig(CacheExpiration))
+	cfg := bigcache.DefaultConfig(DefaultCacheExpiration)
+	cache, err := bigcache.NewBigCache(cfg)
 	if err != nil {
 		panic(err)
 	}

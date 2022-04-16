@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/contentquality"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/cquality"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/httpclient"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/opengraphs"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/readerviews"
@@ -68,7 +68,8 @@ func (s *ExternalContentLoader) getContentFromURL(ctx context.Context) error {
 	if err != nil {
 		return errors.Wrap(err, "model: could not get content from url")
 	}
-	if contentquality.IsLow(s.content) {
+	quality := cquality.LowQuality()
+	if quality.Indicates(s.content) {
 		return errors.Errorf("model: content quality is low on: %q", s.url)
 	}
 	return nil
