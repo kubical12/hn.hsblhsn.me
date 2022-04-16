@@ -18,7 +18,7 @@ RUN make build-backend
 COPY --from=frontend-builder /frontend/frontend/build ./frontend/build
 RUN make build
 
-FROM python:3.9-slim
+FROM python:3.10.4-slim
 RUN apt-get update \
     && apt-get install --no-install-recommends -y make \
     && apt-get clean \
