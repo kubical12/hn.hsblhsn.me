@@ -30,8 +30,8 @@ to report any broken content.
 
 - [Development](docs/development.md).
 - [Contributors](docs/contributors.md).
-- [Security](docs/security.md).
-- [License](docs/license.md).
+- [Security](SECURITY.md).
+- [License](LICENSE).
 
 
 
