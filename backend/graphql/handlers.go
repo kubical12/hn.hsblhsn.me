@@ -23,7 +23,7 @@ type (
 const (
 	MaxQueryComplexity      = 500
 	complexityNetworkField  = 1
-	complexityComputedValue = 10
+	complexityComputedField = 10
 )
 
 // ComplexityMap is a map of field names to their maximum complexity.
@@ -32,18 +32,19 @@ const (
 var ComplexityMap = complexity.Map{
 	"StoryConnection":      complexityNetworkField,
 	"Story":                complexityNetworkField,
-	"Story.html":           complexityComputedValue,
+	"Story.html":           complexityComputedField,
 	"CommentConnection":    complexityNetworkField,
 	"Comment":              complexityNetworkField,
 	"JobConnection":        complexityNetworkField,
 	"Job":                  complexityNetworkField,
-	"Job.html":             complexityComputedValue,
+	"Job.html":             complexityComputedField,
 	"PollConnection":       complexityNetworkField,
 	"Poll":                 complexityNetworkField,
 	"PollOptionConnection": complexityNetworkField,
 	"PollOption":           complexityNetworkField,
 	"User":                 complexityNetworkField,
 	"OpenGraph":            complexityNetworkField * 2, // nolint:gomnd
+	"PageInfo":             complexityNetworkField,
 }
 
 func NewImageHandler(client *httpclient.CachedClient, logger *zap.Logger) *ImageHandler {
