@@ -23,7 +23,7 @@ to report any broken content.
 
 ## Links
 
-- [Developer](docs/developer.md).
+- [Development](docs/development.md).
 - [Contributors](docs/contributors.md).
 - [Security](docs/security.md).
 - [License](docs/license.md).
