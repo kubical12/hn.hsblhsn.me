@@ -26,11 +26,17 @@ const CommentThread: React.FC<CommentThreadProps> = ({
   }
   return (
     <div>
-      {comments.edges.map(({ node }, index) => (
-        <Block className={threadStyle(isChild)} key={index}>
-          <Comment comment={node} />
-        </Block>
-      ))}
+      {comments.edges.map(({ node }, index) => {
+        if (!node) {
+          // eslint-disable-next-line unicorn/no-null
+          return null
+        }
+        return (
+          <Block className={threadStyle(isChild)} key={index}>
+            <Comment comment={node} />
+          </Block>
+        )
+      })}
     </div>
   )
 }
