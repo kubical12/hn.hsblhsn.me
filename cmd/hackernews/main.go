@@ -8,6 +8,7 @@ import (
 	"github.com/blendle/zapdriver"
 	"github.com/gorilla/mux"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql"
 	"github.com/hsblhsn/hn.hsblhsn.me/frontend"
 	"github.com/pkg/errors"
 	"go.uber.org/fx"
@@ -23,6 +24,7 @@ func main() {
 		fx.Supply(client),
 		fx.Supply(router),
 		fx.Provide(newLogger),
+		graphql.Module(),
 		backend.Module(),
 		frontend.Module(),
 		fx.Invoke(startHTTPServer),

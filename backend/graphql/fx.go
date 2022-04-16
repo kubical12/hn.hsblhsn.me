@@ -10,6 +10,8 @@ import (
 	"go.uber.org/fx"
 )
 
+// Module for fx.
+// It already includes all the internal dependencies.
 func Module() fx.Option {
 	return fx.Options(
 		model.Module(),

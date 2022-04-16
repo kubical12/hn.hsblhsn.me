@@ -8,6 +8,7 @@ import (
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql"
 )
 
+// RegisterRoutes registers the routes for the backend.
 func RegisterRoutes(router *mux.Router, gql *graphql.GQLHandler, img *graphql.ImageHandler) {
 	router.Path("/graphql").
 		Methods(http.MethodGet, http.MethodPost).

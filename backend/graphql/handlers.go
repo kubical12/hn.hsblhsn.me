@@ -47,10 +47,12 @@ var ComplexityMap = complexity.Map{
 	"PageInfo":             complexityNetworkField,
 }
 
+// NewImageHandler returns a new image proxy handler.
 func NewImageHandler(client *httpclient.CachedClient, logger *zap.Logger) *ImageHandler {
 	return images.NewImageResizeHandler(client, logger)
 }
 
+// NewGQLHandler creates a new graphql handler.
 func NewGQLHandler(resolver *Resolver, logger *zap.Logger) *GQLHandler {
 	config := generated.Config{Resolvers: resolver}
 	server := handler.NewDefaultServer(generated.NewExecutableSchema(config))
@@ -62,6 +64,9 @@ func NewGQLHandler(resolver *Resolver, logger *zap.Logger) *GQLHandler {
 	return server
 }
 
+// newErrorPresenterFunc returns a function that omits all system errors.
+// But if the error is a msgerr.Error, it will be presented.
+// All other errors will be presented as a generic error message.
 func newErrorPresenterFunc(logger *zap.Logger) graphql.ErrorPresenterFunc {
 	return func(ctx context.Context, err error) *gqlerror.Error {
 		log := logger.With(
@@ -80,6 +85,7 @@ func newErrorPresenterFunc(logger *zap.Logger) graphql.ErrorPresenterFunc {
 	}
 }
 
+// newRecoverFunc returns a recover function that logs the panic message.
 func newRecoverFunc(logger *zap.Logger) graphql.RecoverFunc {
 	return func(ctx context.Context, err interface{}) error {
 		log := logger.With(

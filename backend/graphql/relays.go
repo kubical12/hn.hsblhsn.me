@@ -9,6 +9,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// NewRelayComments returns a relay resolver for comments.
 func (r *Resolver) NewRelayComments(ctx context.Context, ids []int) *relays.Resolver[int, *model.Comment] {
 	return relays.NewResolver(ids, func(id int) (*model.Comment, error) {
 		idStr := hackernews.NewID(id)
@@ -20,6 +21,7 @@ func (r *Resolver) NewRelayComments(ctx context.Context, ids []int) *relays.Reso
 	})
 }
 
+// NewRelayPollOptions returns a relay resolver for poll options.
 func (r *Resolver) NewRelayPollOptions(ctx context.Context, ids []int) *relays.Resolver[int, *model.PollOption] {
 	return relays.NewResolver(ids, func(id int) (*model.PollOption, error) {
 		idStr := hackernews.NewID(id)
@@ -31,6 +33,7 @@ func (r *Resolver) NewRelayPollOptions(ctx context.Context, ids []int) *relays.R
 	})
 }
 
+// NewRelayStories returns a relay resolver for stories.
 func (r *Resolver) NewRelayStories(ctx context.Context, ids []int) *relays.Resolver[int, *model.Story] {
 	return relays.NewResolver(ids, func(id int) (*model.Story, error) {
 		idStr := hackernews.NewID(id)
@@ -42,6 +45,7 @@ func (r *Resolver) NewRelayStories(ctx context.Context, ids []int) *relays.Resol
 	})
 }
 
+// NewRelayJobs returns a relay resolver for jobs.
 func (r *Resolver) NewRelayJobs(ctx context.Context, ids []int) *relays.Resolver[int, *model.Job] {
 	return relays.NewResolver(ids, func(id int) (*model.Job, error) {
 		idStr := hackernews.NewID(id)

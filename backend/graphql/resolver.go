@@ -10,6 +10,9 @@ type Resolver struct {
 	hackerNews *hackernews.HackerNews
 }
 
+// NewResolver returns a new Resolver instance.
+// It takes a HackerNews instance as a dependency.
+// This allows us to inject a mock HackerNews instance for testing.
 func NewResolver(hackerNews *hackernews.HackerNews) *Resolver {
 	return &Resolver{hackerNews: hackerNews}
 }
