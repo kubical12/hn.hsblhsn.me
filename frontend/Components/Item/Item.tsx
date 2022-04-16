@@ -12,7 +12,7 @@ import {
 import { Link, useLocation } from 'react-router-dom'
 import { Job, NodeT, Story } from '../../Types'
 import { CommentThread } from '../CommentThread'
-import { fromNow, getHost, getLink } from '../commonutils'
+import { fromNow, getHost, getLink, getTitle } from '../commonutils'
 import { ChevronLeft, ChevronRight } from 'baseui/icon'
 import './Item.css'
 import { useEffect } from 'react'
@@ -62,7 +62,7 @@ const Header: React.FC<ItemProps> = ({ item }: ItemProps) => {
       </Label4>
       <HeadingLarge>
         <Link to={`/item?id=${item.id}`}>
-          {item.openGraph?.title || item.title}
+          {getTitle(item.title, item.openGraph?.title)}
         </Link>
       </HeadingLarge>
       <Label4

@@ -28,6 +28,16 @@ export const getBestImage = (images?: Image[]) => {
   return bestImage
 }
 
+export const getTitle = (title: string, secondary?: string) => {
+  if (!secondary) {
+    return title
+  }
+  if (title.length > secondary.length) {
+    return title
+  }
+  return secondary
+}
+
 /**
  * Implements all the behaviors of moment.fromNow(). Pass a
  * valid JavaScript Date object and the method will return the

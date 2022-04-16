@@ -4,7 +4,13 @@ import { Card, StyledAction, StyledBody, StyledThumbnail } from 'baseui/card'
 import { HeadingSmall, Label4 } from 'baseui/typography'
 import { Link } from 'react-router-dom'
 import { Job, Story } from '../../Types'
-import { fromNow, getBestImage, getHost, getLink } from '../commonutils'
+import {
+  fromNow,
+  getBestImage,
+  getHost,
+  getLink,
+  getTitle,
+} from '../commonutils'
 
 interface ItemCardProps {
   item: Story | Job
@@ -34,7 +40,7 @@ const ItemCard: React.FC<ItemCardProps> = ({ item }: ItemCardProps) => {
 
       <HeadingSmall paddingBottom={theme.sizing.scale600}>
         <Link to={`/item?id=${item.id}`}>
-          {item.openGraph?.title || item.title}
+          {getTitle(item.title, item.openGraph?.title)}
         </Link>
       </HeadingSmall>
 
