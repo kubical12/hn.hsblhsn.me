@@ -1,5 +1,5 @@
 import { Block } from 'baseui/block'
-import { LabelSmall, ParagraphSmall } from 'baseui/typography'
+import { LabelSmall } from 'baseui/typography'
 import { useStyletron } from 'baseui'
 import { CommentThread } from '../CommentThread'
 import { useState } from 'react'
@@ -36,6 +36,8 @@ const Comment: React.FC<CommentProps> = ({ comment }: CommentProps) => {
           Block: {
             style({ $theme }: StyleProps) {
               return {
+                marginTop: $theme.sizing.scale300,
+                marginBottom: $theme.sizing.scale300,
                 paddingTop: $theme.sizing.scale300,
                 paddingBottom: $theme.sizing.scale300,
                 paddingLeft: $theme.sizing.scale300,
@@ -62,11 +64,16 @@ const Comment: React.FC<CommentProps> = ({ comment }: CommentProps) => {
         </span>
       </LabelSmall>
       <Block display={isExpanded ? 'block' : 'none'}>
-        <ParagraphSmall as="div" className="comment-reader-view-content">
-          <div dangerouslySetInnerHTML={{ __html: comment.text || '' }} />
-        </ParagraphSmall>
+        <div
+          className="comment-reader-view-content"
+          dangerouslySetInnerHTML={{ __html: comment.text || '' }}
+        />
         <Block className="pl-3">
-          <CommentThread isChild={true} comments={comment.comments} />
+          <CommentThread
+            parentId={comment.id}
+            isChild={true}
+            comments={comment.comments}
+          />
         </Block>
       </Block>
     </Block>
