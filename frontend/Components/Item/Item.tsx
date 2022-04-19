@@ -18,6 +18,7 @@ import './Item.css'
 import { useEffect, useMemo } from 'react'
 import { StatefulPopover } from 'baseui/popover'
 import config from '../../app.config'
+import { SnackbarProvider, DURATION, useSnackbar } from 'baseui/snackbar'
 
 interface ItemProps {
   item: NodeT<Story | Job>
@@ -38,21 +39,23 @@ const Item: React.FC<ItemProps> = ({ item }: ItemProps) => {
   }
   return (
     <Block paddingTop={theme.sizing.scale600}>
-      <Header item={item} />
-      <Button
-        kind={KIND.tertiary}
-        size={SIZE.compact}
-        startEnhancer={<TriangleDown />}
-        onClick={() => {
-          window.location.hash = '#comments'
-        }}
-      >
-        Jump to comments
-      </Button>
-      <Content item={item} />
-      <ActionButtons item={item} />
-      <Comments item={item} />
-      <ContentLinks item={item} />
+      <SnackbarProvider>
+        <Header item={item} />
+        <Button
+          kind={KIND.tertiary}
+          size={SIZE.compact}
+          startEnhancer={<TriangleDown />}
+          onClick={() => {
+            window.location.hash = '#comments'
+          }}
+        >
+          Jump to comments
+        </Button>
+        <Content item={item} />
+        <ActionButtons item={item} />
+        <Comments item={item} />
+        <ContentLinks item={item} />
+      </SnackbarProvider>
     </Block>
   )
 }
@@ -159,12 +162,13 @@ const ActionButtons: React.FC<ItemProps> = ({ item }: ItemProps) => {
 
 const MoreBtnPopOver: React.FC<ItemProps> = ({ item }: ItemProps) => {
   const [css, theme] = useStyletron()
+  const { enqueue } = useSnackbar()
   const popoverCss = css({
     padding: theme.sizing.scale600,
     minWidth: '320px',
     backgroundColor: theme.colors.backgroundTertiary,
     border: `2px solid ${theme.colors.contentTertiary}`,
-    borderRadius: theme.sizing.scale500,
+    borderRadius: theme.sizing.scale300,
   })
   const popoverItemCss = css({
     display: 'flex',
@@ -172,10 +176,11 @@ const MoreBtnPopOver: React.FC<ItemProps> = ({ item }: ItemProps) => {
     marginBottom: theme.sizing.scale300,
     paddingTop: theme.sizing.scale300,
     paddingBottom: theme.sizing.scale300,
-    paddingLeft: theme.sizing.scale300,
-    paddingRight: theme.sizing.scale300,
+    paddingLeft: theme.sizing.scale400,
+    paddingRight: theme.sizing.scale400,
     fontWeight: theme.typography.font750.fontWeight,
     cursor: 'pointer',
+    borderRadius: theme.sizing.scale300,
     userSelect: 'none',
     ':hover': {
       backgroundColor: theme.colors.backgroundPrimary,
@@ -184,13 +189,31 @@ const MoreBtnPopOver: React.FC<ItemProps> = ({ item }: ItemProps) => {
 
   const canShare = useMemo(() => {
     return navigator.share !== undefined
-  }, [navigator.share])
+  }, [])
+
+  const canCopy = useMemo(() => {
+    return navigator.clipboard !== undefined
+  }, [])
+
+  const currentPageLink = useMemo(() => {
+    return `${config.host}/item?id=${item.id}`
+  }, [item.id])
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(currentPageLink)
+    enqueue(
+      {
+        message: 'Copied link to clipboard',
+      },
+      DURATION.short
+    )
+  }
 
   const openNativeShare = () => {
-    if (navigator.share) {
+    if (canShare) {
       navigator.share({
         title: item.title,
-        url: `${config.host}/item?id=${item.id}`,
+        url: currentPageLink,
       })
     }
   }
@@ -203,6 +226,11 @@ const MoreBtnPopOver: React.FC<ItemProps> = ({ item }: ItemProps) => {
 
   return (
     <Block className={popoverCss}>
+      {canCopy && (
+        <Block className={popoverItemCss} onClick={copyLink}>
+          <CopyIcon /> Copy link
+        </Block>
+      )}
       {canShare && (
         <Block className={popoverItemCss} onClick={openNativeShare}>
           <ShareIcon /> Share
@@ -274,6 +302,23 @@ const ContentLinks: React.FC<ItemProps> = ({ item }: ItemProps) => {
     </Block>
   )
 }
+
+const CopyIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-5 w-5 mr-2"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+    />
+  </svg>
+)
 
 const ExternalLinkIcon = () => (
   <svg
