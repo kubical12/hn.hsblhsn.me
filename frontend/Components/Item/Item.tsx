@@ -15,8 +15,8 @@ import { CommentThread } from '../CommentThread'
 import { fromNow, getHost, getLink, getTitle } from '../commonutils'
 import { TriangleDown, TriangleLeft } from 'baseui/icon'
 import './Item.css'
-import { useEffect, useMemo } from 'react'
-import { StatefulPopover } from 'baseui/popover'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Popover } from 'baseui/popover'
 import config from '../../app.config'
 import { SnackbarProvider, DURATION, useSnackbar } from 'baseui/snackbar'
 
@@ -114,6 +114,7 @@ const Content: React.FC<ItemProps> = ({ item }: ItemProps) => {
 
 const ActionButtons: React.FC<ItemProps> = ({ item }: ItemProps) => {
   const [, theme] = useStyletron()
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   const btnOverrides = {
     BaseButton: {
       style: {
@@ -124,9 +125,9 @@ const ActionButtons: React.FC<ItemProps> = ({ item }: ItemProps) => {
   const back = () => {
     window.history.back()
   }
-  const open = () => {
-    window.open(getLink(item.id, item.url), '_blank')
-  }
+  const togglePopover = useCallback(() => {
+    setIsPopoverOpen(!isPopoverOpen)
+  }, [isPopoverOpen])
   return (
     <Block
       paddingTop={theme.sizing.scale1200}
@@ -144,23 +145,34 @@ const ActionButtons: React.FC<ItemProps> = ({ item }: ItemProps) => {
           </Button>
         </Cell>
         <Cell span={8}>
-          <StatefulPopover content={<MoreBtnPopOver item={item} />}>
+          <Popover
+            isOpen={isPopoverOpen}
+            onClickOutside={togglePopover}
+            onClick={togglePopover}
+            content={<MoreBtnPopOver item={item} closeFunc={togglePopover} />}
+          >
             <Button
-              onClick={open}
               kind="secondary"
               overrides={btnOverrides}
               startEnhancer={<TriangleDown />}
             >
               More
             </Button>
-          </StatefulPopover>
+          </Popover>
         </Cell>
       </Grid>
     </Block>
   )
 }
 
-const MoreBtnPopOver: React.FC<ItemProps> = ({ item }: ItemProps) => {
+interface MoreBtnPopOverProps extends ItemProps {
+  closeFunc: () => void
+}
+
+const MoreBtnPopOver: React.FC<MoreBtnPopOverProps> = ({
+  item,
+  closeFunc,
+}: MoreBtnPopOverProps) => {
   const [css, theme] = useStyletron()
   const { enqueue } = useSnackbar()
   const popoverCss = css({
@@ -207,6 +219,7 @@ const MoreBtnPopOver: React.FC<ItemProps> = ({ item }: ItemProps) => {
       },
       DURATION.short
     )
+    closeFunc()
   }
 
   const openNativeShare = () => {
@@ -216,12 +229,15 @@ const MoreBtnPopOver: React.FC<ItemProps> = ({ item }: ItemProps) => {
         url: currentPageLink,
       })
     }
+    closeFunc()
   }
   const openLinkInNewTab = () => {
     window.open(getLink(item.id, item.url), '_blank')
+    closeFunc()
   }
   const openInHackerNews = () => {
     window.open(getLink(item.id, undefined), '_blank')
+    closeFunc()
   }
 
   return (
