@@ -1,6 +1,6 @@
 import { useStyletron } from 'baseui'
 import { Block } from 'baseui/block'
-import { Button } from 'baseui/button'
+import { Button, KIND, SIZE } from 'baseui/button'
 import { Cell, Grid } from 'baseui/layout-grid'
 import { StyledLink } from 'baseui/link'
 import {
@@ -13,7 +13,7 @@ import { useLocation } from 'react-router-dom'
 import { Job, NodeT, Story } from '../../Types'
 import { CommentThread } from '../CommentThread'
 import { fromNow, getHost, getLink, getTitle } from '../commonutils'
-import { ChevronLeft, TriangleDown } from 'baseui/icon'
+import { TriangleDown, TriangleLeft } from 'baseui/icon'
 import './Item.css'
 import { useEffect, useMemo } from 'react'
 import { StatefulPopover } from 'baseui/popover'
@@ -39,6 +39,16 @@ const Item: React.FC<ItemProps> = ({ item }: ItemProps) => {
   return (
     <Block paddingTop={theme.sizing.scale600}>
       <Header item={item} />
+      <Button
+        kind={KIND.tertiary}
+        size={SIZE.compact}
+        startEnhancer={<TriangleDown />}
+        onClick={() => {
+          window.location.hash = '#comments'
+        }}
+      >
+        Jump to comments
+      </Button>
       <Content item={item} />
       <ActionButtons item={item} />
       <Comments item={item} />
@@ -125,7 +135,7 @@ const ActionButtons: React.FC<ItemProps> = ({ item }: ItemProps) => {
             onClick={back}
             kind="secondary"
             overrides={btnOverrides}
-            startEnhancer={<ChevronLeft />}
+            startEnhancer={<TriangleLeft />}
           >
             Back
           </Button>
