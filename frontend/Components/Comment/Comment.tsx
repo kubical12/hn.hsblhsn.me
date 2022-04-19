@@ -36,7 +36,6 @@ const Comment: React.FC<CommentProps> = ({ comment }: CommentProps) => {
           Block: {
             style({ $theme }: StyleProps) {
               return {
-                borderTop: `1px solid ${$theme.colors.borderWarning}`,
                 marginTop: $theme.sizing.scale600,
                 paddingTop: $theme.sizing.scale300,
                 paddingBottom: $theme.sizing.scale300,
