@@ -4,6 +4,7 @@ import { Block } from 'baseui/block'
 
 const primitives = {
   accent: '#ff6600',
+  accent100: '#ffc8a8',
 }
 const LIGHT_THEME = createLightTheme(primitives)
 const DARK_THEME = createDarkTheme(primitives)
@@ -27,18 +28,17 @@ const App: React.FC<AppProps> = ({ children }: AppProps) => {
     </BaseProvider>
   )
 }
+
 function useDarkMode() {
   const [isDark, setIsDark] = useState(
     window.matchMedia &&
       window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? true
-      : false
   )
   // setup theme change listener.
   useEffect(() => {
     const osTheme = window.matchMedia('(prefers-color-scheme: dark)')
     const changeTheme = (e: MediaQueryListEvent) => {
-      setIsDark(e.matches ? true : false)
+      setIsDark(e.matches)
     }
     osTheme.addEventListener('change', changeTheme)
     return () => {
