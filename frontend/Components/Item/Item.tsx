@@ -16,7 +16,7 @@ import { fromNow, getHost, getLink, getTitle } from '../commonutils'
 import { TriangleDown, TriangleLeft } from 'baseui/icon'
 import './Item.css'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Popover } from 'baseui/popover'
+import { Popover, PLACEMENT } from 'baseui/popover'
 import config from '../../app.config'
 import { SnackbarProvider, DURATION, useSnackbar } from 'baseui/snackbar'
 
@@ -149,6 +149,7 @@ const ActionButtons: React.FC<ItemProps> = ({ item }: ItemProps) => {
             isOpen={isPopoverOpen}
             onClickOutside={togglePopover}
             onClick={togglePopover}
+            placement={PLACEMENT.bottom}
             content={<MoreBtnPopOver item={item} closeFunc={togglePopover} />}
           >
             <Button
@@ -179,7 +180,7 @@ const MoreBtnPopOver: React.FC<MoreBtnPopOverProps> = ({
     padding: theme.sizing.scale600,
     minWidth: '320px',
     backgroundColor: theme.colors.backgroundTertiary,
-    border: `2px solid ${theme.colors.contentTertiary}`,
+    border: `2px solid ${theme.colors.mono400}`,
     borderRadius: theme.sizing.scale300,
   })
   const popoverItemCss = css({
