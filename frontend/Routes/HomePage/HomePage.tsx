@@ -164,7 +164,7 @@ const InfiniteScroll = ({ query }: { query: DocumentNode }) => {
   } else if (data) {
     children = (
       <PaginatedItemCardList
-        nextPageUrl={`?after=${data.items.pageInfo.pageCursor}`}
+        nextPageUrl={`?after=${data.items.pageInfo.endCursor}`}
         loadNext={loadNext}
         loading={loading}
         items={data.items}
