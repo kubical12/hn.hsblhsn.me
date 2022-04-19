@@ -37,7 +37,6 @@ const ItemPage: React.FC = () => {
       variables: {
         id: searchParams.get('id') || '',
       },
-      errorPolicy: 'ignore',
     }
   )
   let children: React.ReactNode = <Fragment />
