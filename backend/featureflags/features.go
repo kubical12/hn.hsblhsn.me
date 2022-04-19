@@ -4,7 +4,6 @@ import "strings"
 
 const (
 	FeatureImgProxy Feature = "image_proxy"
-	FeatureBionify  Feature = "bionify"
 )
 
 type Feature string

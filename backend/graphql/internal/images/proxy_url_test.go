@@ -1,9 +1,8 @@
 package images
 
 import (
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/featureflags"
 	"testing"
-
-	"github.com/hsblhsn/hn.hsblhsn.me/featureflags"
 )
 
 // nolint:paralleltest // not a test

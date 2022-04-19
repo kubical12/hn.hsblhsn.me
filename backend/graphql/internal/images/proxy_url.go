@@ -2,15 +2,14 @@ package images
 
 import (
 	"fmt"
+	featureflags2 "github.com/hsblhsn/hn.hsblhsn.me/backend/featureflags"
 	"net/url"
 	"os"
 	"strings"
-
-	"github.com/hsblhsn/hn.hsblhsn.me/featureflags"
 )
 
 func ProxiedURL(src string, size ImageSize) string {
-	if !featureflags.IsOn(featureflags.FeatureImgProxy, false) {
+	if !featureflags2.IsOn(featureflags2.FeatureImgProxy, false) {
 		return src
 	}
 	if src == "" {
