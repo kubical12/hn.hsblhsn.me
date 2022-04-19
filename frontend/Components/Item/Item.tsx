@@ -13,9 +13,11 @@ import { useLocation } from 'react-router-dom'
 import { Job, NodeT, Story } from '../../Types'
 import { CommentThread } from '../CommentThread'
 import { fromNow, getHost, getLink, getTitle } from '../commonutils'
-import { ChevronLeft, ChevronRight } from 'baseui/icon'
+import { ChevronLeft, TriangleDown } from 'baseui/icon'
 import './Item.css'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
+import { StatefulPopover } from 'baseui/popover'
+import config from '../../app.config'
 
 interface ItemProps {
   item: NodeT<Story | Job>
@@ -118,7 +120,7 @@ const ActionButtons: React.FC<ItemProps> = ({ item }: ItemProps) => {
       paddingBottom={theme.sizing.scale600}
     >
       <Grid gridColumns={12} gridGaps={0} gridMargins={0}>
-        <Cell span={6}>
+        <Cell span={4}>
           <Button
             onClick={back}
             kind="secondary"
@@ -128,17 +130,84 @@ const ActionButtons: React.FC<ItemProps> = ({ item }: ItemProps) => {
             Back
           </Button>
         </Cell>
-        <Cell span={6}>
-          <Button
-            onClick={open}
-            kind="secondary"
-            overrides={btnOverrides}
-            endEnhancer={<ChevronRight />}
-          >
-            Open
-          </Button>
+        <Cell span={8}>
+          <StatefulPopover content={<MoreBtnPopOver item={item} />}>
+            <Button
+              onClick={open}
+              kind="secondary"
+              overrides={btnOverrides}
+              startEnhancer={<TriangleDown />}
+            >
+              More
+            </Button>
+          </StatefulPopover>
         </Cell>
       </Grid>
+    </Block>
+  )
+}
+
+const MoreBtnPopOver: React.FC<ItemProps> = ({ item }: ItemProps) => {
+  const [css, theme] = useStyletron()
+  const popoverCss = css({
+    padding: theme.sizing.scale600,
+    minWidth: '320px',
+    backgroundColor: theme.colors.backgroundTertiary,
+    border: `2px solid ${theme.colors.contentTertiary}`,
+    borderRadius: theme.sizing.scale500,
+  })
+  const popoverItemCss = css({
+    display: 'flex',
+    width: '100%',
+    marginBottom: theme.sizing.scale300,
+    paddingTop: theme.sizing.scale300,
+    paddingBottom: theme.sizing.scale300,
+    paddingLeft: theme.sizing.scale300,
+    paddingRight: theme.sizing.scale300,
+    fontWeight: theme.typography.font750.fontWeight,
+    cursor: 'pointer',
+    userSelect: 'none',
+    ':hover': {
+      backgroundColor: theme.colors.backgroundPrimary,
+    },
+  })
+
+  const canShare = useMemo(() => {
+    return navigator.share !== undefined
+  }, [navigator.share])
+
+  const openNativeShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: item.title,
+        url: `${config.host}/item?id=${item.id}`,
+      })
+    }
+  }
+  const openLinkInNewTab = () => {
+    window.open(getLink(item.id, item.url), '_blank')
+  }
+  const openInHackerNews = () => {
+    window.open(getLink(item.id, undefined), '_blank')
+  }
+
+  return (
+    <Block className={popoverCss}>
+      {canShare && (
+        <Block className={popoverItemCss} onClick={openNativeShare}>
+          <ShareIcon /> Share
+        </Block>
+      )}
+      <Block className={popoverItemCss} onClick={openInHackerNews}>
+        <HackerNewsIcon />
+        Read on HackerNews
+      </Block>
+      {item.url && (
+        <Block className={popoverItemCss} onClick={openLinkInNewTab}>
+          <ExternalLinkIcon />
+          Open link in new tab
+        </Block>
+      )}
     </Block>
   )
 }
@@ -195,6 +264,57 @@ const ContentLinks: React.FC<ItemProps> = ({ item }: ItemProps) => {
     </Block>
   )
 }
+
+const ExternalLinkIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-5 w-5 mr-2"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+    />
+  </svg>
+)
+
+const ShareIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-5 w-5 mr-2"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+    />
+  </svg>
+)
+
+const HackerNewsIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-5 w-5 mr-2"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+    />
+  </svg>
+)
 
 export { Item }
 export type { ItemProps }
