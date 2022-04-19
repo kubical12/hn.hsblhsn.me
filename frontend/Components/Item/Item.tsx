@@ -13,10 +13,10 @@ import { useLocation } from 'react-router-dom'
 import { Job, NodeT, Story } from '../../Types'
 import { CommentThread } from '../CommentThread'
 import { fromNow, getHost, getLink, getTitle } from '../commonutils'
-import { TriangleDown, TriangleLeft } from 'baseui/icon'
+import { TriangleDown, TriangleLeft, TriangleUp } from 'baseui/icon'
 import './Item.css'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Popover, PLACEMENT } from 'baseui/popover'
+import { Popover } from 'baseui/popover'
 import config from '../../app.config'
 import { SnackbarProvider, DURATION, useSnackbar } from 'baseui/snackbar'
 
@@ -146,18 +146,29 @@ const ActionButtons: React.FC<ItemProps> = ({ item }: ItemProps) => {
         </Cell>
         <Cell span={8}>
           <Popover
+            overrides={{
+              Body: {
+                style: {
+                  backgroundColor: 'rgba(0, 0, 0, 0)',
+                },
+              },
+              Inner: {
+                style: {
+                  backgroundColor: 'rgba(0, 0, 0, 0)',
+                },
+              },
+            }}
             isOpen={isPopoverOpen}
             onClickOutside={togglePopover}
             onClick={togglePopover}
-            placement={PLACEMENT.bottom}
             content={<MoreBtnPopOver item={item} closeFunc={togglePopover} />}
           >
             <Button
               kind="secondary"
               overrides={btnOverrides}
-              startEnhancer={<TriangleDown />}
+              startEnhancer={isPopoverOpen ? <TriangleUp /> : <TriangleDown />}
             >
-              More
+              {isPopoverOpen ? 'Close' : 'More'}
             </Button>
           </Popover>
         </Cell>
@@ -180,7 +191,7 @@ const MoreBtnPopOver: React.FC<MoreBtnPopOverProps> = ({
     padding: theme.sizing.scale600,
     minWidth: '320px',
     backgroundColor: theme.colors.backgroundTertiary,
-    border: `2px solid ${theme.colors.mono400}`,
+    border: `2px solid ${theme.colors.borderTransparent}`,
     borderRadius: theme.sizing.scale300,
   })
   const popoverItemCss = css({
