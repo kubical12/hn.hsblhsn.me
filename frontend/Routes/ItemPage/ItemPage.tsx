@@ -37,6 +37,7 @@ const ItemPage: React.FC = () => {
       variables: {
         id: searchParams.get('id') || '',
       },
+      errorPolicy: 'all',
     }
   )
   let children: React.ReactNode = <Fragment />
@@ -45,11 +46,20 @@ const ItemPage: React.FC = () => {
   } else if (!data && error) {
     children = <ErrorScreen error={error} />
   } else if (data) {
-    children = (
-      <Fragment>
-        <Head item={data.item} /> <Item item={data.item} />
-      </Fragment>
-    )
+    if (!data.item) {
+      // there is an error or the item doesn't exist.
+      children = (
+        <Fragment>
+          <Head item={data.item} /> <ErrorScreen error={error} />
+        </Fragment>
+      )
+    } else {
+      children = (
+        <Fragment>
+          <Head item={data.item} /> <Item item={data.item} />
+        </Fragment>
+      )
+    }
   }
   return (
     <Container
