@@ -27,7 +27,7 @@ const CommentThread: React.FC<CommentThreadProps> = ({
 
   const threadStyle = (child: boolean) => {
     return css({
-      paddingLeft: child ? theme.sizing.scale300 : theme.sizing.scale0,
+      paddingLeft: child ? theme.sizing.scale500 : theme.sizing.scale0,
       borderLeft: child
         ? `3px solid ${theme.colors.borderTransparent}`
         : 'none',

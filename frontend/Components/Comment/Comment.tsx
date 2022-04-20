@@ -36,7 +36,7 @@ const Comment: React.FC<CommentProps> = ({ comment }: CommentProps) => {
           Block: {
             style({ $theme }: StyleProps) {
               return {
-                marginTop: $theme.sizing.scale600,
+                marginTop: $theme.sizing.scale900,
                 paddingTop: $theme.sizing.scale300,
                 paddingBottom: $theme.sizing.scale300,
                 paddingLeft: $theme.sizing.scale300,
@@ -45,8 +45,10 @@ const Comment: React.FC<CommentProps> = ({ comment }: CommentProps) => {
                 backgroundColor: isExpanded
                   ? $theme.colors.backgroundSecondary
                   : $theme.colors.backgroundTertiary,
+                border: '2px solid transparent',
+                transition: 'border 0.5s ease-in-out',
                 ':hover': {
-                  opacity: '0.7',
+                  border: `2px solid ${$theme.colors.borderOpaque}`,
                 },
               }
             },
