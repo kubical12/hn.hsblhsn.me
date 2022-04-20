@@ -3,7 +3,7 @@ type Poll implements Node {
   databaseId: Int!
   deleted: Boolean!
   type: String!
-  by: String!
+  by: User!
   time: Int!
   dead: Boolean!
   kids: [Int!]!
@@ -23,7 +23,7 @@ type PollOption implements Node {
   databaseId: Int!
   deleted: Boolean!
   type: String!
-  by: String!
+  by: User!
   text: String!
   time: Int!
   dead: Boolean!

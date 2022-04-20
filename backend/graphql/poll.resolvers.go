@@ -17,6 +17,14 @@ func (r *pollResolver) Type(ctx context.Context, obj *model.Poll) (string, error
 	return obj.Type.String(), nil
 }
 
+func (r *pollResolver) By(ctx context.Context, obj *model.Poll) (*model.User, error) {
+	resp, err := r.hackerNews.GetUser(ctx, obj.By)
+	if err != nil {
+		return nil, msgerr.New(err, "Could not get user")
+	}
+	return &model.User{UserResponse: resp}, nil
+}
+
 func (r *pollResolver) Comments(ctx context.Context, obj *model.Poll, after *string, first *int) (*relays.Connection[*model.Comment], error) {
 	relayResolver := r.NewRelayComments(ctx, obj.Kids)
 	comments, err := relayResolver.Resolve(nil, after, first, nil)
@@ -37,6 +45,14 @@ func (r *pollResolver) PollOptions(ctx context.Context, obj *model.Poll, after *
 
 func (r *pollOptionResolver) Type(ctx context.Context, obj *model.PollOption) (string, error) {
 	return obj.Type.String(), nil
+}
+
+func (r *pollOptionResolver) By(ctx context.Context, obj *model.PollOption) (*model.User, error) {
+	resp, err := r.hackerNews.GetUser(ctx, obj.By)
+	if err != nil {
+		return nil, msgerr.New(err, "Could not get user")
+	}
+	return &model.User{UserResponse: resp}, nil
 }
 
 func (r *pollOptionResolver) Poll(ctx context.Context, obj *model.PollOption) (string, error) {

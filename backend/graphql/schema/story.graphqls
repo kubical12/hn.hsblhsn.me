@@ -14,7 +14,7 @@ type Story implements Node {
   databaseId: Int!
   deleted: Boolean!
   type: String!
-  by: String!
+  by: User!
   time: Int!
   dead: Boolean!
   kids: [Int!]!

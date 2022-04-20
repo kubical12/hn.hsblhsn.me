@@ -16,6 +16,14 @@ func (r *storyResolver) Type(ctx context.Context, obj *model.Story) (string, err
 	return obj.Type.String(), nil
 }
 
+func (r *storyResolver) By(ctx context.Context, obj *model.Story) (*model.User, error) {
+	resp, err := r.hackerNews.GetUser(ctx, obj.By)
+	if err != nil {
+		return nil, msgerr.New(err, "Could not get user")
+	}
+	return &model.User{UserResponse: resp}, nil
+}
+
 func (r *storyResolver) Comments(ctx context.Context, obj *model.Story, after *string, first *int) (*relays.Connection[*model.Comment], error) {
 	relayResolver := r.NewRelayComments(ctx, obj.Kids)
 	comments, err := relayResolver.Resolve(nil, after, first, nil)

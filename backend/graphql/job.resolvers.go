@@ -7,11 +7,20 @@ import (
 	"context"
 
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/generated"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/msgerr"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/model"
 )
 
 func (r *jobResolver) Type(ctx context.Context, obj *model.Job) (string, error) {
 	return obj.Type.String(), nil
+}
+
+func (r *jobResolver) By(ctx context.Context, obj *model.Job) (*model.User, error) {
+	resp, err := r.hackerNews.GetUser(ctx, obj.By)
+	if err != nil {
+		return nil, msgerr.New(err, "Could not get user")
+	}
+	return &model.User{UserResponse: resp}, nil
 }
 
 // Job returns generated.JobResolver implementation.

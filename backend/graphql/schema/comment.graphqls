@@ -13,7 +13,7 @@ type Comment implements Node {
   id: ID!
   databaseId: Int!
   type: String!
-  by: String!
+  by: User!
   deleted: Boolean!
   dead: Boolean!
   time: Int!
