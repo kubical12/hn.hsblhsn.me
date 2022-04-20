@@ -1,8 +1,9 @@
 import { OpenGraph } from './OpenGraph'
+import { User } from './User'
 
 export interface Job {
   id: string
-  by: string
+  by: User
   score: number
   text: string
   time: number

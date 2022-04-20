@@ -1,7 +1,8 @@
 import { ConnectionT } from './Node'
+import { User } from './User'
 
 export interface Comment {
-  by: string
+  by: User
   id: string
   kids: number[]
   parent: number

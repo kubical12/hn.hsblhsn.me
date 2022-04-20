@@ -55,7 +55,7 @@ const Comment: React.FC<CommentProps> = ({ comment }: CommentProps) => {
           },
         }}
       >
-        <span className={color(theme.colors.accent)}>@{comment.by}</span>
+        <span className={color(theme.colors.accent)}>@{comment.by.id}</span>
         <span className={color(theme.colors.contentSecondary)}>
           &nbsp;commented&nbsp;
           {comment.time ? fromNow(comment.time * 1000) : 'unknown'}

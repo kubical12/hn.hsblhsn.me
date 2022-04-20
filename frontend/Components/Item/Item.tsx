@@ -70,7 +70,7 @@ const Header: React.FC<ItemProps> = ({ item }: ItemProps) => {
   return (
     <Block>
       <LabelXSmall>
-        <span className={color(theme.colors.accent)}>@{item.by}</span>&nbsp;
+        <span className={color(theme.colors.accent)}>@{item.by.id}</span>&nbsp;
         <span className={color(theme.colors.contentSecondary)}>
           {item.time ? fromNow(item.time * 1000) : 'unknown'}
         </span>

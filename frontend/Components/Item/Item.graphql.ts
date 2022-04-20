@@ -3,9 +3,14 @@ import { COMMENT_THREAD_FIELDS } from '../CommentThread'
 
 const ITEM_FIELDS = gql`
   ${COMMENT_THREAD_FIELDS}
+  fragment AuthorFields on User {
+    id
+  }
   fragment ItemFields on Story {
     id
-    by
+    by {
+      ...AuthorFields
+    }
     time
     url
     title
@@ -28,7 +33,9 @@ const ITEM_FIELDS = gql`
   }
   fragment JobFields on Job {
     id
-    by
+    by {
+      ...AuthorFields
+    }
     time
     url
     title

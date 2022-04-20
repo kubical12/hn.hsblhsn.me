@@ -4,7 +4,9 @@ const COMMENT_FIELDS = gql`
   fragment CommentContentFields on Comment {
     id
     type
-    by
+    by {
+      id
+    }
     time
     text
     dead

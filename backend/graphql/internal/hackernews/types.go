@@ -10,7 +10,10 @@ import (
 
 const host = "https://hacker-news.firebaseio.com"
 
-var ErrMismatchedType = errors.New("hackernews: mismatched item type")
+var (
+	ErrMismatchedType = errors.New("hackernews: mismatched item type")
+	ErrItemNotFound   = errors.New("hackernews: item not found")
+)
 
 type ItemType string
 

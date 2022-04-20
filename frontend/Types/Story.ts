@@ -1,8 +1,9 @@
 import { CommentConnection } from './Comment'
 import { OpenGraph } from './OpenGraph'
+import { User } from './User'
 
 export interface Story {
-  by: string
+  by: User
   descendants: number
   id: string
   kids: number[]

@@ -1,7 +1,8 @@
 import { CommentConnection } from './Comment'
+import { User } from './User'
 
 export interface Poll {
-  by: string
+  by: User
   descendants: number
   id: string
   kids: number[]

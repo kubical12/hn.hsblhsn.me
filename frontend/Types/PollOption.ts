@@ -1,5 +1,7 @@
+import { User } from './User'
+
 export interface PollOption {
-  by: string
+  by: User
   id: string
   parent: number
   score: number

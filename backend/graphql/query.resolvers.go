@@ -14,16 +14,24 @@ import (
 )
 
 func (r *queryResolver) Node(ctx context.Context, id string) (model.Node, error) {
-	nodeID := id
+	var (
+		nodeID    = id
+		errOnUser error
+	)
 	if hackernews.IsUserName(nodeID) {
-		user, userErr := r.hackerNews.GetUser(ctx, nodeID)
-		if userErr != nil {
-			return nil, msgerr.New(userErr, "Could not find a user with the username")
+		user, err := r.hackerNews.GetUser(ctx, nodeID)
+		if err != nil {
+			errOnUser = err
+			goto itemResolver
 		}
 		return &model.User{UserResponse: user}, nil
 	}
+itemResolver:
 	idN, err := hackernews.GetIntID(nodeID)
 	if err != nil {
+		if errOnUser != nil {
+			return nil, msgerr.New(errOnUser, "Could not find a user with the username")
+		}
 		return nil, msgerr.New(err, "Invalid ID")
 	}
 	result, err := r.hackerNews.GetItem(ctx, idN)

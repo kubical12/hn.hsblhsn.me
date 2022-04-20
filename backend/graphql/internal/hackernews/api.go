@@ -102,11 +102,14 @@ func (h *HackerNews) GetTypedItem(ctx context.Context, typ ItemType, itemID stri
 func (h *HackerNews) GetItem(ctx context.Context, id int) (*ItemResponse, error) {
 	var (
 		endpoint = fmt.Sprintf("%s/v0/item/%d.json", host, id)
-		out      = new(ItemResponse)
-		err      = h.API(ctx, endpoint, out)
+		out      = (*ItemResponse)(nil)
+		err      = h.API(ctx, endpoint, &out)
 	)
 	if err != nil {
 		return nil, err
+	}
+	if out == nil {
+		return nil, ErrItemNotFound
 	}
 	out.Text, err = readerviews.TransformHTML(out.URL, strings.NewReader(out.Text))
 	if err != nil {
@@ -118,11 +121,14 @@ func (h *HackerNews) GetItem(ctx context.Context, id int) (*ItemResponse, error)
 func (h *HackerNews) GetUser(ctx context.Context, id string) (*UserResponse, error) {
 	var (
 		endpoint = fmt.Sprintf("%s/v0/user/%s.json", host, id)
-		out      = new(UserResponse)
-		err      = h.API(ctx, endpoint, out)
+		out      = (*UserResponse)(nil)
+		err      = h.API(ctx, endpoint, &out)
 	)
 	if err != nil {
 		return nil, err
+	}
+	if out == nil {
+		return nil, ErrItemNotFound
 	}
 	return out, nil
 }
