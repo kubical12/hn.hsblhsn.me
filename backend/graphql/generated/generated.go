@@ -45,6 +45,7 @@ type ResolverRoot interface {
 	PollOption() PollOptionResolver
 	Query() QueryResolver
 	Story() StoryResolver
+	User() UserResolver
 }
 
 type DirectiveRoot struct {
@@ -110,6 +111,17 @@ type ComplexityRoot struct {
 	}
 
 	JobEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
+	}
+
+	NodeConnection struct {
+		Edges      func(childComplexity int) int
+		PageInfo   func(childComplexity int) int
+		TotalCount func(childComplexity int) int
+	}
+
+	NodeEdge struct {
 		Cursor func(childComplexity int) int
 		Node   func(childComplexity int) int
 	}
@@ -223,24 +235,27 @@ type ComplexityRoot struct {
 		Delay      func(childComplexity int) int
 		ID         func(childComplexity int) int
 		Karma      func(childComplexity int) int
-		Submitted  func(childComplexity int) int
+		Submitted  func(childComplexity int, after *string, first *int) int
 	}
 }
 
 type CommentResolver interface {
 	Type(ctx context.Context, obj *model.Comment) (string, error)
+	By(ctx context.Context, obj *model.Comment) (*model.User, error)
 
 	Comments(ctx context.Context, obj *model.Comment, after *string, first *int) (*relays.Connection[*model.Comment], error)
 	Parent(ctx context.Context, obj *model.Comment) (string, error)
 }
 type JobResolver interface {
 	Type(ctx context.Context, obj *model.Job) (string, error)
+	By(ctx context.Context, obj *model.Job) (*model.User, error)
 }
 type OpenGraphResolver interface {
 	ID(ctx context.Context, obj *opengraph.OpenGraph) (string, error)
 }
 type PollResolver interface {
 	Type(ctx context.Context, obj *model.Poll) (string, error)
+	By(ctx context.Context, obj *model.Poll) (*model.User, error)
 
 	Comments(ctx context.Context, obj *model.Poll, after *string, first *int) (*relays.Connection[*model.Comment], error)
 
@@ -248,6 +263,7 @@ type PollResolver interface {
 }
 type PollOptionResolver interface {
 	Type(ctx context.Context, obj *model.PollOption) (string, error)
+	By(ctx context.Context, obj *model.PollOption) (*model.User, error)
 
 	Poll(ctx context.Context, obj *model.PollOption) (string, error)
 }
@@ -261,8 +277,14 @@ type QueryResolver interface {
 }
 type StoryResolver interface {
 	Type(ctx context.Context, obj *model.Story) (string, error)
+	By(ctx context.Context, obj *model.Story) (*model.User, error)
 
 	Comments(ctx context.Context, obj *model.Story, after *string, first *int) (*relays.Connection[*model.Comment], error)
+}
+type UserResolver interface {
+	DatabaseID(ctx context.Context, obj *model.User) (string, error)
+
+	Submitted(ctx context.Context, obj *model.User, after *string, first *int) (*relays.Connection[model.Node], error)
 }
 
 type executableSchema struct {
@@ -557,6 +579,41 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.JobEdge.Node(childComplexity), true
+
+	case "NodeConnection.edges":
+		if e.complexity.NodeConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.NodeConnection.Edges(childComplexity), true
+
+	case "NodeConnection.pageInfo":
+		if e.complexity.NodeConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.NodeConnection.PageInfo(childComplexity), true
+
+	case "NodeConnection.totalCount":
+		if e.complexity.NodeConnection.TotalCount == nil {
+			break
+		}
+
+		return e.complexity.NodeConnection.TotalCount(childComplexity), true
+
+	case "NodeEdge.cursor":
+		if e.complexity.NodeEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.NodeEdge.Cursor(childComplexity), true
+
+	case "NodeEdge.node":
+		if e.complexity.NodeEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.NodeEdge.Node(childComplexity), true
 
 	case "OpenGraph.description":
 		if e.complexity.OpenGraph.Description == nil {
@@ -1154,7 +1211,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.User.Submitted(childComplexity), true
+		args, err := ec.field_User_submitted_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.User.Submitted(childComplexity, args["after"].(*string), args["first"].(*int)), true
 
 	}
 	return 0, false
@@ -1221,7 +1283,7 @@ type Comment implements Node {
   id: ID!
   databaseId: Int!
   type: String!
-  by: String!
+  by: User!
   deleted: Boolean!
   dead: Boolean!
   time: Int!
@@ -1248,7 +1310,7 @@ type Job implements Node {
   databaseId: Int!
   deleted: Boolean!
   type: String!
-  by: String!
+  by: User!
   time: Int!
   dead: Boolean!
   text: String!
@@ -1284,47 +1346,47 @@ type OpenGraph {
 }
 `, BuiltIn: false},
 	{Name: "backend/graphql/schema/poll.graphqls", Input: `type Poll implements Node {
-    id: ID!
-    databaseId: Int!
-    deleted: Boolean!
-    type: String!
-    by: String!
-    time: Int!
-    dead: Boolean!
-    kids: [Int!]!
-    comments(after: Cursor, first: Int): CommentConnection!
+  id: ID!
+  databaseId: Int!
+  deleted: Boolean!
+  type: String!
+  by: User!
+  time: Int!
+  dead: Boolean!
+  kids: [Int!]!
+  comments(after: Cursor, first: Int): CommentConnection!
     @goField(forceResolver: true)
-    parts: [Int!]!
-    pollOptions(after: Cursor, first: Int): PollOptionConnection!
+  parts: [Int!]!
+  pollOptions(after: Cursor, first: Int): PollOptionConnection!
     @goField(forceResolver: true)
-    descendants: Int!
-    score: Int!
-    url: String!
-    title: String!
+  descendants: Int!
+  score: Int!
+  url: String!
+  title: String!
 }
 
 type PollOption implements Node {
-    id: ID!
-    databaseId: Int!
-    deleted: Boolean!
-    type: String!
-    by: String!
-    text: String!
-    time: Int!
-    dead: Boolean!
-    poll: ID!
-    score: Int!
+  id: ID!
+  databaseId: Int!
+  deleted: Boolean!
+  type: String!
+  by: User!
+  text: String!
+  time: Int!
+  dead: Boolean!
+  poll: ID!
+  score: Int!
 }
 
 type PollOptionConnection {
-    pageInfo: PageInfo!
-    edges: [PollOptionEdge!]!
-    totalCount: Int!
+  pageInfo: PageInfo!
+  edges: [PollOptionEdge!]!
+  totalCount: Int!
 }
 
 type PollOptionEdge {
-    node: PollOption
-    cursor: Cursor!
+  node: PollOption
+  cursor: Cursor!
 }
 `, BuiltIn: false},
 	{Name: "backend/graphql/schema/query.graphqls", Input: `type Query {
@@ -1352,7 +1414,7 @@ type Story implements Node {
   databaseId: Int!
   deleted: Boolean!
   type: String!
-  by: String!
+  by: User!
   time: Int!
   dead: Boolean!
   kids: [Int!]!
@@ -1367,31 +1429,45 @@ type Story implements Node {
   html: String
 }
 `, BuiltIn: false},
-	{Name: "backend/graphql/schema/types.graphqls", Input: `interface Node {
-  id: ID!
-}
-scalar Cursor
+	{Name: "backend/graphql/schema/types.graphqls", Input: `scalar Cursor
 type PageInfo {
-  hasNextPage: Boolean!
-  hasPreviousPage: Boolean!
-  pageCursor: Cursor!
-  startCursor: Cursor!
-  endCursor: Cursor!
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    pageCursor: Cursor!
+    startCursor: Cursor!
+    endCursor: Cursor!
 }
 
+interface Node {
+    id: ID!
+}
+
+type NodeConnection {
+    pageInfo: PageInfo!
+    edges: [NodeEdge!]!
+    totalCount: Int!
+}
+
+type NodeEdge {
+    node: Node
+    cursor: Cursor!
+}
+
+
 directive @goField(
-  forceResolver: Boolean
-  name: String
+    forceResolver: Boolean
+    name: String
 ) on INPUT_FIELD_DEFINITION | FIELD_DEFINITION
 `, BuiltIn: false},
-	{Name: "backend/graphql/schema/user.graphqls", Input: `type User {
-  id: ID!
-  databaseId: Int!
-  delay: Int!
-  created: Int!
-  karma: Int!
-  about: String!
-  submitted: [ID!]!
+	{Name: "backend/graphql/schema/user.graphqls", Input: `type User implements Node {
+    id: ID!
+    databaseId: String!
+    delay: Int!
+    created: Int!
+    karma: Int!
+    about: String!
+    submitted(after: Cursor, first: Int): NodeConnection!
+    @goField(forceResolver: true)
 }
 `, BuiltIn: false},
 }
@@ -1647,6 +1723,30 @@ func (ec *executionContext) field_Story_comments_args(ctx context.Context, rawAr
 	return args, nil
 }
 
+func (ec *executionContext) field_User_submitted_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 *string
+	if tmp, ok := rawArgs["after"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+		arg0, err = ec.unmarshalOCursor2ᚖstring(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["after"] = arg0
+	var arg1 *int
+	if tmp, ok := rawArgs["first"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+		arg1, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["first"] = arg1
+	return args, nil
+}
+
 func (ec *executionContext) field___Type_enumValues_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -1801,14 +1901,14 @@ func (ec *executionContext) _Comment_by(ctx context.Context, field graphql.Colle
 		Object:     "Comment",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.By, nil
+		return ec.resolvers.Comment().By(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1820,9 +1920,9 @@ func (ec *executionContext) _Comment_by(ctx context.Context, field graphql.Colle
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Comment_deleted(ctx context.Context, field graphql.CollectedField, obj *model.Comment) (ret graphql.Marshaler) {
@@ -2589,14 +2689,14 @@ func (ec *executionContext) _Job_by(ctx context.Context, field graphql.Collected
 		Object:     "Job",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.By, nil
+		return ec.resolvers.Job().By(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2608,9 +2708,9 @@ func (ec *executionContext) _Job_by(ctx context.Context, field graphql.Collected
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Job_time(ctx context.Context, field graphql.CollectedField, obj *model.Job) (ret graphql.Marshaler) {
@@ -2998,6 +3098,178 @@ func (ec *executionContext) _JobEdge_cursor(ctx context.Context, field graphql.C
 	}()
 	fc := &graphql.FieldContext{
 		Object:     "JobEdge",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Cursor, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNCursor2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _NodeConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *relays.Connection[model.Node]) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "NodeConnection",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.PageInfo, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*relays.PageInfo)
+	fc.Result = res
+	return ec.marshalNPageInfo2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐPageInfo(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _NodeConnection_edges(ctx context.Context, field graphql.CollectedField, obj *relays.Connection[model.Node]) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "NodeConnection",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Edges, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*relays.Edge[model.Node])
+	fc.Result = res
+	return ec.marshalNNodeEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐEdgeᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _NodeConnection_totalCount(ctx context.Context, field graphql.CollectedField, obj *relays.Connection[model.Node]) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "NodeConnection",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalCount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _NodeEdge_node(ctx context.Context, field graphql.CollectedField, obj *relays.Edge[model.Node]) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "NodeEdge",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Node, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(model.Node)
+	fc.Result = res
+	return ec.marshalONode2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐNode(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _NodeEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *relays.Edge[model.Node]) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "NodeEdge",
 		Field:      field,
 		Args:       nil,
 		IsMethod:   false,
@@ -3673,14 +3945,14 @@ func (ec *executionContext) _Poll_by(ctx context.Context, field graphql.Collecte
 		Object:     "Poll",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.By, nil
+		return ec.resolvers.Poll().By(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -3692,9 +3964,9 @@ func (ec *executionContext) _Poll_by(ctx context.Context, field graphql.Collecte
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Poll_time(ctx context.Context, field graphql.CollectedField, obj *model.Poll) (ret graphql.Marshaler) {
@@ -4212,14 +4484,14 @@ func (ec *executionContext) _PollOption_by(ctx context.Context, field graphql.Co
 		Object:     "PollOption",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.By, nil
+		return ec.resolvers.PollOption().By(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -4231,9 +4503,9 @@ func (ec *executionContext) _PollOption_by(ctx context.Context, field graphql.Co
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _PollOption_text(ctx context.Context, field graphql.CollectedField, obj *model.PollOption) (ret graphql.Marshaler) {
@@ -5054,14 +5326,14 @@ func (ec *executionContext) _Story_by(ctx context.Context, field graphql.Collect
 		Object:     "Story",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.By, nil
+		return ec.resolvers.Story().By(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -5073,9 +5345,9 @@ func (ec *executionContext) _Story_by(ctx context.Context, field graphql.Collect
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Story_time(ctx context.Context, field graphql.CollectedField, obj *model.Story) (ret graphql.Marshaler) {
@@ -5682,14 +5954,14 @@ func (ec *executionContext) _User_databaseId(ctx context.Context, field graphql.
 		Object:     "User",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.DatabaseID, nil
+		return ec.resolvers.User().DatabaseID(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -5701,9 +5973,9 @@ func (ec *executionContext) _User_databaseId(ctx context.Context, field graphql.
 		}
 		return graphql.Null
 	}
-	res := resTmp.(int)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalNInt2int(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _User_delay(ctx context.Context, field graphql.CollectedField, obj *model.User) (ret graphql.Marshaler) {
@@ -5857,14 +6129,21 @@ func (ec *executionContext) _User_submitted(ctx context.Context, field graphql.C
 		Object:     "User",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_User_submitted_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Submitted, nil
+		return ec.resolvers.User().Submitted(rctx, obj, args["after"].(*string), args["first"].(*int))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -5876,9 +6155,9 @@ func (ec *executionContext) _User_submitted(ctx context.Context, field graphql.C
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]string)
+	res := resTmp.(*relays.Connection[model.Node])
 	fc.Result = res
-	return ec.marshalNID2ᚕstringᚄ(ctx, field.Selections, res)
+	return ec.marshalNNodeConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) ___Directive_name(ctx context.Context, field graphql.CollectedField, obj *introspection.Directive) (ret graphql.Marshaler) {
@@ -7110,6 +7389,13 @@ func (ec *executionContext) _Node(ctx context.Context, sel ast.SelectionSet, obj
 			return graphql.Null
 		}
 		return ec._Story(ctx, sel, obj)
+	case model.User:
+		return ec._User(ctx, sel, &obj)
+	case *model.User:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._User(ctx, sel, obj)
 	default:
 		panic(fmt.Errorf("unexpected type %T", obj))
 	}
@@ -7170,15 +7456,25 @@ func (ec *executionContext) _Comment(ctx context.Context, sel ast.SelectionSet, 
 
 			})
 		case "by":
+			field := field
+
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Comment_by(ctx, field, obj)
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Comment_by(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
 			}
 
-			out.Values[i] = innerFunc(ctx)
+			out.Concurrently(i, func() graphql.Marshaler {
+				return innerFunc(ctx)
 
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
-			}
+			})
 		case "deleted":
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Comment_deleted(ctx, field, obj)
@@ -7511,15 +7807,25 @@ func (ec *executionContext) _Job(ctx context.Context, sel ast.SelectionSet, obj 
 
 			})
 		case "by":
+			field := field
+
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Job_by(ctx, field, obj)
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Job_by(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
 			}
 
-			out.Values[i] = innerFunc(ctx)
+			out.Concurrently(i, func() graphql.Marshaler {
+				return innerFunc(ctx)
 
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
-			}
+			})
 		case "time":
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Job_time(ctx, field, obj)
@@ -7686,6 +7992,95 @@ func (ec *executionContext) _JobEdge(ctx context.Context, sel ast.SelectionSet, 
 		case "cursor":
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._JobEdge_cursor(ctx, field, obj)
+			}
+
+			out.Values[i] = innerFunc(ctx)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var nodeConnectionImplementors = []string{"NodeConnection"}
+
+func (ec *executionContext) _NodeConnection(ctx context.Context, sel ast.SelectionSet, obj *relays.Connection[model.Node]) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, nodeConnectionImplementors)
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("NodeConnection")
+		case "pageInfo":
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._NodeConnection_pageInfo(ctx, field, obj)
+			}
+
+			out.Values[i] = innerFunc(ctx)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "edges":
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._NodeConnection_edges(ctx, field, obj)
+			}
+
+			out.Values[i] = innerFunc(ctx)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "totalCount":
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._NodeConnection_totalCount(ctx, field, obj)
+			}
+
+			out.Values[i] = innerFunc(ctx)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var nodeEdgeImplementors = []string{"NodeEdge"}
+
+func (ec *executionContext) _NodeEdge(ctx context.Context, sel ast.SelectionSet, obj *relays.Edge[model.Node]) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, nodeEdgeImplementors)
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("NodeEdge")
+		case "node":
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._NodeEdge_node(ctx, field, obj)
+			}
+
+			out.Values[i] = innerFunc(ctx)
+
+		case "cursor":
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._NodeEdge_cursor(ctx, field, obj)
 			}
 
 			out.Values[i] = innerFunc(ctx)
@@ -7940,15 +8335,25 @@ func (ec *executionContext) _Poll(ctx context.Context, sel ast.SelectionSet, obj
 
 			})
 		case "by":
+			field := field
+
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Poll_by(ctx, field, obj)
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Poll_by(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
 			}
 
-			out.Values[i] = innerFunc(ctx)
+			out.Concurrently(i, func() graphql.Marshaler {
+				return innerFunc(ctx)
 
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
-			}
+			})
 		case "time":
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Poll_time(ctx, field, obj)
@@ -8141,15 +8546,25 @@ func (ec *executionContext) _PollOption(ctx context.Context, sel ast.SelectionSe
 
 			})
 		case "by":
+			field := field
+
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._PollOption_by(ctx, field, obj)
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._PollOption_by(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
 			}
 
-			out.Values[i] = innerFunc(ctx)
+			out.Concurrently(i, func() graphql.Marshaler {
+				return innerFunc(ctx)
 
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
-			}
+			})
 		case "text":
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._PollOption_text(ctx, field, obj)
@@ -8550,15 +8965,25 @@ func (ec *executionContext) _Story(ctx context.Context, sel ast.SelectionSet, ob
 
 			})
 		case "by":
+			field := field
+
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Story_by(ctx, field, obj)
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Story_by(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
 			}
 
-			out.Values[i] = innerFunc(ctx)
+			out.Concurrently(i, func() graphql.Marshaler {
+				return innerFunc(ctx)
 
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
-			}
+			})
 		case "time":
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Story_time(ctx, field, obj)
@@ -8793,7 +9218,7 @@ func (ec *executionContext) _StoryEdge(ctx context.Context, sel ast.SelectionSet
 	return out
 }
 
-var userImplementors = []string{"User"}
+var userImplementors = []string{"User", "Node"}
 
 func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj *model.User) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, userImplementors)
@@ -8811,18 +9236,28 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			out.Values[i] = innerFunc(ctx)
 
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "databaseId":
+			field := field
+
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._User_databaseId(ctx, field, obj)
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._User_databaseId(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
 			}
 
-			out.Values[i] = innerFunc(ctx)
+			out.Concurrently(i, func() graphql.Marshaler {
+				return innerFunc(ctx)
 
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
+			})
 		case "delay":
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._User_delay(ctx, field, obj)
@@ -8831,7 +9266,7 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			out.Values[i] = innerFunc(ctx)
 
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "created":
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
@@ -8841,7 +9276,7 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			out.Values[i] = innerFunc(ctx)
 
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "karma":
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
@@ -8851,7 +9286,7 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			out.Values[i] = innerFunc(ctx)
 
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "about":
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
@@ -8861,18 +9296,28 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			out.Values[i] = innerFunc(ctx)
 
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "submitted":
+			field := field
+
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._User_submitted(ctx, field, obj)
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._User_submitted(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
 			}
 
-			out.Values[i] = innerFunc(ctx)
+			out.Concurrently(i, func() graphql.Marshaler {
+				return innerFunc(ctx)
 
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
+			})
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -9420,38 +9865,6 @@ func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.Selec
 	return res
 }
 
-func (ec *executionContext) unmarshalNID2ᚕstringᚄ(ctx context.Context, v interface{}) ([]string, error) {
-	var vSlice []interface{}
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
-	var err error
-	res := make([]string, len(vSlice))
-	for i := range vSlice {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNID2string(ctx, vSlice[i])
-		if err != nil {
-			return nil, err
-		}
-	}
-	return res, nil
-}
-
-func (ec *executionContext) marshalNID2ᚕstringᚄ(ctx context.Context, sel ast.SelectionSet, v []string) graphql.Marshaler {
-	ret := make(graphql.Array, len(v))
-	for i := range v {
-		ret[i] = ec.marshalNID2string(ctx, sel, v[i])
-	}
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
-}
-
 func (ec *executionContext) unmarshalNInt2int(ctx context.Context, v interface{}) (int, error) {
 	res, err := graphql.UnmarshalInt(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -9565,6 +9978,74 @@ func (ec *executionContext) marshalNJobEdge2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsb
 		return graphql.Null
 	}
 	return ec._JobEdge(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNNodeConnection2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx context.Context, sel ast.SelectionSet, v relays.Connection[model.Node]) graphql.Marshaler {
+	return ec._NodeConnection(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNNodeConnection2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐConnection(ctx context.Context, sel ast.SelectionSet, v *relays.Connection[model.Node]) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._NodeConnection(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNNodeEdge2ᚕᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*relays.Edge[model.Node]) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNNodeEdge2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐEdge(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalNNodeEdge2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐEdge(ctx context.Context, sel ast.SelectionSet, v *relays.Edge[model.Node]) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._NodeEdge(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNPageInfo2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋinternalᚋrelaysᚐPageInfo(ctx context.Context, sel ast.SelectionSet, v *relays.PageInfo) graphql.Marshaler {
@@ -9726,6 +10207,20 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) marshalNUser2githubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v model.User) graphql.Marshaler {
+	return ec._User(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋhsblhsnᚋhnᚗhsblhsnᚗmeᚋbackendᚋgraphqlᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._User(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalN__Directive2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐDirective(ctx context.Context, sel ast.SelectionSet, v introspection.Directive) graphql.Marshaler {

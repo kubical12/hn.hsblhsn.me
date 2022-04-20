@@ -1,16 +1,29 @@
-interface Node {
-  id: ID!
-}
 scalar Cursor
 type PageInfo {
-  hasNextPage: Boolean!
-  hasPreviousPage: Boolean!
-  pageCursor: Cursor!
-  startCursor: Cursor!
-  endCursor: Cursor!
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    pageCursor: Cursor!
+    startCursor: Cursor!
+    endCursor: Cursor!
 }
 
+interface Node {
+    id: ID!
+}
+
+type NodeConnection {
+    pageInfo: PageInfo!
+    edges: [NodeEdge!]!
+    totalCount: Int!
+}
+
+type NodeEdge {
+    node: Node
+    cursor: Cursor!
+}
+
+
 directive @goField(
-  forceResolver: Boolean
-  name: String
+    forceResolver: Boolean
+    name: String
 ) on INPUT_FIELD_DEFINITION | FIELD_DEFINITION

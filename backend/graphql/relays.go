@@ -56,3 +56,14 @@ func (r *Resolver) NewRelayJobs(ctx context.Context, ids []int) *relays.Resolver
 		return &model.Job{ItemResponse: out}, nil
 	})
 }
+
+// NewRelaySubmitted returns a relay resolver for submitted nodes.
+func (r *Resolver) NewRelaySubmitted(ctx context.Context, ids []int) *relays.Resolver[int, model.Node] {
+	return relays.NewResolver(ids, func(id int) (model.Node, error) {
+		out, err := r.hackerNews.GetItem(ctx, id)
+		if err != nil {
+			return nil, errors.Wrap(err, "graph: could not get user")
+		}
+		return ItemToNode(out)
+	})
+}

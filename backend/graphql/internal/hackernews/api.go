@@ -114,3 +114,15 @@ func (h *HackerNews) GetItem(ctx context.Context, id int) (*ItemResponse, error)
 	}
 	return out, nil
 }
+
+func (h *HackerNews) GetUser(ctx context.Context, id string) (*UserResponse, error) {
+	var (
+		endpoint = fmt.Sprintf("%s/v0/user/%s.json", host, id)
+		out      = new(UserResponse)
+		err      = h.API(ctx, endpoint, out)
+	)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}

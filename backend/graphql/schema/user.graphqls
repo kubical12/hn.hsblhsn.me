@@ -1,9 +1,10 @@
-type User {
-  id: ID!
-  databaseId: Int!
-  delay: Int!
-  created: Int!
-  karma: Int!
-  about: String!
-  submitted: [ID!]!
+type User implements Node {
+    id: ID!
+    databaseId: String!
+    delay: Int!
+    created: Int!
+    karma: Int!
+    about: String!
+    submitted(after: Cursor, first: Int): NodeConnection!
+    @goField(forceResolver: true)
 }

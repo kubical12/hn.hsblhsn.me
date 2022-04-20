@@ -19,7 +19,6 @@ require (
 	github.com/vektah/gqlparser/v2 v2.4.1
 	go.uber.org/fx v1.17.1
 	go.uber.org/zap v1.21.0
-	golang.org/x/exp v0.0.0-20200224162631-6cc2880d07d6
 	google.golang.org/grpc v1.45.0
 	google.golang.org/protobuf v1.28.0
 )

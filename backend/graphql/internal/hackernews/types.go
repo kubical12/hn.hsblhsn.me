@@ -1,6 +1,7 @@
 package hackernews
 
 import (
+	"regexp"
 	"strconv"
 
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/relays"
@@ -50,6 +51,17 @@ func (i *ItemResponse) ID() string {
 
 func (ItemResponse) IsNode() {}
 
+type UserResponse struct {
+	ID        string
+	About     string
+	Submitted []int
+	Created   int
+	Delay     int
+	Karma     int
+}
+
+func (UserResponse) IsNode() {}
+
 func NewID(id int) string {
 	return relays.NewID(id)
 }
@@ -60,4 +72,10 @@ func GetIntID(id string) (int, error) {
 		return -1, errors.Wrap(err, "hackernews: invalid ID")
 	}
 	return idN, nil
+}
+
+// IsUserName returns true if the given string is a valid username.
+func IsUserName(str string) bool {
+	rxUserName := regexp.MustCompile(`^[a-zA-Z0-9_]{3,20}$`)
+	return rxUserName.MatchString(str)
 }

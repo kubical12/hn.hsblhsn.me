@@ -5,8 +5,6 @@ package graphql
 
 import (
 	"context"
-	"errors"
-	"fmt"
 
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/generated"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/hackernews"
@@ -16,7 +14,15 @@ import (
 )
 
 func (r *queryResolver) Node(ctx context.Context, id string) (model.Node, error) {
-	idN, err := hackernews.GetIntID(id)
+	nodeID := id
+	if hackernews.IsUserName(nodeID) {
+		user, userErr := r.hackerNews.GetUser(ctx, nodeID)
+		if userErr != nil {
+			return nil, msgerr.New(userErr, "Could not find a user with the username")
+		}
+		return &model.User{UserResponse: user}, nil
+	}
+	idN, err := hackernews.GetIntID(nodeID)
 	if err != nil {
 		return nil, msgerr.New(err, "Invalid ID")
 	}
@@ -24,22 +30,7 @@ func (r *queryResolver) Node(ctx context.Context, id string) (model.Node, error)
 	if err != nil {
 		return nil, msgerr.New(err, "Could not get item")
 	}
-	switch result.Type {
-	case hackernews.ItemTypeStory:
-		return &model.Story{ItemResponse: result}, nil
-	case hackernews.ItemTypeComment:
-		return &model.Comment{ItemResponse: result}, nil
-	case hackernews.ItemTypeJob:
-		return &model.Job{ItemResponse: result}, nil
-	case hackernews.ItemTypePoll:
-		return &model.Poll{ItemResponse: result}, nil
-	case hackernews.ItemTypePollOption:
-		return &model.PollOption{ItemResponse: result}, nil
-	default:
-		msg := fmt.Sprintf("unknown item type: %q", result.Type)
-		// nolint:goerr113 // we want to capture the result type here.
-		return nil, msgerr.New(errors.New(msg), "Invalid item type received")
-	}
+	return ItemToNode(result)
 }
 
 func (r *queryResolver) TopStories(ctx context.Context, after *string, first *int) (*relays.Connection[*model.Story], error) {

@@ -5,13 +5,3 @@ package model
 type Node interface {
 	IsNode()
 }
-
-type User struct {
-	ID         string   `json:"id"`
-	DatabaseID int      `json:"databaseId"`
-	Delay      int      `json:"delay"`
-	Created    int      `json:"created"`
-	Karma      int      `json:"karma"`
-	About      string   `json:"about"`
-	Submitted  []string `json:"submitted"`
-}

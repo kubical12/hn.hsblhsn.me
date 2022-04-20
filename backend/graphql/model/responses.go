@@ -30,6 +30,10 @@ type PollOption struct {
 	*hackernews.ItemResponse
 }
 
+type User struct {
+	*hackernews.UserResponse
+}
+
 type PageInfo = relays.PageInfo
 
 type (
@@ -50,6 +54,11 @@ type (
 type (
 	JobConnection = relays.Connection[*Job]
 	JobEdge       = relays.Edge[*Job]
+)
+
+type (
+	NodeConnection = relays.Connection[Node]
+	NodeEdge       = relays.Edge[Node]
 )
 
 type (
