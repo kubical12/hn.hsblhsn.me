@@ -5,6 +5,7 @@ package graphql
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/generated"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/algolia"
@@ -44,21 +45,22 @@ itemResolver:
 
 func (r *queryResolver) Search(ctx context.Context, query string, after *string, first *int) (*relays.Connection[model.Node], error) {
 	var (
-		page    = new(string)
-		perPage = new(int)
+		page    = 1
+		perPage = 10
 	)
-	*page = "1"
-	*perPage = 10
-
 	if after != nil {
-		page = after
+		afterN, err := strconv.Atoi(*after)
+		if err != nil {
+			return nil, msgerr.New(err, "Invalid after")
+		}
+		page = afterN + 1
 	}
 	if first != nil {
-		perPage = first
+		perPage = *first
 	}
 	result, err := r.algolia.Search(ctx, "story", query, &algolia.PaginationInput{
-		Page:    *page,
-		PerPage: *perPage,
+		Page:    page,
+		PerPage: perPage,
 	})
 	if err != nil {
 		return nil, msgerr.New(err, "Could not search")

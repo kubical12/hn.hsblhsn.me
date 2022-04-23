@@ -23,19 +23,15 @@ func NewAlgolia(client *httpclient.CachedClient) *Algolia {
 }
 
 type PaginationInput struct {
-	Page    string
+	Page    int
 	PerPage int
 }
 
 func (a *Algolia) Search(ctx context.Context, typ string, query string, pagination *PaginationInput) (*Response, error) {
-	page, err := strconv.Atoi(pagination.Page)
-	if err != nil {
-		return nil, errors.Wrap(err, "algolia: invalid page")
-	}
+	page := pagination.Page
 	if page < 1 || page > 100 {
 		page = 1
 	}
-
 	first := pagination.PerPage
 	if first < 1 || first > 10 {
 		first = 10
