@@ -3,7 +3,7 @@ import { Container, PaddedBlock } from '../../Components/Layout'
 import { useSearchParams } from 'react-router-dom'
 import { LoadingScreen } from './LoadingScreen'
 import { ErrorScreen } from './ErrorScreen'
-import { Fragment, useCallback, useEffect, useState } from 'react'
+import { FormEvent, Fragment, useCallback, useEffect, useState } from 'react'
 import { BaseInput } from 'baseui/input'
 import {
   ITEM_CARD_LIST_NODE_FIELDS,
@@ -150,12 +150,19 @@ interface SearchBarProps {
 
 const SearchBar = ({ value, onChange }: SearchBarProps) => {
   const [css, theme] = useStyletron()
+  const focusOut = useCallback((e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const el = document.getElementById('search-input')
+    if (el) {
+      el.blur()
+    }
+    return false
+  }, [])
   return (
     <Block
       className={css({
         textAlign: 'center',
-        paddingTop: theme.sizing.scale1200,
-        paddingBottom: theme.sizing.scale1200,
+        paddingTop: theme.sizing.scale300,
       })}
     >
       <HeadingXXLarge
@@ -166,25 +173,28 @@ const SearchBar = ({ value, onChange }: SearchBarProps) => {
       >
         Search HackerNews!
       </HeadingXXLarge>
-      <FormControl
-        //label="Search HackerNews"
-        caption="All search results are sorted by popularity."
-      >
-        <BaseInput
-          name="q"
-          placeholder="Type to search..."
-          value={value}
-          onChange={(e) => onChange(e.currentTarget.value)}
-          autoFocus={true}
-          overrides={{
-            InputContainer: {
-              style: ({ $theme }) => ({
-                border: `2px solid  ${$theme.colors.accent}`,
-              }),
-            },
-          }}
-        />
-      </FormControl>
+      <form onSubmit={focusOut} onReset={focusOut}>
+        <FormControl
+          //label="Search HackerNews"
+          caption="All search results are sorted by popularity."
+        >
+          <BaseInput
+            id="search-input"
+            name="q"
+            placeholder="Type to search..."
+            value={value}
+            onChange={(e) => onChange(e.currentTarget.value)}
+            autoFocus={true}
+            overrides={{
+              InputContainer: {
+                style: ({ $theme }) => ({
+                  border: `2px solid  ${$theme.colors.accent}`,
+                }),
+              },
+            }}
+          />
+        </FormControl>
+      </form>
     </Block>
   )
 }
