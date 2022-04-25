@@ -15,6 +15,7 @@ import { useStyletron } from 'baseui'
 import { FormControl } from 'baseui/form-control'
 import AwesomeDebouncePromise from 'awesome-debounce-promise'
 import { HeadingXXLarge } from 'baseui/typography'
+import { Head } from './Head'
 
 const PAGE_INFO_FIELDS = gql`
   fragment PageInfoFields on PageInfo {
@@ -118,11 +119,14 @@ const SearchPage: React.FC = () => {
     children = <ErrorScreen error={error} />
   } else if (results) {
     children = (
-      <SearchResults
-        onLoadMore={onLoadMore}
-        loading={isLoading}
-        results={results.items}
-      />
+      <Fragment>
+        <Head />
+        <SearchResults
+          onLoadMore={onLoadMore}
+          loading={isLoading}
+          results={results.items}
+        />
+      </Fragment>
     )
   }
   return (
