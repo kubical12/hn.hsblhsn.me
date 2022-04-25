@@ -4,7 +4,7 @@ const Head: React.FC = () => {
   return (
     <SEO
       title="Search | Hacker News"
-      description=""
+      description="Hacker News Search, millions articles and comments at your fingertips."
       imageUrl={undefined}
       url={`/search`}
     />
