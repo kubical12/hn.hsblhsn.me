@@ -3,6 +3,7 @@ WORKDIR /frontend
 COPY package.json package.json
 COPY package-lock.json package-lock.json
 COPY Makefile Makefile
+COPY patches patches
 RUN make dep-frontend
 COPY . .
 RUN make build-frontend
