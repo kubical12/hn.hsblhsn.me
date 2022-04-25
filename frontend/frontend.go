@@ -2,25 +2,20 @@ package frontend
 
 import (
 	"embed"
-	"fmt"
-	"io"
 	"io/fs"
 	"net/http"
 	"path/filepath"
-	"strings"
 
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 )
 
 // RegisterRoutes registers routes for the server.
-func RegisterRoutes(r *mux.Router, logger *zap.Logger) {
+func RegisterRoutes(r *mux.Router) {
 	h := &staticFileServer{
 		FS: newSpaFS(assetFS, "build"),
 	}
-	r.PathPrefix("/").
-		Handler(PrerenderIfBot(h, logger))
+	r.PathPrefix("/").Handler(h)
 }
 
 // spaFS is an optimized filesystem implementation for single page application.
@@ -61,67 +56,4 @@ type staticFileServer struct {
 // ServeHTTP implements http.Handler.
 func (f *staticFileServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	http.FileServer(http.FS(f)).ServeHTTP(w, r)
-}
-
-func PrerenderIfBot(next http.Handler, logger *zap.Logger) http.Handler {
-	return http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
-		// pass all non-bot requests.
-		if !isBot(request.UserAgent()) {
-			next.ServeHTTP(response, request)
-			return
-		}
-
-		// process bot requests here.
-		request.URL.Host = request.Host
-		request.URL.Scheme = "https"
-		endpoint := fmt.Sprintf("https://service.prerender.cloud/%s", request.URL.String())
-		logger.Debug("frontend: prerendering endpoint", zap.String("url", endpoint))
-
-		req, err := http.NewRequestWithContext(request.Context(), http.MethodGet, endpoint, nil)
-		if err != nil {
-			logger.Error("frontend: could not create request", zap.Error(err))
-			next.ServeHTTP(response, request)
-			return
-		}
-
-		resp, err := http.DefaultClient.Do(req)
-		if err != nil {
-			logger.Error("frontend: could not prerender", zap.Error(err))
-			next.ServeHTTP(response, request)
-			return
-		}
-		defer func(Body io.ReadCloser) {
-			_ = Body.Close()
-		}(resp.Body)
-		if resp.StatusCode != http.StatusOK {
-			logger.Error("frontend: prerender failed", zap.Int("status", resp.StatusCode))
-			next.ServeHTTP(response, request)
-			return
-		}
-		response.WriteHeader(resp.StatusCode)
-		_, _ = io.Copy(response, resp.Body)
-	})
-}
-
-func isBot(useragent string) bool {
-	useragent = strings.ToLower(useragent)
-	// google bot can render react page.
-	// no need to prerender.
-	if strings.Contains(useragent, "+http://www.google.com/bot.html") {
-		return false
-	}
-	bots := []string{
-		"bot",
-		"facebookexternalhit",
-		"embedly",
-		"wordpress",
-		"curl",
-		"Go-http-client",
-	}
-	for _, bot := range bots {
-		if strings.Contains(useragent, bot) {
-			return true
-		}
-	}
-	return false
 }
