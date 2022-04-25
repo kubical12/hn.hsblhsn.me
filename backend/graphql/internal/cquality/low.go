@@ -26,6 +26,8 @@ func initLowQualityIndicators() {
 		"Checking your browser before accessing",
 		// nytimes
 		"Please enable JS and disable any ad blocker",
+		// reddit
+		"whoa there, pardner!",
 	}
 	lowQualityIndicators = NewIndicators(list)
 }
