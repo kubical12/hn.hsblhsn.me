@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet-async'
 import config from '../../app.config'
-import defaultOGImg from '../../og-banner.jpg'
 
 interface SEOProps {
   title: string
@@ -10,7 +9,10 @@ interface SEOProps {
 }
 
 const SEO: React.FC<SEOProps> = (props: SEOProps) => {
-  const imageUrl = props.imageUrl || `${config.host}${defaultOGImg}`
+  let imageUrl = props.imageUrl
+  if (!imageUrl || imageUrl.length === 0) {
+    imageUrl = `${config.host}/og-banner.jpg`
+  }
   return (
     <Helmet>
       <title>{props.title}</title>
