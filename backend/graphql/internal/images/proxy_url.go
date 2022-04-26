@@ -10,6 +10,9 @@ import (
 )
 
 func ProxiedURL(src string, size ImageSize) string {
+	if strings.HasPrefix(src, "data:image") {
+		return src
+	}
 	if !featureflags.IsOn(featureflags.FeatureImgProxy, false) {
 		return src
 	}
