@@ -32,7 +32,7 @@ func NewCachedClient(httpClient *http.Client, cache caches.Cache, logger *zap.Lo
 	}
 }
 
-func (c *CachedClient) Get(ctx context.Context, uri string) (*http.Response, error) {
+func (c *CachedClient) Get(ctx context.Context, uri string, opts ...FilterOption) (*http.Response, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, uri, nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "httpclient: could not create request")
@@ -40,6 +40,11 @@ func (c *CachedClient) Get(ctx context.Context, uri string) (*http.Response, err
 	resp, err := c.Do(req)
 	if err != nil {
 		return nil, errors.Wrap(err, "httpclient: could not send request")
+	}
+	for _, v := range opts {
+		if err := v.apply(resp); err != nil {
+			return nil, errors.Wrap(err, "httpclient: response is filtered")
+		}
 	}
 	return resp, nil
 }

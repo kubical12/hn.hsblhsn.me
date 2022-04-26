@@ -58,7 +58,10 @@ func (s *ExternalContentLoader) getContentFromURL(ctx context.Context) error {
 	var err error
 	s.once.Do(func() {
 		var resp *http.Response
-		resp, err = client.Get(ctx, s.url)
+		resp, err = client.Get(ctx, s.url, httpclient.WithAcceptedContentTypes([]string{
+			"text/html",
+			"text/plain",
+		}))
 		if err != nil {
 			return
 		}

@@ -13,6 +13,7 @@ linters-settings:
     enable-all: true
   wrapcheck:
     ignoreSigs:
+      - "errors.Wrapf("
       - "errors.Wrap("
       - "errors.New("
       - "errors.Errorf("
