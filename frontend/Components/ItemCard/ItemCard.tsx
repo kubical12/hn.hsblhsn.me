@@ -20,15 +20,7 @@ const ItemCard: React.FC<ItemCardProps> = ({ item }: ItemCardProps) => {
   const [, theme] = useStyletron()
   const thumbnail = getBestImage(item.openGraph?.image)
   return (
-    <Card
-      overrides={{
-        Root: {
-          style: {
-            backgroundColor: theme.colors.backgroundSecondary,
-          },
-        },
-      }}
-    >
+    <Card>
       <LabelXSmall color={theme.colors.contentTertiary}>
         <a href={getLink(item.id, item.url)} target="_blank" rel="noreferrer">
           {getHost(item.id, item.url)}

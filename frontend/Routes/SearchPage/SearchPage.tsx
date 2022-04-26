@@ -14,7 +14,7 @@ import { ConnectionT, Story } from '../../Types'
 import { useStyletron } from 'baseui'
 import { FormControl } from 'baseui/form-control'
 import AwesomeDebouncePromise from 'awesome-debounce-promise'
-import { HeadingXXLarge } from 'baseui/typography'
+import { HeadingXXLarge, ParagraphMedium } from 'baseui/typography'
 import { Head } from './Head'
 
 const PAGE_INFO_FIELDS = gql`
@@ -188,7 +188,7 @@ const SearchBar = ({ value, onChange }: SearchBarProps) => {
             overrides={{
               InputContainer: {
                 style: ({ $theme }) => ({
-                  border: `2px solid  ${$theme.colors.accent}`,
+                  border: `2px solid  ${$theme.colors.borderOpaque}`,
                 }),
               },
             }}
@@ -210,6 +210,25 @@ const SearchResults = ({
   loading,
   results,
 }: SearchResultsProps) => {
+  const [css, theme] = useStyletron()
+  if (results && results.edges.length === 0) {
+    return (
+      <PaddedBlock>
+        <ParagraphMedium
+          className={css({
+            textAlign: 'center',
+            color: theme.colors.contentSecondary,
+          })}
+        >
+          :(
+          <br />
+          No results found.
+          <br />
+          Try a different search term.
+        </ParagraphMedium>
+      </PaddedBlock>
+    )
+  }
   return (
     <PaginatedItemCardList
       items={results}

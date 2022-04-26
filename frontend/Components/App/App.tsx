@@ -9,25 +9,12 @@ const primitives = {
 const LIGHT_THEME = createLightTheme(primitives)
 const DARK_THEME = createDarkTheme(primitives)
 const StyledAppShell = styled(Block, ({ $theme }) => ({
-  backgroundColor: $theme.colors.backgroundSecondary,
+  backgroundColor: $theme.colors.backgroundPrimary,
   color: $theme.colors.contentPrimary,
   overflow: 'hidden',
   minHeight: '100vh',
   minWidth: '100vw',
 }))
-
-interface AppProps {
-  children: React.ReactNode
-}
-
-const App: React.FC<AppProps> = ({ children }: AppProps) => {
-  const isDark = useDarkMode()
-  return (
-    <BaseProvider theme={isDark ? DARK_THEME : LIGHT_THEME}>
-      <StyledAppShell>{children}</StyledAppShell>
-    </BaseProvider>
-  )
-}
 
 function useDarkMode() {
   const [isDark, setIsDark] = useState(
@@ -46,6 +33,19 @@ function useDarkMode() {
     }
   }, [])
   return isDark
+}
+
+interface AppProps {
+  children: React.ReactNode
+}
+
+const App: React.FC<AppProps> = ({ children }: AppProps) => {
+  const isDark = useDarkMode()
+  return (
+    <BaseProvider theme={isDark ? DARK_THEME : LIGHT_THEME}>
+      <StyledAppShell>{children}</StyledAppShell>
+    </BaseProvider>
+  )
 }
 
 export { App }

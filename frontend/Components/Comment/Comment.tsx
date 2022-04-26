@@ -44,11 +44,13 @@ const Comment: React.FC<CommentProps> = ({ comment }: CommentProps) => {
                 borderRadius: $theme.borders.radius300,
                 cursor: 'pointer',
                 backgroundColor: isExpanded
-                  ? $theme.colors.backgroundSecondary
-                  : $theme.colors.backgroundTertiary,
-                border: `2px solid transparent`,
+                  ? $theme.colors.backgroundPrimary
+                  : $theme.colors.backgroundSecondary,
+                border: isExpanded
+                  ? 'none'
+                  : `2px solid ${$theme.colors.borderOpaque}`,
                 opacity: isExpanded ? 1 : 0.5,
-                transition: 'border 0.5s ease-in-out',
+                transition: 'border-color 0.5s ease-in-out',
               }
             },
           },
