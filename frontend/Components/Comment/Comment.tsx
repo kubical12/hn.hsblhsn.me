@@ -47,7 +47,7 @@ const Comment: React.FC<CommentProps> = ({ comment }: CommentProps) => {
                   ? $theme.colors.backgroundPrimary
                   : $theme.colors.backgroundSecondary,
                 border: isExpanded
-                  ? 'none'
+                  ? `2px solid transparent`
                   : `2px solid ${$theme.colors.borderOpaque}`,
                 opacity: isExpanded ? 1 : 0.5,
                 transition: 'border-color 0.5s ease-in-out',
