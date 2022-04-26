@@ -3,20 +3,13 @@ import { Container, PaddedBlock } from '../../Components/Layout'
 import { useSearchParams } from 'react-router-dom'
 import { LoadingScreen } from './LoadingScreen'
 import { ErrorScreen } from './ErrorScreen'
-import { FormEvent, Fragment, useCallback, useEffect, useState } from 'react'
-import { Input } from 'baseui/input'
-import {
-  ITEM_CARD_LIST_NODE_FIELDS,
-  PaginatedItemCardList,
-} from '../../Components/ItemCardList'
+import { Fragment, useCallback, useEffect, useState } from 'react'
+import { ITEM_CARD_LIST_NODE_FIELDS } from '../../Components/ItemCardList'
 import { gql, useQuery } from '@apollo/client'
 import { ConnectionT, Story } from '../../Types'
-import { useStyletron } from 'baseui'
-import { FormControl } from 'baseui/form-control'
 import AwesomeDebouncePromise from 'awesome-debounce-promise'
-import { HeadingXXLarge, ParagraphMedium } from 'baseui/typography'
 import { Head } from './Head'
-import { Search } from 'baseui/icon'
+import { SearchBar, SearchResults } from '../../Components/Search'
 
 const PAGE_INFO_FIELDS = gql`
   fragment PageInfoFields on PageInfo {
@@ -50,14 +43,14 @@ interface SearchResultsQueryVars {
 
 const SearchPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [queryTxt, setQueryTxt] = useState(searchParams.get('q') || '')
+  const [query, setQuery] = useState(searchParams.get('q') || '')
   const [isLoading, setIsLoading] = useState(false)
   const { loading, error, data, fetchMore, refetch } = useQuery<
     SearchResultsQueryData,
     SearchResultsQueryVars
   >(GET_SEARCH_RESULTS, {
     variables: {
-      query: queryTxt,
+      query: query,
     },
     notifyOnNetworkStatusChange: true,
     refetchWritePolicy: 'overwrite',
@@ -82,16 +75,16 @@ const SearchPage: React.FC = () => {
         query: text,
       })
     }, 500),
-    [queryTxt]
+    [query]
   )
 
   // input states
   const onQueryUpdate = useCallback(
     (val: string) => {
-      setQueryTxt(val)
+      setQuery(val)
       debounced(val)
     },
-    [setQueryTxt]
+    [setQuery]
   )
 
   const onLoadMore = useCallback(() => {
@@ -99,19 +92,19 @@ const SearchPage: React.FC = () => {
     fetchMore({
       query: GET_SEARCH_RESULTS,
       variables: {
-        query: queryTxt,
+        query: query,
         after: data?.items.pageInfo.pageCursor,
       },
     }).finally(() => {
       setIsLoading(false)
     })
-  }, [queryTxt, data?.items.pageInfo.pageCursor, fetchMore])
+  }, [query, data?.items.pageInfo.pageCursor, fetchMore])
 
   useEffect(() => {
     const params = new URLSearchParams()
-    params.set('q', queryTxt)
+    params.set('q', query)
     setSearchParams(params)
-  }, [queryTxt])
+  }, [query])
 
   let children: React.ReactNode = <Fragment />
   if (!results && isLoading) {
@@ -123,6 +116,7 @@ const SearchPage: React.FC = () => {
       <Fragment>
         <Head />
         <SearchResults
+          query={query}
           onLoadMore={onLoadMore}
           loading={isLoading}
           results={results.items}
@@ -135,101 +129,11 @@ const SearchPage: React.FC = () => {
       left={<Block />}
       center={
         <PaddedBlock>
-          <SearchBar value={queryTxt} onChange={onQueryUpdate} />
+          <SearchBar value={query} onChange={onQueryUpdate} />
           {children}
         </PaddedBlock>
       }
       right={<Block />}
-    />
-  )
-}
-
-interface SearchBarProps {
-  value: string
-  onChange: (val: string) => void
-}
-
-const SearchBar = ({ value, onChange }: SearchBarProps) => {
-  const [css, theme] = useStyletron()
-  const focusOut = useCallback((e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const el = document.getElementById('search-input')
-    if (el) {
-      el.blur()
-    }
-    return false
-  }, [])
-  return (
-    <Block
-      className={css({
-        textAlign: 'center',
-        paddingTop: theme.sizing.scale300,
-      })}
-    >
-      <HeadingXXLarge
-        className={css({
-          textAlign: 'center',
-          paddingBottom: theme.sizing.scale600,
-        })}
-      >
-        Search HackerNews!
-      </HeadingXXLarge>
-      <form onSubmit={focusOut} onReset={focusOut}>
-        <FormControl
-          //label="Search HackerNews"
-          caption="All search results are sorted by relevance."
-        >
-          <Input
-            id="search-input"
-            name="q"
-            placeholder="Type to search..."
-            value={value}
-            onChange={(e) => onChange(e.currentTarget.value)}
-            autoFocus={true}
-            startEnhancer={<Search size={24} />}
-          />
-        </FormControl>
-      </form>
-    </Block>
-  )
-}
-
-interface SearchResultsProps {
-  onLoadMore: () => void
-  loading: boolean
-  results: ConnectionT<Story>
-}
-
-const SearchResults = ({
-  onLoadMore,
-  loading,
-  results,
-}: SearchResultsProps) => {
-  const [css, theme] = useStyletron()
-  if (results && results.edges.length === 0) {
-    return (
-      <PaddedBlock>
-        <ParagraphMedium
-          className={css({
-            textAlign: 'center',
-            color: theme.colors.contentSecondary,
-          })}
-        >
-          :(
-          <br />
-          No results found.
-          <br />
-          Try a different search term.
-        </ParagraphMedium>
-      </PaddedBlock>
-    )
-  }
-  return (
-    <PaginatedItemCardList
-      items={results}
-      loading={loading}
-      loadNext={onLoadMore}
-      nextPageUrl={window.location.toString()}
     />
   )
 }
