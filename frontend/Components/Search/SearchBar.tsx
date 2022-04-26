@@ -44,7 +44,7 @@ const SearchBar = ({ value, onChange }: SearchBarProps) => {
           <Input
             id="search-input"
             name="q"
-            type="search"
+            type="text"
             clearable={true}
             placeholder="Type to search..."
             value={value}
