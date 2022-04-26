@@ -37,19 +37,14 @@ func (c *CachedClient) Get(ctx context.Context, uri string, opts ...FilterOption
 	if err != nil {
 		return nil, errors.Wrap(err, "httpclient: could not create request")
 	}
-	resp, err := c.Do(req)
+	resp, err := c.Do(req, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "httpclient: could not send request")
-	}
-	for _, v := range opts {
-		if err := v.apply(resp); err != nil {
-			return nil, errors.Wrap(err, "httpclient: response is filtered")
-		}
 	}
 	return resp, nil
 }
 
-func (c *CachedClient) Do(request *http.Request) (*http.Response, error) {
+func (c *CachedClient) Do(request *http.Request, opts ...FilterOption) (*http.Response, error) {
 	uri := request.URL.String()
 	if cachedVal, err := c.cache.Get(uri); err == nil {
 		c.logger.Debug("httpclient: found cached response", zap.String("uri", uri))
@@ -71,6 +66,12 @@ func (c *CachedClient) Do(request *http.Request) (*http.Response, error) {
 	resp, err := c.httpClient.Do(request)
 	if err != nil {
 		return nil, errors.Wrap(err, "httpclient: could not send request")
+	}
+
+	for _, v := range opts {
+		if optErr := v.apply(resp); optErr != nil {
+			return nil, errors.Wrap(optErr, "httpclient: response is filtered")
+		}
 	}
 
 	resp.Body = http.MaxBytesReader(nil, resp.Body, MaxResponseSize)
