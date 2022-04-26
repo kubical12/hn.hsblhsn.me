@@ -37,20 +37,28 @@ const Item: React.FC<ItemProps> = ({ item }: ItemProps) => {
     // eslint-disable-next-line unicorn/no-null
     return null
   }
+
+  const shouldShowJumpBtn = useMemo(() => {
+    const content = item.text || item.html || item.openGraph?.description || ''
+    return content && content.length > 2048
+  }, [item])
+
   return (
     <Block paddingTop={theme.sizing.scale600}>
       <SnackbarProvider>
         <Header item={item} />
-        <Button
-          kind={KIND.tertiary}
-          size={SIZE.compact}
-          startEnhancer={<TriangleDown />}
-          onClick={() => {
-            window.location.hash = '#comments'
-          }}
-        >
-          Jump to comments
-        </Button>
+        {shouldShowJumpBtn && (
+          <Button
+            kind={KIND.tertiary}
+            size={SIZE.compact}
+            startEnhancer={<TriangleDown />}
+            onClick={() => {
+              window.location.hash = '#comments'
+            }}
+          >
+            Jump to comments
+          </Button>
+        )}
         <Content item={item} />
         <ActionButtons item={item} />
         <Comments item={item} />
