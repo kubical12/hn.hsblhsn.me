@@ -7,7 +7,7 @@ import { PaddedBlock } from '../../Components/Layout'
 import { LoadingScreen } from './LoadingScreen'
 import { ErrorScreen } from './ErrorScreen'
 import { Job, NodeT, Story } from '../../Types'
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { Head } from './Head'
 
 const GET_ITEM_QUERY = gql`
@@ -39,6 +39,9 @@ const ItemPage: React.FC = () => {
       errorPolicy: 'all',
     }
   )
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   let children: React.ReactNode = <Fragment />
   if (!data && loading) {
     children = <LoadingScreen />
