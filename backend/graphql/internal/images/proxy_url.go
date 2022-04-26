@@ -6,18 +6,18 @@ import (
 	"os"
 	"strings"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/featureflags"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/featureflags"
 )
 
 func ProxiedURL(src string, size ImageSize) string {
-	if strings.HasPrefix(src, "data:image") {
-		return src
-	}
 	if !featureflags.IsOn(featureflags.FeatureImgProxy, false) {
 		return src
 	}
 	if src == "" {
 		return ""
+	}
+	if strings.HasPrefix(src, "data:image") {
+		return src
 	}
 	host := os.Getenv("DOMAIN")
 	if host != "" {
