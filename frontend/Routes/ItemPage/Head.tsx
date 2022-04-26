@@ -16,10 +16,10 @@ const Head: React.FC<HeadProps> = ({ item }: HeadProps) => {
   if (!item) {
     return (
       <SEO
-        title={`404 Page Not Found | Hacker News`}
-        description={'Page not found'}
-        imageUrl={''}
-        url={''}
+        title="404 Page Not Found | Hacker News"
+        description="Page not found"
+        imageUrl=""
+        url=""
       />
     )
   }
@@ -27,7 +27,7 @@ const Head: React.FC<HeadProps> = ({ item }: HeadProps) => {
   const description = openGraph?.description || text || ''
   return (
     <SEO
-      title={`${openGraph?.title || title} | Hacker News`}
+      title={`${openGraph?.title || title || 'Read on'} | Hacker News`}
       description={description.replace(/<\/?[^>]+(>|$)/g, '')}
       imageUrl={
         getBestImage(openGraph?.image)?.url.replace(
