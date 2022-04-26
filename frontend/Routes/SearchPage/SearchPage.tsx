@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 import { LoadingScreen } from './LoadingScreen'
 import { ErrorScreen } from './ErrorScreen'
 import { FormEvent, Fragment, useCallback, useEffect, useState } from 'react'
-import { BaseInput } from 'baseui/input'
+import { Input } from 'baseui/input'
 import {
   ITEM_CARD_LIST_NODE_FIELDS,
   PaginatedItemCardList,
@@ -14,8 +14,9 @@ import { ConnectionT, Story } from '../../Types'
 import { useStyletron } from 'baseui'
 import { FormControl } from 'baseui/form-control'
 import AwesomeDebouncePromise from 'awesome-debounce-promise'
-import { HeadingXXLarge } from 'baseui/typography'
+import { HeadingXXLarge, ParagraphMedium } from 'baseui/typography'
 import { Head } from './Head'
+import { Search } from 'baseui/icon'
 
 const PAGE_INFO_FIELDS = gql`
   fragment PageInfoFields on PageInfo {
@@ -176,22 +177,16 @@ const SearchBar = ({ value, onChange }: SearchBarProps) => {
       <form onSubmit={focusOut} onReset={focusOut}>
         <FormControl
           //label="Search HackerNews"
-          caption="All search results are sorted by popularity."
+          caption="All search results are sorted by relevance."
         >
-          <BaseInput
+          <Input
             id="search-input"
             name="q"
             placeholder="Type to search..."
             value={value}
             onChange={(e) => onChange(e.currentTarget.value)}
             autoFocus={true}
-            overrides={{
-              InputContainer: {
-                style: ({ $theme }) => ({
-                  border: `2px solid  ${$theme.colors.accent}`,
-                }),
-              },
-            }}
+            startEnhancer={<Search size={24} />}
           />
         </FormControl>
       </form>
@@ -210,6 +205,25 @@ const SearchResults = ({
   loading,
   results,
 }: SearchResultsProps) => {
+  const [css, theme] = useStyletron()
+  if (results && results.edges.length === 0) {
+    return (
+      <PaddedBlock>
+        <ParagraphMedium
+          className={css({
+            textAlign: 'center',
+            color: theme.colors.contentSecondary,
+          })}
+        >
+          :(
+          <br />
+          No results found.
+          <br />
+          Try a different search term.
+        </ParagraphMedium>
+      </PaddedBlock>
+    )
+  }
   return (
     <PaginatedItemCardList
       items={results}
