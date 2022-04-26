@@ -1,8 +1,8 @@
 import { Route, Routes as ReactRouterRoutes } from 'react-router-dom'
 import HomePage from './HomePage'
-import { lazy, Suspense, useEffect, useRef } from 'react'
+import { lazy, Suspense } from 'react'
 import { useStyletron } from 'baseui'
-import LoadingBar from 'react-top-loading-bar'
+import { Block } from 'baseui/block'
 
 const ItemPage = lazy(() => import('./ItemPage'))
 const SearchPage = lazy(() => import('./SearchPage'))
@@ -23,25 +23,19 @@ const Routes = () => (
   </Suspense>
 )
 
-interface LoadingBarRefI {
-  staticStart(): void
-  continuousStart(): void
-  complete(): void
-}
-
 const Fallback = () => {
-  const ref = useRef<LoadingBarRefI>(null)
-  const [, theme] = useStyletron()
-  useEffect(() => {
-    ref.current?.continuousStart()
-  }, [])
+  const [css, theme] = useStyletron()
   return (
-    <LoadingBar
-      color={theme.colors.backgroundAlwaysDark}
-      height={3}
-      ref={ref}
-      shadow={true}
-    />
+    <Block>
+      <Block
+        className={css({
+          textAlign: 'center',
+          paddingTop: theme.sizing.scale4800,
+        })}
+      >
+        Please wait...
+      </Block>
+    </Block>
   )
 }
 
