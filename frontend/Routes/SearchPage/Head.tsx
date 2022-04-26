@@ -1,9 +1,13 @@
 import { SEO } from '../../Components/SEO'
 
-const Head: React.FC = () => {
+interface HeadProps {
+  query: string
+}
+
+const Head: React.FC<HeadProps> = ({ query }: HeadProps) => {
   return (
     <SEO
-      title="Search | Hacker News"
+      title={`Search ${query || ''} on Hacker News`}
       description="Hacker News Search, millions articles and comments at your fingertips."
       imageUrl={undefined}
       url={`/search`}

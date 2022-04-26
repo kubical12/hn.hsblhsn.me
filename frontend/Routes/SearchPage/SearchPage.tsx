@@ -114,7 +114,7 @@ const SearchPage: React.FC = () => {
   } else if (results) {
     children = (
       <Fragment>
-        <Head />
+        <Head query={query} />
         <SearchResults
           query={query}
           onLoadMore={onLoadMore}
