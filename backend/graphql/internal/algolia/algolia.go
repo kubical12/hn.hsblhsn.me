@@ -13,10 +13,10 @@ import (
 )
 
 type Algolia struct {
-	Client *httpclient.CachedClient
+	Client *httpclient.Client
 }
 
-func NewAlgolia(client *httpclient.CachedClient) *Algolia {
+func NewAlgolia(client *httpclient.Client) *Algolia {
 	return &Algolia{
 		Client: client,
 	}

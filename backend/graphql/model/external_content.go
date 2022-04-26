@@ -17,11 +17,11 @@ import (
 
 // nolint:gochecknoglobals // global client to call from ExternalContentLoader.
 var (
-	client *httpclient.CachedClient
+	client *httpclient.Client
 	logger *zap.Logger
 )
 
-func registerDependencies(c *httpclient.CachedClient, l *zap.Logger) {
+func registerDependencies(c *httpclient.Client, l *zap.Logger) {
 	client = c
 	logger = l.With(zap.String("component", "model_external_content"))
 }

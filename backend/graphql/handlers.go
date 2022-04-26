@@ -51,7 +51,7 @@ var ComplexityMap = complexity.Map{
 }
 
 // NewImageHandler returns a new image proxy handler.
-func NewImageHandler(client *httpclient.CachedClient, logger *zap.Logger) *ImageHandler {
+func NewImageHandler(client *httpclient.Client, logger *zap.Logger) *ImageHandler {
 	return images.NewImageResizeHandler(client, logger)
 }
 

@@ -12,10 +12,10 @@ import (
 )
 
 type HackerNews struct {
-	client *httpclient.CachedClient
+	client *httpclient.Client
 }
 
-func NewHackerNews(client *httpclient.CachedClient) *HackerNews {
+func NewHackerNews(client *httpclient.Client) *HackerNews {
 	return &HackerNews{client: client}
 }
 

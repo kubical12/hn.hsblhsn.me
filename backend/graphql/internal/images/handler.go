@@ -12,11 +12,11 @@ import (
 const quality = 85
 
 type ImageResizeHandler struct {
-	client *httpclient.CachedClient
+	client *httpclient.Client
 	logger *zap.Logger
 }
 
-func NewImageResizeHandler(client *httpclient.CachedClient, logger *zap.Logger) *ImageResizeHandler {
+func NewImageResizeHandler(client *httpclient.Client, logger *zap.Logger) *ImageResizeHandler {
 	return &ImageResizeHandler{
 		client: client,
 		logger: logger.With(zap.String("component", "images_resize_handler")),
