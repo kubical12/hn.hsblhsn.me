@@ -45,30 +45,45 @@ func (c *Client) Get(ctx context.Context, uri string, opts ...FilterOption) (*ht
 }
 
 func (c *Client) Send(request *http.Request, opts ...FilterOption) (*http.Response, error) {
+	// return cached response in the request is cached before.
 	if resp, err := c.getFromCache(request); err == nil {
 		return resp, nil
 	}
 
+	// limit maximum response size.
+	// set useragent.
 	request.Header.Set("Range", fmt.Sprintf("bytes=0-%d", MaxResponseSize))
 	if request.Header.Get("User-Agent") == "" {
 		request.Header.Set("User-Agent", UserAgent)
 	}
 
+	// send the request.
 	c.logger.Debug("httpclient: sending http request", zap.String("uri", request.URL.String()))
 	resp, err := c.httpClient.Do(request)
 	if err != nil {
 		return nil, errors.Wrap(err, "httpclient: could not send request")
 	}
+
+	// check for low quality contents and other filters.
 	for _, v := range opts {
 		if optErr := v.apply(resp); optErr != nil {
 			return nil, errors.Wrap(optErr, "httpclient: response is filtered")
 		}
 	}
+
+	// read response till the maximum allowed size.
+	// this prevents malicious urls
+	// from flooding our memory by sending a large response body.
 	resp.Body = http.MaxBytesReader(nil, resp.Body, MaxResponseSize)
 	resp.ContentLength = -1
+
+	// cache the respose.
 	if err := c.setToCache(request, resp); err != nil {
 		return nil, err
 	}
+
+	// recursively send the request.
+	// this will get the response cached a moment ago.
 	return c.Send(request, opts...)
 }
 
