@@ -2,9 +2,10 @@ import config from '../../app.config'
 import { getBestImage } from '../../Components/commonutils'
 import { SEO } from '../../Components/SEO'
 import { OpenGraph } from '../../Types'
+import React from 'react'
 
 interface HeadProps {
-  item: {
+  item?: {
     id: string
     title: string
     text?: string

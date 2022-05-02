@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BaseProvider, createDarkTheme, createLightTheme, styled } from 'baseui'
 import { Block } from 'baseui/block'
 

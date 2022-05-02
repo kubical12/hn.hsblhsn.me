@@ -7,7 +7,7 @@ import { PaddedBlock } from '../../Components/Layout'
 import { LoadingScreen } from './LoadingScreen'
 import { ErrorScreen } from './ErrorScreen'
 import { Job, NodeT, Story } from '../../Types'
-import { Fragment, useEffect } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { Head } from './Head'
 
 const GET_ITEM_QUERY = gql`
@@ -52,7 +52,7 @@ const ItemPage: React.FC = () => {
       // there is an error or the item doesn't exist.
       children = (
         <Fragment>
-          <Head item={data.item} /> <ErrorScreen error={error} />
+          <Head /> <ErrorScreen error={error} />
         </Fragment>
       )
     } else {
