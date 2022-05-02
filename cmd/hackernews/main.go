@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
@@ -57,9 +58,13 @@ func httpServer(
 	router *mux.Router,
 	logger *zap.Logger,
 ) {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 	const defaultTimeout = 15 * time.Second
 	const defaultTimeoutResponse = `{"errors": {"message": "Server timeout"}}`
-	const defaultAddr = ":8080"
+	defaultAddr := fmt.Sprintf(":%s", port)
 	server := &http.Server{
 		Handler: http.TimeoutHandler(router, defaultTimeout, defaultTimeoutResponse),
 		Addr:    defaultAddr,
