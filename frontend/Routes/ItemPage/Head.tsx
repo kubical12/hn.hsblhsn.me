@@ -1,8 +1,8 @@
-import config from '../../app.config'
 import { getBestImage } from '../../Components/commonutils'
 import { SEO } from '../../Components/SEO'
 import { OpenGraph } from '../../Types'
-import React from 'react'
+import React, { useContext } from 'react'
+import { ConfigContext } from '../../Components/Config'
 
 interface HeadProps {
   item?: {
@@ -14,6 +14,7 @@ interface HeadProps {
 }
 
 const Head: React.FC<HeadProps> = ({ item }: HeadProps) => {
+  const config = useContext(ConfigContext)
   if (!item) {
     return (
       <SEO

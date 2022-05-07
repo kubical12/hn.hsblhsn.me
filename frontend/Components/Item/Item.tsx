@@ -15,10 +15,10 @@ import { CommentThread } from '../CommentThread'
 import { fromNow, getHost, getLink, getTitle } from '../commonutils'
 import { TriangleDown, TriangleLeft, TriangleUp } from 'baseui/icon'
 import './Item.css'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { Popover } from 'baseui/popover'
-import config from '../../app.config'
 import { SnackbarProvider, DURATION, useSnackbar } from 'baseui/snackbar'
+import { ConfigContext } from '../Config'
 
 interface ItemProps {
   item: NodeT<Story | Job>
@@ -193,6 +193,7 @@ const MoreBtnPopOver: React.FC<MoreBtnPopOverProps> = ({
   item,
   closeFunc,
 }: MoreBtnPopOverProps) => {
+  const config = useContext(ConfigContext)
   const [css, theme] = useStyletron()
   const { enqueue } = useSnackbar()
   const popoverCss = css({

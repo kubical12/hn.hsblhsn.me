@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BaseProvider, createDarkTheme, createLightTheme, styled } from 'baseui'
 import { Block } from 'baseui/block'
+import { ConfigProvider } from '../Config'
 
 const primitives = {
   accent: '#ff6600',
@@ -43,7 +44,9 @@ const App: React.FC<AppProps> = ({ children }: AppProps) => {
   const isDark = useDarkMode()
   return (
     <BaseProvider theme={isDark ? DARK_THEME : LIGHT_THEME}>
-      <StyledAppShell>{children}</StyledAppShell>
+      <ConfigProvider>
+        <StyledAppShell>{children}</StyledAppShell>
+      </ConfigProvider>
     </BaseProvider>
   )
 }

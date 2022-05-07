@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import { Block } from 'baseui/block'
 import { useStyletron } from 'baseui'
-
-let googleAdTicker = 0
+import { AdWindow } from './types'
 
 interface FeedAdProps {
   layoutKey?: string
@@ -11,39 +10,22 @@ interface FeedAdProps {
   testMode?: boolean
 }
 
-interface AdWindow extends Window {
-  adsbygoogle?: Array<unknown>
+const pushAd = () => {
+  try {
+    const adWindow: AdWindow = window
+    const adsbygoogle = adWindow.adsbygoogle || []
+    adsbygoogle.push({})
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 const FeedAd: React.FC<FeedAdProps> = (props: FeedAdProps) => {
   const [css, theme] = useStyletron()
   useEffect(() => {
-    const pushAd = () => {
-      try {
-        const adWindow: AdWindow = window
-        const adsbygoogle = adWindow.adsbygoogle || []
-        adsbygoogle.push({})
-      } catch (e) {
-        console.error(e)
-      }
-    }
-    const interval = setInterval(() => {
-      console.log('checking for GoogleAds')
-      if (googleAdTicker > 15) {
-        clearInterval(interval)
-      }
-      googleAdTicker++
-      const adWindow: AdWindow = window
-      // Check if Adsense script is loaded every 300ms
-      if (adWindow.adsbygoogle) {
-        pushAd()
-        // clear the interval once the ad is pushed so that function isn't called indefinitely
-        clearInterval(interval)
-      }
-    }, 300)
-
-    return () => {
-      clearInterval(interval)
+    const adWindow: AdWindow = window
+    if (adWindow.adsbygoogle) {
+      pushAd()
     }
   }, [])
   return (

@@ -1,11 +1,13 @@
-import config from '../../app.config'
 import { SEO } from '../../Components/SEO'
+import { useContext } from 'react'
+import { ConfigContext } from '../../Components/Config'
 
 interface HeadProps {
   path: string
 }
 
 const Head: React.FC<HeadProps> = ({ path }: HeadProps) => {
+  const config = useContext(ConfigContext)
   const typ = getStoryType(path)
   return (
     <SEO

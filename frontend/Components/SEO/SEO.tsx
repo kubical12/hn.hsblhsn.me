@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async'
-import config from '../../app.config'
+import { useContext } from 'react'
+import { ConfigContext } from '../Config'
 
 interface SEOProps {
   title: string
@@ -9,6 +10,7 @@ interface SEOProps {
 }
 
 const SEO: React.FC<SEOProps> = (props: SEOProps) => {
+  const config = useContext(ConfigContext)
   let imageUrl = props.imageUrl
   if (!imageUrl || imageUrl.length === 0) {
     imageUrl = `${config.host}/og-banner.jpg`

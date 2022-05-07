@@ -1,4 +1,4 @@
-interface Config {
+export interface Config {
   host: string
   graphqlEndpoint: string
   ads: {
@@ -12,24 +12,13 @@ interface Config {
   }
 }
 
-let config: Config = {
+const defaultConfig: Config = {
   host: 'https://hn.hsblhsn.me',
   graphqlEndpoint: '/graphql',
   ads: {
     enabled: false,
-    frequency: 12,
+    frequency: 4,
   },
 }
 
-// get the config from local storage
-const configStr = window?.localStorage?.getItem('hn_app_config')
-try {
-  if (configStr) {
-    const localConfig = JSON.parse(configStr)
-    config = { ...config, ...localConfig }
-  }
-} catch (e) {
-  console.error('Failed to parse config from local storage', e)
-}
-
-export default config
+export { defaultConfig }
