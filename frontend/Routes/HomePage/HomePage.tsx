@@ -10,7 +10,7 @@ import {
 import { ErrorScreen } from './ErrorScreen'
 import { LoadingScreen } from './LoadingScreen'
 import { ConnectionT, Job, Story } from '../../Types'
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import { Head } from './Head'
 
 const PAGE_INFO_FIELDS = gql`
@@ -128,13 +128,14 @@ const HomePage: React.FC = () => {
 }
 
 const InfiniteScroll = ({ query }: { query: DocumentNode }) => {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
+  const [after, setAfter] = useState<string>('0')
   const { loading, error, data, fetchMore } = useQuery<
     HomePageQueryData,
     HomePageQueryVars
   >(query, {
     variables: {
-      after: searchParams.get('after') || '0',
+      after: searchParams.get('after') || after,
     },
     notifyOnNetworkStatusChange: true,
   })
@@ -146,8 +147,7 @@ const InfiniteScroll = ({ query }: { query: DocumentNode }) => {
     })
       .then(({ data }) => {
         if (data?.items.pageInfo?.pageCursor) {
-          searchParams.set('after', data.items.pageInfo.pageCursor)
-          setSearchParams(searchParams)
+          setAfter(data.items.pageInfo.pageCursor)
         }
       })
       .catch((e) => {
