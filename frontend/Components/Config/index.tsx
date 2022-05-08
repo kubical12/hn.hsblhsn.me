@@ -8,21 +8,27 @@ interface ConfiguredWindow extends Window {
 }
 
 let configLoadTicker = 0
-const configLoadInterval = 500
-const maxConfigLoadTicks = 15
+const configLoadInterval = 200
+const maxConfigLoadTicks = 30
 
 const ConfigProvider = ({ children }: { children: ReactNode }) => {
   const [config, setConfig] = useState<Config>(defaultConfig)
+
   useEffect(() => {
+    const cfgWindow: ConfiguredWindow = window
+    if (cfgWindow.hnAppConfig) {
+      console.log('remote config loaded (#1001)')
+      setConfig({ ...defaultConfig, ...cfgWindow.hnAppConfig })
+      return
+    }
+
     const interval = setInterval(() => {
       if (configLoadTicker > maxConfigLoadTicks) {
         clearInterval(interval)
       }
       configLoadTicker++
-      const cfgWindow: ConfiguredWindow = window
-      // Check if config is loaded
       if (cfgWindow.hnAppConfig) {
-        console.log('remote config loaded')
+        console.log('remote config loaded (#1002)')
         setConfig({ ...defaultConfig, ...cfgWindow.hnAppConfig })
         clearInterval(interval)
       }
