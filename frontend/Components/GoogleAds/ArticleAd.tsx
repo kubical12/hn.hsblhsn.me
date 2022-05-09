@@ -3,8 +3,7 @@ import { Block } from 'baseui/block'
 import { useStyletron } from 'baseui'
 import { AdWindow } from './types'
 
-interface FeedAdProps {
-  layoutKey?: string
+interface ArticleAdProps {
   client: string
   slot: string
   testMode?: boolean
@@ -14,13 +13,14 @@ const pushAd = () => {
   try {
     const adWindow: AdWindow = window
     const adsbygoogle = adWindow.adsbygoogle || []
+    console.log('called')
     adsbygoogle.push({})
   } catch (e) {
     console.error(e)
   }
 }
 
-const FeedAd: React.FC<FeedAdProps> = (props: FeedAdProps) => {
+const ArticleAd: React.FC<ArticleAdProps> = (props: ArticleAdProps) => {
   const [css, theme] = useStyletron()
   useEffect(() => {
     const adWindow: AdWindow = window
@@ -51,7 +51,7 @@ const FeedAd: React.FC<FeedAdProps> = (props: FeedAdProps) => {
           opacity: '0.5',
         })}
       >
-        This ad helps me to support the site and pay for the server.
+        This ad helps to support the site and pay for the server.
       </div>
       <ins
         className="adsbygoogle"
@@ -64,12 +64,12 @@ const FeedAd: React.FC<FeedAdProps> = (props: FeedAdProps) => {
         data-ad-format="fluid"
         data-ad-client={props.client}
         data-ad-slot={props.slot}
-        data-ad-layout-key={props.layoutKey || ''}
+        data-ad-layout-key="in-article"
         data-adtest={props.testMode ? 'on' : 'off'}
       ></ins>
     </Block>
   )
 }
 
-export { FeedAd }
-export type { FeedAdProps }
+export { ArticleAd }
+export type { ArticleAdProps }

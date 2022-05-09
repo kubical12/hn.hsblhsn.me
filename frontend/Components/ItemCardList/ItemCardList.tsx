@@ -39,7 +39,7 @@ const ItemCardList: React.FC<ItemCardListProps> = ({
             <FeedAd
               layoutKey={config.ads.google?.adLayout}
               client={config.ads.google.adClient}
-              slot={config.ads.google.adSlot}
+              slot={config.ads.google.feedAdSlot}
               key={index}
             />
           )

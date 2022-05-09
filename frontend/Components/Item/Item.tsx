@@ -15,10 +15,18 @@ import { CommentThread } from '../CommentThread'
 import { fromNow, getHost, getLink, getTitle } from '../commonutils'
 import { TriangleDown, TriangleLeft, TriangleUp } from 'baseui/icon'
 import './Item.css'
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import {
+  Fragment,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { Popover } from 'baseui/popover'
 import { SnackbarProvider, DURATION, useSnackbar } from 'baseui/snackbar'
 import { ConfigContext } from '../Config'
+import { AdWindow, ArticleAd } from '../GoogleAds'
 
 interface ItemProps {
   item: NodeT<Story | Job>
@@ -104,6 +112,7 @@ const Header: React.FC<ItemProps> = ({ item }: ItemProps) => {
 }
 
 const Content: React.FC<ItemProps> = ({ item }: ItemProps) => {
+  const config = useContext(ConfigContext)
   let val = ''
   if ('text' in item && item.text !== '') {
     val = item.text
@@ -112,11 +121,28 @@ const Content: React.FC<ItemProps> = ({ item }: ItemProps) => {
   } else if (item.openGraph?.description) {
     val = item.openGraph.description
   }
+
+  // eslint-disable-next-line unicorn/no-null
+  let ad = null
+  const shouldShowAd =
+    val !== '' && config.ads.enabled && (window as AdWindow)?.adsbygoogle
+  if (shouldShowAd && config.ads.google) {
+    ad = (
+      <ArticleAd
+        client={config.ads.google.adClient}
+        slot={config.ads.google.articleAdSlot}
+      />
+    )
+  }
+
   return (
-    <section
-      id="reader-view-content"
-      dangerouslySetInnerHTML={{ __html: val }}
-    />
+    <Fragment>
+      <section
+        id="reader-view-content"
+        dangerouslySetInnerHTML={{ __html: val }}
+      />
+      {ad}
+    </Fragment>
   )
 }
 

@@ -6,7 +6,8 @@ export interface Config {
     frequency: number
     google?: {
       adClient: string
-      adSlot: string
+      feedAdSlot: string
+      articleAdSlot: string
       adLayout?: string
     }
   }
