@@ -34,6 +34,7 @@ const ArticleAd: React.FC<ArticleAdProps> = (props: ArticleAdProps) => {
         justifyContent: 'center',
         alignItems: 'center',
         border: `2px solid ${theme.colors.borderOpaque}`,
+        marginTop: theme.sizing.scale1200,
         marginBottom: theme.sizing.scale900,
         padding: theme.sizing.scale300,
         borderRadius: theme.borders.radius400,
