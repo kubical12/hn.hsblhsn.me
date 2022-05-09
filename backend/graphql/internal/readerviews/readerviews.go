@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/url"
 	"path"
+	"regexp"
 	"strings"
 	"time"
 
@@ -58,9 +59,11 @@ func TransformHTML(link string, content io.Reader) (string, error) {
 			selection.Remove()
 			return
 		}
-		absLink := toAbs(link, href)
+		absLink, isHnItemLink := toHNLink(toAbs(link, href))
 		selection.SetAttr("href", absLink)
-		selection.SetAttr("target", "_blank")
+		if !isHnItemLink {
+			selection.SetAttr("target", "_blank")
+		}
 	})
 	htmlContent, err := doc.Html()
 	if err != nil {
@@ -90,4 +93,14 @@ func toAbs(base, relpath string) string {
 		return fmt.Sprintf("%s://%s%s", baseURL.Scheme, baseURL.Host, relpath)
 	}
 	return fmt.Sprintf("%s://%s%s", baseURL.Scheme, baseURL.Host, path.Join(baseURL.Path, relpath))
+}
+
+var hnItemLinkRx = regexp.MustCompile(`^https://news.ycombinator.com/item\?id=(\d{1,16})$`)
+
+func toHNLink(link string) (string, bool) {
+	if !hnItemLinkRx.MatchString(link) {
+		return link, false
+	}
+	itemID := hnItemLinkRx.ReplaceAllString(link, "$1")
+	return fmt.Sprintf("/item?id=%s", itemID), true
 }
