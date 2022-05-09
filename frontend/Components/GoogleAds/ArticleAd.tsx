@@ -13,7 +13,6 @@ const pushAd = () => {
   try {
     const adWindow: AdWindow = window
     const adsbygoogle = adWindow.adsbygoogle || []
-    console.log('called')
     adsbygoogle.push({})
   } catch (e) {
     console.error(e)
