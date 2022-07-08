@@ -1,6 +1,6 @@
 import { useStyletron } from 'baseui'
 import { Block } from 'baseui/block'
-import { CommentConnection } from '../../Types'
+import {CommentConnection, StyleProps} from '../../Types'
 import { Comment } from '../Comment'
 import { ApolloError, useApolloClient } from '@apollo/client'
 import { LOAD_MORE_COMMENTS_QUERY } from './CommentThread.graphql'
@@ -113,7 +113,7 @@ const LoadMoreComments: React.FC<LoadMoreCommentsProps> = ({
       startEnhancer={<ChevronDown size={24} />}
       overrides={{
         BaseButton: {
-          style: ({ $theme }) => {
+          style: ({ $theme }: StyleProps) => {
             return {
               marginTop: $theme.sizing.scale600,
               color: $theme.colors.accent,
