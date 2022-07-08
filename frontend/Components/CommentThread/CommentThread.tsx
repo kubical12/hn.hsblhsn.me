@@ -47,7 +47,7 @@ const CommentThread: React.FC<CommentThreadProps> = ({
             minWidth: theme.sizing.scale100,
             maxWidth: theme.sizing.scale100,
             width: theme.sizing.scale100,
-            marginTop: theme.sizing.scale900,
+            marginTop: theme.sizing.scale100,
             backgroundColor: theme.colors.backgroundTertiary,
             ':hover': {
               backgroundColor: theme.colors.backgroundAccent,
@@ -58,28 +58,25 @@ const CommentThread: React.FC<CommentThreadProps> = ({
         ></Block>
       )}
       {!isExpanded && (
-        <Block
+        <Button
+          kind={KIND.tertiary}
           className={css({
-            marginTop: theme.sizing.scale900,
+            marginTop: theme.sizing.scale100,
             padding: theme.sizing.scale300,
-            //backgroundColor: theme.colors.backgroundSecondary,
             borderRadius: theme.borders.radius300,
             paddingLeft: theme.sizing.scale600,
             opacity: '0.5',
             cursor: 'pointer',
+            ':hover': {
+              backgroundColor: 'transparent',
+            },
           })}
           onClick={toggleIsExpanded}
+          startEnhancer={<ChevronDown color={theme.colors.accent} />}
         >
-          <ChevronDown color={theme.colors.accent} />
-          <span
-            className={css({
-              paddingLeft: theme.sizing.scale600,
-            })}
-          >
-            Expand {comments.edges.length} comment
-            {comments.edges.length > 1 ? 's' : ''}
-          </span>
-        </Block>
+          Expand {comments.edges.length} comment
+          {comments.edges.length > 1 ? 's' : ''}
+        </Button>
       )}
       {isExpanded && (
         <Block className={threadStyle(isChild)}>
