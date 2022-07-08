@@ -1,10 +1,10 @@
 import { useStyletron } from 'baseui'
 import { Block } from 'baseui/block'
-import {CommentConnection, StyleProps} from '../../Types'
+import { CommentConnection, StyleProps } from '../../Types'
 import { Comment } from '../Comment'
 import { ApolloError, useApolloClient } from '@apollo/client'
 import { LOAD_MORE_COMMENTS_QUERY } from './CommentThread.graphql'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Button, KIND, SIZE } from 'baseui/button'
 import { ChevronDown } from 'baseui/icon'
 
@@ -20,6 +20,10 @@ const CommentThread: React.FC<CommentThreadProps> = ({
   isChild = false,
 }: CommentThreadProps) => {
   const [css, theme] = useStyletron()
+  const [isExpanded, setIsExpanded] = useState(true)
+  const toggleIsExpanded = useCallback(() => {
+    setIsExpanded(!isExpanded)
+  }, [isExpanded])
   if (!comments) {
     // eslint-disable-next-line unicorn/no-null
     return null
@@ -28,26 +32,72 @@ const CommentThread: React.FC<CommentThreadProps> = ({
   const threadStyle = (child: boolean) => {
     return css({
       paddingLeft: child ? theme.sizing.scale500 : theme.sizing.scale0,
-      borderLeft: child
-        ? `3px solid ${theme.colors.borderTransparent}`
-        : 'none',
     })
   }
   return (
-    <Block className={threadStyle(isChild)}>
-      {comments.edges.map(({ node }, index) => {
-        if (!node) {
-          // eslint-disable-next-line unicorn/no-null
-          return null
-        }
-        return <Comment comment={node} key={index} />
+    <Block
+      className={css({
+        display: 'flex',
       })}
-      {comments.pageInfo.hasNextPage && (
-        <LoadMoreComments
-          isChild={isChild}
-          parentId={parentId}
-          after={comments.pageInfo.endCursor}
-        />
+    >
+      {isChild && (
+        // show the side border to toggle comment threads.
+        <Block
+          className={css({
+            minWidth: theme.sizing.scale100,
+            maxWidth: theme.sizing.scale100,
+            width: theme.sizing.scale100,
+            marginTop: theme.sizing.scale900,
+            backgroundColor: theme.colors.backgroundTertiary,
+            ':hover': {
+              backgroundColor: theme.colors.backgroundAccent,
+            },
+            cursor: 'pointer',
+          })}
+          onClick={toggleIsExpanded}
+        ></Block>
+      )}
+      {!isExpanded && (
+        <Block
+          className={css({
+            marginTop: theme.sizing.scale900,
+            padding: theme.sizing.scale300,
+            //backgroundColor: theme.colors.backgroundSecondary,
+            borderRadius: theme.borders.radius300,
+            paddingLeft: theme.sizing.scale600,
+            opacity: '0.5',
+            cursor: 'pointer',
+          })}
+          onClick={toggleIsExpanded}
+        >
+          <ChevronDown color={theme.colors.accent} />
+          <span
+            className={css({
+              paddingLeft: theme.sizing.scale600,
+            })}
+          >
+            Expand {comments.edges.length} comment
+            {comments.edges.length > 1 ? 's' : ''}
+          </span>
+        </Block>
+      )}
+      {isExpanded && (
+        <Block className={threadStyle(isChild)}>
+          {comments.edges.map(({ node }, index) => {
+            if (!node) {
+              // eslint-disable-next-line unicorn/no-null
+              return null
+            }
+            return <Comment comment={node} key={index} />
+          })}
+          {comments.pageInfo.hasNextPage && (
+            <LoadMoreComments
+              isChild={isChild}
+              parentId={parentId}
+              after={comments.pageInfo.endCursor}
+            />
+          )}
+        </Block>
       )}
     </Block>
   )
