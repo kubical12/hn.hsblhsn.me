@@ -33,21 +33,21 @@ func (h *ImageResizeHandler) ServeHTTP(resp http.ResponseWriter, req *http.Reque
 	src := req.URL.Query().Get("src")
 	if src == "" {
 		h.logger.Error("no src provided", zap.String("size", string(size)))
-		writeBlankImage(resp, http.StatusBadRequest)
+		writeBlankImage(resp, http.StatusOK)
 		return
 	}
 	// get image from src
 	imgResp, err := h.client.Get(req.Context(), src)
 	if err != nil {
 		h.logger.Error("failed to get image", zap.String("size", string(size)), zap.String("src", src), zap.Error(err))
-		writeBlankImage(resp, http.StatusInternalServerError)
+		writeBlankImage(resp, http.StatusOK)
 		return
 	}
 	// resize image
 	resized, err := Resize(imgResp.Body, size)
 	if err != nil {
 		h.logger.Error("failed to resize image", zap.String("size", string(size)), zap.String("src", src), zap.Error(err))
-		writeBlankImage(resp, http.StatusInternalServerError)
+		writeBlankImage(resp, http.StatusOK)
 		return
 	}
 
@@ -56,7 +56,7 @@ func (h *ImageResizeHandler) ServeHTTP(resp http.ResponseWriter, req *http.Reque
 	})
 	if err != nil {
 		h.logger.Error("failed to encode image", zap.String("size", string(size)), zap.String("src", src), zap.Error(err))
-		writeBlankImage(resp, http.StatusInternalServerError)
+		writeBlankImage(resp, http.StatusOK)
 		return
 	}
 }
