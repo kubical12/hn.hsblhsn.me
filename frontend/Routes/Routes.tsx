@@ -26,15 +26,16 @@ const Routes = () => (
 const Fallback = () => {
   const [css, theme] = useStyletron()
   return (
-    <Block>
+    <Block className="animate-pulse">
       <Block
         className={css({
           textAlign: 'center',
-          paddingTop: theme.sizing.scale4800,
+          height: theme.sizing.scale100,
+          width: '100%',
+          marginTop: '-1px',
+          backgroundColor: theme.colors.backgroundAccent,
         })}
-      >
-        Please wait...
-      </Block>
+      ></Block>
     </Block>
   )
 }
