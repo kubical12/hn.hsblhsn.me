@@ -32,12 +32,18 @@ const CommentThread: React.FC<CommentThreadProps> = ({
   const threadStyle = (child: boolean) => {
     return css({
       paddingLeft: child ? theme.sizing.scale500 : theme.sizing.scale0,
+      width: '100%',
+      overflow: 'hidden',
+      whiteSpace: 'pre-wrap',
     })
   }
   return (
     <Block
       className={css({
         display: 'flex',
+        width: '100%',
+        overflow: 'hidden',
+        whiteSpace: 'pre-wrap',
       })}
     >
       {isChild && (
