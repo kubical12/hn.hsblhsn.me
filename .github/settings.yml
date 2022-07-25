@@ -25,6 +25,9 @@ labels:
   - name: documentation
     color: AAAA00
     description: Anything about documentation.
+  - name: wontfix
+    color: FFFFFF
+    description: Invalid/Complex/Unnecessary/YAGNI
   - name: content-quality
     color: AA00AA
     description: Anything about the quality improvement of the content.
