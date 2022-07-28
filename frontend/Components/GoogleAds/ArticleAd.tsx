@@ -38,21 +38,12 @@ const ArticleAd: React.FC<ArticleAdProps> = (props: ArticleAdProps) => {
         marginBottom: theme.sizing.scale900,
         padding: theme.sizing.scale300,
         borderRadius: theme.borders.radius400,
-        height: '200px',
+        height: 'auto',
         width: '100%',
         overflow: 'hidden',
         textDecoration: 'none',
       })}
     >
-      <div
-        className={css({
-          position: 'absolute',
-          zIndex: '1',
-          opacity: '0.5',
-        })}
-      >
-        This ad helps to support the site and pay for the server.
-      </div>
       <ins
         className="adsbygoogle"
         style={{
