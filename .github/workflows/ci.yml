@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  Go:
+  Backend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -20,7 +20,7 @@ jobs:
       - run: mkdir -p ./frontend/build && touch ./frontend/build/index.html
       - run: go build -v ./...
       - run: go test -v ./...
-  Node:
+  Frontend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
