@@ -25,7 +25,7 @@ func ProxiedURL(src string, size ImageSize) string {
 	}
 	escaped := url.QueryEscape(src)
 	return fmt.Sprintf(
-		"%s/images.jpeg?src=%s&size=%s",
+		"%s/images/proxy.jpeg?src=%s&size=%s",
 		host,
 		unescape(escaped),
 		size,
