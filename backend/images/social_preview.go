@@ -3,14 +3,15 @@ package images
 import (
 	"bytes"
 	"embed"
+	"image"
+	"image/color"
+	"path/filepath"
+
 	"github.com/disintegration/imaging"
 	"github.com/fogleman/gg"
 	"github.com/golang/freetype/truetype"
 	"github.com/pkg/errors"
 	"golang.org/x/image/font"
-	"image"
-	"image/color"
-	"path/filepath"
 )
 
 const (
@@ -34,19 +35,23 @@ func (sp *SocialPreviewGenerator) Generate(title string) (image.Image, error) {
 	dc := gg.NewContext(SocialPreviewWidth, SocialPreviewHeight)
 	dc.DrawImage(sp.background, 0, 0)
 
+	backgroundColor := color.Black
+	titleColor := color.White
+	brandingColor := color.White
+
 	// add background rectangle
 	margin := 20.0
 	x := margin
 	y := margin
-	w := float64(dc.Width()) - (2.0 * margin)
-	h := float64(dc.Height()) - (2.0 * margin)
-	dc.SetColor(color.RGBA{A: 204})
+	w := float64(dc.Width()) - (margin * 2)
+	h := float64(dc.Height()) - (margin * 2)
+	dc.SetColor(backgroundColor)
 	dc.DrawRectangle(x, y, w, h)
 	dc.Fill()
 
 	// add branding logo
 	dc.SetFontFace(sp.brandingFont)
-	dc.SetColor(color.White)
+	dc.SetColor(brandingColor)
 	s := "Hackernews"
 	marginX := 50.0
 	marginY := 30.0
@@ -57,14 +62,7 @@ func (sp *SocialPreviewGenerator) Generate(title string) (image.Image, error) {
 
 	// add branding website
 	dc.SetFontFace(sp.brandingFont)
-	r, g, b, _ := color.White.RGBA()
-	mutedColor := color.RGBA{
-		R: uint8(r),
-		G: uint8(g),
-		B: uint8(b),
-		A: uint8(200),
-	}
-	dc.SetColor(mutedColor)
+	dc.SetColor(titleColor)
 	marginY = 30
 	s = "https://hn.hsblhsn.me/"
 	_, textHeight = dc.MeasureString(s)
@@ -81,7 +79,7 @@ func (sp *SocialPreviewGenerator) Generate(title string) (image.Image, error) {
 	maxWidth := float64(dc.Width()) - textRightMargin - textRightMargin
 	dc.SetColor(color.Black)
 	dc.DrawStringWrapped(title, x+1, y+1, 0, 0, maxWidth, 1.5, gg.AlignLeft)
-	dc.SetColor(color.White)
+	dc.SetColor(titleColor)
 	dc.DrawStringWrapped(title, x, y, 0, 0, maxWidth, 1.5, gg.AlignLeft)
 	return dc.Image(), nil
 }
@@ -97,7 +95,7 @@ func readResource(path string) []byte {
 	return b
 }
 
-func newSocialPreviewGenerator() (*SocialPreviewGenerator, error) {
+func NewSocialPreviewGenerator() (*SocialPreviewGenerator, error) {
 	imgBytes := readResource("background_image.jpg")
 	img, _, err := image.Decode(bytes.NewReader(imgBytes))
 	if err != nil {
