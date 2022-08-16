@@ -42,7 +42,6 @@ steps:
       - '--platform=$_PLATFORM'
       - '--region=$_DEPLOY_REGION'
       - '--to-tags=gh$SHORT_SHA=$_TRAFFIC_RATIO'
-      - '--max-instances=29'
       - '--quiet'
     id: Serve
     entrypoint: gcloud
