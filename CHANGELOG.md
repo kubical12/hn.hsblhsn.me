@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.22.0...v1.23.0) (2022-08-16)
+
+
+### Features
+
+* add maximum instance limit for cloud run. ([2d19dbf](https://github.com/hsblhsn/hn.hsblhsn.me/commit/2d19dbfd543362e3c8b63f115d1a4c8354295010))
+
 ## [1.22.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.21.0...v1.22.0) (2022-08-16)
 
 
