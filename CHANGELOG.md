@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.20.0...v1.21.0) (2022-08-16)
+
+
+### Features
+
+* use black background and themed image border on preview. ([4db1988](https://github.com/hsblhsn/hn.hsblhsn.me/commit/4db19887bf92cbe7ce5bd9f2d54034d848d8aa6e))
+
 ## [1.20.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.19.2...v1.20.0) (2022-07-28)
 
 
