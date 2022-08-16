@@ -22,10 +22,6 @@ func RegisterRoutes(
 	router.Path("/explorer").
 		Methods(http.MethodGet).
 		Handler(playground.Handler("GraphQL Explorer", "/graphql"))
-	router.Path("/images.jpeg").
-		Methods(http.MethodGet).
-		Queries("size", "{size}", "src", "{src}").
-		Handler(imgProxy)
 	router.Path("/images/proxy.jpeg").
 		Methods(http.MethodGet).
 		Queries("size", "{size}", "src", "{src}").
