@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.22.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.21.0...v1.22.0) (2022-08-16)
+
+
+### Features
+
+* remove old image endpoint. ([3156611](https://github.com/hsblhsn/hn.hsblhsn.me/commit/315661146424c218d16b4ef662df97638e583e95))
+
 ## [1.21.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.20.0...v1.21.0) (2022-08-16)
 
 
