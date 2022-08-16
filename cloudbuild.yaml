@@ -29,6 +29,7 @@ steps:
       - '--region=$_DEPLOY_REGION'
       - '--no-traffic'
       - '--tag=gh$SHORT_SHA'
+      - '--max-instances=29'
       - '--quiet'
     id: Deploy
     entrypoint: gcloud
@@ -41,6 +42,7 @@ steps:
       - '--platform=$_PLATFORM'
       - '--region=$_DEPLOY_REGION'
       - '--to-tags=gh$SHORT_SHA=$_TRAFFIC_RATIO'
+      - '--max-instances=29'
       - '--quiet'
     id: Serve
     entrypoint: gcloud
