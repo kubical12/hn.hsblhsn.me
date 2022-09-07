@@ -95,7 +95,7 @@ func toAbs(base, relpath string) string {
 	return fmt.Sprintf("%s://%s%s", baseURL.Scheme, baseURL.Host, path.Join(baseURL.Path, relpath))
 }
 
-var hnItemLinkRx = regexp.MustCompile(`^https://news.ycombinator.com/item\?id=(\d{1,16})$`)
+var hnItemLinkRx = regexp.MustCompile(`^https://news\.ycombinator\.com/item\?id=(\d{1,16})$`)
 
 func toHNLink(link string) (string, bool) {
 	if !hnItemLinkRx.MatchString(link) {

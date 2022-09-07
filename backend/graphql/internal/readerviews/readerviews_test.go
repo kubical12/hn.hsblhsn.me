@@ -34,6 +34,27 @@ func TestToHNLink(t *testing.T) {
 			want: "https://news.ycombinator.com/top",
 		},
 		{
+			name: "invalid hn subdomain",
+			args: args{
+				link: "https://newsX.ycombinator.com/item?id=1234134",
+			},
+			want: "https://newsX.ycombinator.com/item?id=1234134",
+		},
+		{
+			name: "invalid hn host",
+			args: args{
+				link: "https://news.Xycombinator.com/item?id=1234134",
+			},
+			want: "https://news.Xycombinator.com/item?id=1234134",
+		},
+		{
+			name: "regex bypass (gh issue #299)",
+			args: args{
+				link: "https://newsXycombinatorXcom/item?id=1234134",
+			},
+			want: "https://newsXycombinatorXcom/item?id=1234134",
+		},
+		{
 			name: "invalid item url link",
 			args: args{
 				link: "https://example.com",
