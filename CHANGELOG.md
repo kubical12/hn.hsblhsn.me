@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.2](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.23.1...v1.23.2) (2022-09-11)
+
+
+### Bug Fixes
+
+* broken opengraph image in slack. ([6048021](https://github.com/hsblhsn/hn.hsblhsn.me/commit/6048021ad06c42cf9c95c68e433ea602395b9dfa))
+
 ## [1.23.1](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.23.0...v1.23.1) (2022-09-07)
 
 
