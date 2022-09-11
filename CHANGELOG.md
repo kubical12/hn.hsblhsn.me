@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.1](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.23.0...v1.23.1) (2022-09-07)
+
+
+### Bug Fixes
+
+* **security:** Incomplete regular expression for hostnames ([#300](https://github.com/hsblhsn/hn.hsblhsn.me/issues/300)) ([12d1b57](https://github.com/hsblhsn/hn.hsblhsn.me/commit/12d1b5713d4632c7b424dfe1d9576ad215f991a1))
+
 ## [1.23.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.22.0...v1.23.0) (2022-08-16)
 
 
