@@ -17,6 +17,7 @@ import (
 const (
 	SocialPreviewWidth  = 1200
 	SocialPreviewHeight = 628
+	MaximumTitleLength  = 120
 )
 
 type SocialPreviewGenerator struct {
@@ -26,10 +27,9 @@ type SocialPreviewGenerator struct {
 }
 
 func (sp *SocialPreviewGenerator) Generate(title string) (image.Image, error) {
-	maximumTitleLength := 120
-	if len(title) > maximumTitleLength {
+	if len(title) > MaximumTitleLength {
 		ellipsis := "..."
-		title = title[:maximumTitleLength-len(ellipsis)]
+		title = title[:MaximumTitleLength-len(ellipsis)]
 		title += ellipsis
 	}
 	dc := gg.NewContext(SocialPreviewWidth, SocialPreviewHeight)

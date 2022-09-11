@@ -15,7 +15,7 @@ import (
 //go:embed readability_pb2_grpc.py readability_pb2.py readability_server.py
 var content embed.FS
 
-// nolint:gochecknoglobals // This is a stateful operation.
+//nolint:gochecknoglobals // This is a stateful operation.
 var initializeOnce sync.Once
 
 const (

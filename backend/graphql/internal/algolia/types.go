@@ -11,7 +11,8 @@ import (
 )
 
 // Response from algolia api.
-// nolint:tagliatelle,govet
+//
+//nolint:tagliatelle,govet
 type Response struct {
 	Hits             []*Hit `json:"hits"`
 	Query            string `json:"query"`
@@ -51,7 +52,8 @@ func (r *Response) ToConnection() (*model.NodeConnection, error) {
 }
 
 // Hit represents a single hit from Algolia.
-// nolint: tagliatelle
+//
+//nolint:tagliatelle
 type Hit struct {
 	CreatedAt      time.Time `json:"created_at"`
 	ObjectID       string    `json:"objectID"`

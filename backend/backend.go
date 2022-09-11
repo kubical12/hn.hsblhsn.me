@@ -1,12 +1,12 @@
 package backend
 
 import (
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/images"
 	"net/http"
 
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/gorilla/mux"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/images"
 )
 
 // RegisterRoutes registers the routes for the backend.

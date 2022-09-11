@@ -5,15 +5,15 @@ package graphql
 
 import (
 	"context"
-	"crypto/md5" // nolint:gosec // not a cryptographic operation
+	"crypto/md5" //nolint:gosec // not a cryptographic operation
 	"encoding/hex"
 
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/generated"
 	opengraph "github.com/otiai10/opengraph/v2"
 )
 
-func (r *openGraphResolver) ID(ctx context.Context, obj *opengraph.OpenGraph) (string, error) {
-	// nolint:gosec // not a cryptographic operation
+func (r *openGraphResolver) ID(_ context.Context, obj *opengraph.OpenGraph) (string, error) {
+	//nolint:gosec // not a cryptographic operation
 	hashBytes := md5.Sum([]byte(obj.URL))
 	return hex.EncodeToString(hashBytes[:]), nil
 }

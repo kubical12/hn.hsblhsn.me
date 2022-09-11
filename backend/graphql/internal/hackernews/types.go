@@ -29,7 +29,7 @@ const (
 	ItemTypePollOption = "pollopt"
 )
 
-// nolint:govet // i have no idea why this is happening.
+//nolint:govet // i have no idea why this is happening.
 type ItemResponse struct {
 	Deleted     bool     `json:"deleted"`
 	Dead        bool     `json:"dead"`

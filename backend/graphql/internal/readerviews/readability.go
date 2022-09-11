@@ -13,7 +13,8 @@ import (
 )
 
 // readabilityClient returns a grpc client for the readability service.
-// nolint:ireturn // readabilityclient.NewReadabilityClient returns interface.
+//
+//nolint:ireturn // readabilityclient.NewReadabilityClient returns interface.
 func readabilityClient() readabilityclient.ReadabilityClient {
 	addr := os.Getenv("READABILITY_SERVER_ADDR")
 	if addr == "" {

@@ -28,7 +28,8 @@ const (
 
 // ComplexityMap is a map of field names to their maximum complexity.
 // The map is used to calculate the complexity of a query.
-// nolint: gochecknoglobals // initialize once globally.
+//
+//nolint:gochecknoglobals // initialize once globally.
 var ComplexityMap = complexity.Map{
 	"StoryConnection":      complexityNetworkField,
 	"Story":                complexityNetworkField,
@@ -43,7 +44,7 @@ var ComplexityMap = complexity.Map{
 	"PollOptionConnection": complexityNetworkField,
 	"PollOption":           complexityNetworkField,
 	"User":                 complexityNetworkField,
-	"OpenGraph":            complexityNetworkField * 2, // nolint:gomnd
+	"OpenGraph":            complexityNetworkField * 2, //nolint:gomnd
 	"PageInfo":             complexityNetworkField,
 }
 

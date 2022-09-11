@@ -2,10 +2,10 @@ package opengraphs
 
 import (
 	"bytes"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/images"
 	"strings"
 
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/readerviews"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/images"
 	"github.com/otiai10/opengraph/v2"
 	"github.com/pkg/errors"
 )

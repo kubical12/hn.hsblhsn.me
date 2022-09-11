@@ -1,9 +1,10 @@
 package images
 
 import (
-	"go.uber.org/zap"
 	"image/jpeg"
 	"net/http"
+
+	"go.uber.org/zap"
 )
 
 type SocialPreviewHandler struct {
@@ -30,7 +31,7 @@ func (h *SocialPreviewHandler) ServeHTTP(resp http.ResponseWriter, req *http.Req
 			zap.String("title", title),
 			zap.Error(err),
 		)
-		writeBlankImage(resp, http.StatusOK)
+		writeBlankImage(resp)
 		return
 	}
 	err = jpeg.Encode(resp, img, &jpeg.Options{
@@ -42,7 +43,7 @@ func (h *SocialPreviewHandler) ServeHTTP(resp http.ResponseWriter, req *http.Req
 			zap.String("title", title),
 			zap.Error(err),
 		)
-		writeBlankImage(resp, http.StatusOK)
+		writeBlankImage(resp)
 		return
 	}
 }

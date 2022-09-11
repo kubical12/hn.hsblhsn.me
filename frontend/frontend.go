@@ -38,7 +38,7 @@ func newSpaFS(root embed.FS, dir string) fs.FS {
 func (a *spaFS) Open(name string) (fs.File, error) {
 	file, err := a.internal.Open(filepath.Join(a.dir, name))
 	if errors.Is(err, fs.ErrNotExist) {
-		// nolint:wrapcheck // too much nested code.
+		//nolint:wrapcheck // too much nested code.
 		return a.internal.Open(filepath.Join(a.dir, "index.html"))
 	}
 	if err != nil {

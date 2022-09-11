@@ -3,7 +3,6 @@ package model
 import (
 	"bytes"
 	"context"
-	httpclient2 "github.com/hsblhsn/hn.hsblhsn.me/backend/internal/httpclient"
 	"io"
 	"net/http"
 	"sync"
@@ -11,11 +10,12 @@ import (
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/cquality"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/opengraphs"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/readerviews"
+	httpclient2 "github.com/hsblhsn/hn.hsblhsn.me/backend/internal/httpclient"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 )
 
-// nolint:gochecknoglobals // global client to call from ExternalContentLoader.
+//nolint:gochecknoglobals // global client to call from ExternalContentLoader.
 var (
 	client *httpclient2.Client
 	logger *zap.Logger

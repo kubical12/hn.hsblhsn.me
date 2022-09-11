@@ -5,7 +5,7 @@ import (
 	"go.uber.org/zap"
 )
 
-// nolint:gochecknoglobals // global client to call from ExternalContentLoader.
+//nolint:gochecknoglobals // global client to call from ExternalContentLoader.
 var (
 	logger *zap.Logger
 )

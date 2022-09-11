@@ -66,8 +66,11 @@ func httpServer(
 	const defaultTimeoutResponse = `{"errors": {"message": "Server timeout"}}`
 	defaultAddr := fmt.Sprintf(":%s", port)
 	server := &http.Server{
-		Handler: http.TimeoutHandler(router, defaultTimeout, defaultTimeoutResponse),
-		Addr:    defaultAddr,
+		Handler:           http.TimeoutHandler(router, defaultTimeout, defaultTimeoutResponse),
+		Addr:              defaultAddr,
+		ReadHeaderTimeout: time.Second,
+		WriteTimeout:      time.Second,
+		IdleTimeout:       time.Second,
 	}
 
 	shutdown := func() {

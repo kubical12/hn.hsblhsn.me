@@ -28,6 +28,14 @@ linters:
     - exhaustivestruct
     - ireturn
     - dupl
+    - exhaustruct
+    - bodyclose
+    - funlen
+    - gomnd
+    - varnamelen
+    - nonamedreturns
+    - interfacer
+    - wrapcheck
 
 issues:
   exclude-rules:

@@ -32,7 +32,7 @@ func initLowQualityIndicators() {
 	lowQualityIndicators = NewIndicators(list)
 }
 
-// nolint:gochecknoglobals // global for lazy loading
+//nolint:gochecknoglobals // global for lazy loading
 var (
 	lowQualityIndicators Indicators
 	lowQualityOnce       sync.Once
