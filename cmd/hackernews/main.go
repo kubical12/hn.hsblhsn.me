@@ -62,11 +62,9 @@ func httpServer(
 	if port == "" {
 		port = "8080"
 	}
-	const defaultTimeout = 15 * time.Second
-	const defaultTimeoutResponse = `{"errors": {"message": "Server timeout"}}`
 	defaultAddr := fmt.Sprintf(":%s", port)
 	server := &http.Server{
-		Handler:           http.TimeoutHandler(router, defaultTimeout, defaultTimeoutResponse),
+		Handler:           router,
 		Addr:              defaultAddr,
 		ReadHeaderTimeout: time.Second,
 		WriteTimeout:      time.Second,
