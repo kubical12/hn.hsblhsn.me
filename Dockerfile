@@ -8,7 +8,7 @@ RUN make dep-frontend
 COPY . .
 RUN make build-frontend
 
-FROM golang:1.19.0-bullseye AS backend-builder
+FROM golang:1.19.1-bullseye AS backend-builder
 WORKDIR /backend
 COPY go.mod go.mod
 COPY go.sum go.sum
