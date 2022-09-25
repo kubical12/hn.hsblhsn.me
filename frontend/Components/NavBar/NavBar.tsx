@@ -4,9 +4,10 @@ import {
   StyledNavigationItem,
   StyledNavigationList,
 } from 'baseui/header-navigation'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useStyletron } from 'baseui'
 import { Avatar } from 'baseui/avatar'
+import { useEffect, useState } from 'react'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface NavBarProps {}
@@ -68,7 +69,12 @@ interface NavBarItemProps {
 
 const NavBarItem: React.FC<NavBarItemProps> = (props: NavBarItemProps) => {
   const [, theme] = useStyletron()
-  //className="py-4 md:px-6 border-b-2 border-transparent md:hover:border-orange-500"
+  const location = useLocation()
+  const [isActive, setIsActive] = useState(location.pathname === props.to)
+  useEffect(() => {
+    setIsActive(location.pathname === props.to)
+  }, [location.pathname])
+
   return (
     <Link to={props.to}>
       <StyledNavigationItem
@@ -78,13 +84,13 @@ const NavBarItem: React.FC<NavBarItemProps> = (props: NavBarItemProps) => {
           ':hover': {
             borderBottomWidth: '2px',
             borderBottomStyle: 'solid',
-            borderBottomColor: theme.colors.accent ?? 'orange',
+            borderBottomColor: 'orange',
           },
           paddingTop: '1rem',
           paddingBottom: '1rem',
           borderBottomWidth: '2px',
           borderBottomStyle: 'solid',
-          borderColor: 'transparent',
+          borderColor: isActive ? theme.colors.accent : 'transparent',
           paddingLeft: '0.7rem',
           paddingRight: '0.7rem',
           [theme.mediaQuery.medium]: {
