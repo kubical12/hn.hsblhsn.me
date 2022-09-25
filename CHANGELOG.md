@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.30.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.29.2...v1.30.0) (2022-09-25)
+
+
+### Features
+
+* **graph:** calculate html field complexity dynamically. ([1546fd5](https://github.com/hsblhsn/hn.hsblhsn.me/commit/1546fd509cf32dfdc353a30ea9d13be31149e01d))
+* **ui:** make the ui a little bit less hurting to eye (use secondary background color). ([0f1cca1](https://github.com/hsblhsn/hn.hsblhsn.me/commit/0f1cca18256fdbc26431f7aff273bb24ee83355e))
+* **ui:** make the whole app limited to 1200px max width. ([d6a5cbf](https://github.com/hsblhsn/hn.hsblhsn.me/commit/d6a5cbf8b4afee692710b24226c41bd617641d58))
+* **web:** remove theme color from web manifest ([b0eed4c](https://github.com/hsblhsn/hn.hsblhsn.me/commit/b0eed4ca17bbbb92b077e1c8fcb9ca74e9520831))
+
 ## [1.29.2](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.29.1...v1.29.2) (2022-09-25)
 
 
