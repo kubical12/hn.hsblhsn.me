@@ -4,7 +4,7 @@ import { Button, KIND, SIZE } from 'baseui/button'
 import { Cell, Grid } from 'baseui/layout-grid'
 import { StyledLink } from 'baseui/link'
 import {
-  HeadingLarge,
+  HeadingMedium,
   HeadingSmall,
   LabelXSmall,
   ParagraphXSmall,
@@ -70,6 +70,9 @@ const Header: React.FC<ItemProps> = ({ item }: ItemProps) => {
     const content = item.text || item.html || item.openGraph?.description || ''
     return content && content.length > 2048
   }, [item])
+  const openLink = useCallback(() => {
+    window.open(getLink(item.id, item.url), '_blank')
+  }, [])
   return (
     <Block>
       <LabelXSmall>
@@ -78,15 +81,21 @@ const Header: React.FC<ItemProps> = ({ item }: ItemProps) => {
           &middot;&nbsp;{item.time ? fromNow(item.time * 1000) : 'unknown'}
         </span>
       </LabelXSmall>
-      <HeadingLarge as="h1">
+      <HeadingMedium
+        as="h1"
+        $style={{
+          cursor: 'pointer',
+        }}
+        onClick={openLink}
+      >
         {getTitle(item.title, item.openGraph?.title)}
-      </HeadingLarge>
+      </HeadingMedium>
       <Block
         $style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          paddingBottom: theme.sizing.scale200,
+          paddingBottom: theme.sizing.scale800,
           color: theme.colors.contentTertiary,
         }}
       >
@@ -137,9 +146,9 @@ const Header: React.FC<ItemProps> = ({ item }: ItemProps) => {
 const Content: React.FC<ItemProps> = ({ item }: ItemProps) => {
   const config = useContext(ConfigContext)
   let val = ''
-  if ('text' in item && item.text !== '') {
+  if ('text' in item && item.text) {
     val = item.text
-  } else if ('html' in item && item.html !== '') {
+  } else if ('html' in item && item.html) {
     val = item.html || ''
   } else if (item.openGraph?.description) {
     val = item.openGraph.description
