@@ -1,0 +1,3 @@
+extend type Query {
+    search(query: String!,after: Cursor, first: Int): NodeConnection!
+}

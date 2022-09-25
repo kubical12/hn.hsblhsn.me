@@ -48,8 +48,12 @@ type ItemResponse struct {
 	Parts       []int    `json:"parts"`
 }
 
-func (i *ItemResponse) ID() string {
+func (i ItemResponse) ID() string {
 	return NewID(i.DatabaseID)
+}
+
+func (i ItemResponse) GetID() string {
+	return i.ID()
 }
 
 func (ItemResponse) IsNode() {}
@@ -61,6 +65,10 @@ type UserResponse struct {
 	Created   int
 	Delay     int
 	Karma     int
+}
+
+func (u UserResponse) GetID() string {
+	return u.ID
 }
 
 func (UserResponse) IsNode() {}

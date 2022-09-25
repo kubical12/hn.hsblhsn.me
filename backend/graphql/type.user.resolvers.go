@@ -12,10 +12,12 @@ import (
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/model"
 )
 
+// DatabaseID is the resolver for the databaseId field.
 func (r *userResolver) DatabaseID(ctx context.Context, obj *model.User) (string, error) {
 	return obj.UserResponse.ID, nil
 }
 
+// Submitted is the resolver for the submitted field.
 func (r *userResolver) Submitted(ctx context.Context, obj *model.User, after *string, first *int) (*relays.Connection[model.Node], error) {
 	relayResolver := r.NewRelaySubmitted(ctx, obj.Submitted)
 	nodes, err := relayResolver.Resolve(nil, after, first, nil)

@@ -7,21 +7,6 @@ type PageInfo {
   endCursor: Cursor!
 }
 
-interface Node {
-  id: ID!
-}
-
-type NodeConnection {
-  pageInfo: PageInfo!
-  edges: [NodeEdge!]!
-  totalCount: Int!
-}
-
-type NodeEdge {
-  node: Node
-  cursor: Cursor!
-}
-
 directive @goField(
   forceResolver: Boolean
   name: String

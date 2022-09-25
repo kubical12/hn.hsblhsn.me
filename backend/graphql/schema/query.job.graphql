@@ -1,0 +1,3 @@
+extend type Query {
+    jobStories(after: Cursor, first: Int): JobConnection!
+}

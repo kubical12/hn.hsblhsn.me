@@ -12,10 +12,12 @@ import (
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/model"
 )
 
+// Type is the resolver for the type field.
 func (r *storyResolver) Type(ctx context.Context, obj *model.Story) (string, error) {
 	return obj.Type.String(), nil
 }
 
+// By is the resolver for the by field.
 func (r *storyResolver) By(ctx context.Context, obj *model.Story) (*model.User, error) {
 	resp, err := r.hackerNews.GetUser(ctx, obj.By)
 	if err != nil {
@@ -24,6 +26,7 @@ func (r *storyResolver) By(ctx context.Context, obj *model.Story) (*model.User, 
 	return &model.User{UserResponse: resp}, nil
 }
 
+// Comments is the resolver for the comments field.
 func (r *storyResolver) Comments(ctx context.Context, obj *model.Story, after *string, first *int) (*relays.Connection[*model.Comment], error) {
 	relayResolver := r.NewRelayComments(ctx, obj.Kids)
 	comments, err := relayResolver.Resolve(nil, after, first, nil)

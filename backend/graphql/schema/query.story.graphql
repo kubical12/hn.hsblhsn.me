@@ -1,9 +1,6 @@
-type Query {
-    node(id: ID!): Node
-    search(query: String!,after: Cursor, first: Int): NodeConnection!
+extend type Query {
     topStories(after: Cursor, first: Int): StoryConnection!
     newStories(after: Cursor, first: Int): StoryConnection!
     askStories(after: Cursor, first: Int): StoryConnection!
     showStories(after: Cursor, first: Int): StoryConnection!
-    jobStories(after: Cursor, first: Int): JobConnection!
 }
