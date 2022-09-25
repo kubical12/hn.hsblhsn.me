@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.25.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.24.0...v1.25.0) (2022-09-25)
+
+
+### Features
+
+* **navbar:** add underline to nav item. ([3345cc9](https://github.com/hsblhsn/hn.hsblhsn.me/commit/3345cc9178a96766511e6a044ba23ed85bbd0843))
+* **tracer:** add tracer to track error faster than ever. ([a2c27d4](https://github.com/hsblhsn/hn.hsblhsn.me/commit/a2c27d43605598b688a2f817009765496fe7ff23))
+
 ## [1.24.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.23.3...v1.24.0) (2022-09-25)
 
 
