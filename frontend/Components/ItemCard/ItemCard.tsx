@@ -1,7 +1,7 @@
 import { useStyletron } from 'baseui'
 import { Button, SHAPE, KIND, SIZE } from 'baseui/button'
 import { Card, StyledAction, StyledBody, StyledThumbnail } from 'baseui/card'
-import { HeadingSmall, LabelXSmall } from 'baseui/typography'
+import { HeadingXSmall, LabelXSmall } from 'baseui/typography'
 import { Link } from 'react-router-dom'
 import { Job, Story } from '../../Types'
 import {
@@ -30,11 +30,14 @@ const ItemCard: React.FC<ItemCardProps> = ({ item }: ItemCardProps) => {
 
       {thumbnail && <StyledThumbnail src={thumbnail.url} alt={thumbnail.alt} />}
 
-      <HeadingSmall paddingBottom={theme.sizing.scale600}>
+      <HeadingXSmall
+        paddingBottom={theme.sizing.scale600}
+        paddingTop={theme.sizing.scale200}
+      >
         <Link to={`/item?id=${item.id}`}>
           {getTitle(item.title, item.openGraph?.title)}
         </Link>
-      </HeadingSmall>
+      </HeadingXSmall>
 
       <StyledBody>
         {'text' in item && item.text !== '' ? (

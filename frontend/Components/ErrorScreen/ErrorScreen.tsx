@@ -15,7 +15,11 @@ const MonoSpaced = styled('pre', {
 export function ErrorScreen({ error }: { error: ApolloError | unknown }) {
   const [css, theme] = useStyletron()
   const reloadThisPage = useCallback(() => {
-    window.location.reload()
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const href = new URL(window.location.href)
+    href.searchParams.set('reload', Date.now().toString())
+    window.location.replace(href.toString())
   }, [])
   const goToHomePage = useCallback(() => {
     window.location.href = '/'

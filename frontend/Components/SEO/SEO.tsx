@@ -18,7 +18,9 @@ const SEO: React.FC<SEOProps> = (props: SEOProps) => {
     if (props.title.endsWith(trimSuffix)) {
       title = props.title.substring(0, props.title.length - trimSuffix.length)
     }
-    imageUrl = `${config.host}/images/social_preview.jpeg?title=${encodeURIComponent(title)}`
+    imageUrl = `${
+      config.host
+    }/images/social_preview.jpeg?title=${encodeURIComponent(title)}`
   }
   if (!imageUrl || imageUrl.length === 0) {
     imageUrl = `${config.host}/og-banner.jpg`
