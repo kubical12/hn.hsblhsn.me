@@ -11,7 +11,9 @@ import (
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/generated"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/msgerr"
 	"github.com/pkg/errors"
+	"github.com/ravilushqa/otelgqlgen"
 	"github.com/vektah/gqlparser/v2/gqlerror"
+	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 )
 
@@ -49,12 +51,13 @@ var ComplexityMap = complexity.Map{
 }
 
 // NewGQLHandler creates a new graphql handler.
-func NewGQLHandler(resolver *Resolver, logger *zap.Logger) *GQLHandler {
+func NewGQLHandler(resolver *Resolver, logger *zap.Logger, tracer trace.TracerProvider) *GQLHandler {
 	config := generated.Config{Resolvers: resolver}
 	server := handler.NewDefaultServer(generated.NewExecutableSchema(config))
 	// setup extensions.
 	server.Use(timeout.NewExtension(DefaultTimeout))
 	server.Use(complexity.NewExtension(MaxQueryComplexity, ComplexityMap))
+	server.Use(otelgqlgen.Middleware(otelgqlgen.WithTracerProvider(tracer)))
 	// setup error presenters.
 	server.SetErrorPresenter(newErrorPresenterFunc(logger))
 	server.SetRecoverFunc(newRecoverFunc(logger))

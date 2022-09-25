@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -24,6 +25,7 @@ import (
 
 func main() {
 	app := fx.New(
+		fx.NopLogger,
 		fx.Provide(newHTTPClient),
 		fx.Provide(newRouter),
 		fx.Provide(newLogger),
@@ -33,6 +35,9 @@ func main() {
 		fx.Invoke(httpServer),
 		fx.Invoke(pprofiler),
 	)
+	if err := app.Err(); err != nil {
+		log.Fatalln(err)
+	}
 	app.Run()
 }
 
