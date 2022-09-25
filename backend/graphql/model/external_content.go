@@ -10,6 +10,7 @@ import (
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/opengraphs"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/readerviews"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/cquality"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/featureflags"
 	httpclient2 "github.com/hsblhsn/hn.hsblhsn.me/backend/internal/httpclient"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
@@ -105,6 +106,9 @@ func (s *ExternalContentLoader) Opengraph(ctx context.Context) *opengraphs.OpenG
 }
 
 func (s *ExternalContentLoader) HTML(ctx context.Context) *string {
+	if !featureflags.IsOn(featureflags.FeatureReadability, false) {
+		return nil
+	}
 	if err := s.getContentFromURL(ctx); err != nil {
 		logger.Error("model: could not get content from url",
 			zap.Error(err),

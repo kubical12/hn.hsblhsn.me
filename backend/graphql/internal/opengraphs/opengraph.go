@@ -16,6 +16,13 @@ type (
 	Favicon   = opengraph.Favicon
 )
 
+//nolint:gochecknoglobals // global client to call from ExternalContentLoader.
+var replacer = strings.NewReplacer(
+	"&nbsp;", " ",
+	"&amp;", "&",
+	"&quot;", "\"",
+)
+
 func GetOpengraphData(uri string, content *bytes.Buffer) (*OpenGraph, error) {
 	data := opengraph.New(uri)
 	if err := data.Parse(content); err != nil {
@@ -26,6 +33,7 @@ func GetOpengraphData(uri string, content *bytes.Buffer) (*OpenGraph, error) {
 	}
 	var err error
 	data.Description, err = readerviews.TransformHTML(uri, strings.NewReader(data.Description))
+	data.Description = replacer.Replace(data.Description)
 	if err != nil {
 		return nil, errors.Wrap(err, "opengraph: could not transform description")
 	}

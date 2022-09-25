@@ -10,6 +10,7 @@ import (
 	"sync"
 
 	"github.com/hsblhsn/copyembed"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/featureflags"
 )
 
 //go:embed readability_pb2_grpc.py readability_pb2.py readability_server.py
@@ -24,6 +25,9 @@ const (
 )
 
 func start() {
+	if !featureflags.IsOn(featureflags.FeatureReadability, false) {
+		return
+	}
 	go initializeOnce.Do(run)
 }
 
