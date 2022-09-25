@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.29.2](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.29.1...v1.29.2) (2022-09-25)
+
+
+### Bug Fixes
+
+* **content:** show og description when html is not available. ([a879ca0](https://github.com/hsblhsn/hn.hsblhsn.me/commit/a879ca0aeabf035273d3bbdf6becf1f41c5c13e4))
+
 ## [1.29.1](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.29.0...v1.29.1) (2022-09-25)
 
 
