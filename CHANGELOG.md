@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.29.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.28.0...v1.29.0) (2022-09-25)
+
+
+### Features
+
+* **ui:** show comment count in jump to comment button. ([2cd3242](https://github.com/hsblhsn/hn.hsblhsn.me/commit/2cd3242c61c5e478ed584207ca6c200f4d6ad5b6))
+
+
+### Bug Fixes
+
+* **content:** mark google support as low quality content provider. ([67a9bc7](https://github.com/hsblhsn/hn.hsblhsn.me/commit/67a9bc797f8a48570baf31cbfefabdba9a497302))
+
 ## [1.28.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.27.0...v1.28.0) (2022-09-25)
 
 
