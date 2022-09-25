@@ -10,7 +10,7 @@ const primitives = {
 const LIGHT_THEME = createLightTheme(primitives)
 const DARK_THEME = createDarkTheme(primitives)
 const StyledAppShell = styled(Block, ({ $theme }) => ({
-  backgroundColor: $theme.colors.backgroundPrimary,
+  backgroundColor: $theme.colors.backgroundSecondary,
   color: $theme.colors.contentPrimary,
   overflow: 'hidden',
   minHeight: '100vh',

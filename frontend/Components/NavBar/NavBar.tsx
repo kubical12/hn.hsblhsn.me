@@ -15,11 +15,7 @@ interface NavBarProps {}
 const NavBar: React.FC<NavBarProps> = () => {
   const [, theme] = useStyletron()
   return (
-    <Block
-      $style={{
-        backgroundColor: theme.colors.backgroundPrimary,
-      }}
-    >
+    <Block>
       <div className="flex items-left justify-left pl-2 pt-2 md:hidden">
         <Link to="/">
           <Logo />

@@ -8,6 +8,7 @@ const LoadingScreen: React.FC = () => {
     Root: {
       style: {
         width: '100%',
+        backgroundColor: 'inherit',
         height: theme.sizing.scale4800,
         marginTop: theme.sizing.scale600,
         marginBottom: theme.sizing.scale900,
