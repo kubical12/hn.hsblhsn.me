@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.26.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.25.1...v1.26.0) (2022-09-25)
+
+
+### Features
+
+* **icon:** add upvote and comment icon to homepage. ([7d65646](https://github.com/hsblhsn/hn.hsblhsn.me/commit/7d65646433d353d6ebd6fee3aaa46c389cb4f262))
+
+
+### Bug Fixes
+
+* **security:** upgrade dependencies ([f2ae9e9](https://github.com/hsblhsn/hn.hsblhsn.me/commit/f2ae9e95f7ce2b94e9e6ce5c20859c97b04743e3))
+* **theme:** remove browser theme color. ([a72f99c](https://github.com/hsblhsn/hn.hsblhsn.me/commit/a72f99c4a51fbaa75194e4d64948435580ef9e76))
+
 ## [1.25.1](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.25.0...v1.25.1) (2022-09-25)
 
 
