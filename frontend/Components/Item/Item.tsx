@@ -24,7 +24,7 @@ import {
   useState,
 } from 'react'
 import { Popover } from 'baseui/popover'
-import { SnackbarProvider, DURATION, useSnackbar } from 'baseui/snackbar'
+import { DURATION, SnackbarProvider, useSnackbar } from 'baseui/snackbar'
 import { ConfigContext } from '../Config'
 import { AdWindow, ArticleAd } from '../GoogleAds'
 
@@ -46,27 +46,10 @@ const Item: React.FC<ItemProps> = ({ item }: ItemProps) => {
     return null
   }
 
-  const shouldShowJumpBtn = useMemo(() => {
-    const content = item.text || item.html || item.openGraph?.description || ''
-    return content && content.length > 2048
-  }, [item])
-
   return (
     <Block paddingTop={theme.sizing.scale600}>
       <SnackbarProvider>
         <Header item={item} />
-        {shouldShowJumpBtn && (
-          <Button
-            kind={KIND.tertiary}
-            size={SIZE.compact}
-            startEnhancer={<TriangleDown />}
-            onClick={() => {
-              window.location.hash = '#comments'
-            }}
-          >
-            Jump to comments
-          </Button>
-        )}
         <Content item={item} />
         <ActionButtons item={item} />
         <Comments item={item} />
@@ -83,30 +66,66 @@ const Header: React.FC<ItemProps> = ({ item }: ItemProps) => {
       color: c,
       cursor: 'pointer',
     })
+  const shouldShowJumpBtn = useMemo(() => {
+    const content = item.text || item.html || item.openGraph?.description || ''
+    return content && content.length > 2048
+  }, [item])
   return (
     <Block>
       <LabelXSmall>
         <span className={color(theme.colors.accent)}>@{item.by.id}</span>&nbsp;
         <span className={color(theme.colors.contentSecondary)}>
-          {item.time ? fromNow(item.time * 1000) : 'unknown'}
+          -&nbsp;{item.time ? fromNow(item.time * 1000) : 'unknown'}
         </span>
       </LabelXSmall>
       <HeadingLarge as="h1">
         {getTitle(item.title, item.openGraph?.title)}
       </HeadingLarge>
-      <LabelXSmall
-        color={theme.colors.contentTertiary}
-        paddingBottom={theme.sizing.scale800}
+      <Block
+        $style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          paddingBottom: theme.sizing.scale200,
+          color: theme.colors.contentTertiary,
+        }}
       >
-        Read on&nbsp;
-        <StyledLink
-          href={getLink(item.id, item.url)}
-          target="_blank"
-          rel="noreferrer"
-        >
-          {getHost(item.id, item.url)}
-        </StyledLink>
-      </LabelXSmall>
+        <Block>
+          <StyledLink
+            href={getLink(item.id, item.url)}
+            target="_blank"
+            rel="noreferrer"
+            $style={{
+              color: theme.colors.contentTertiary,
+              textDecoration: 'none',
+              fontSize: theme.sizing.scale400,
+            }}
+          >
+            <b>{getHost(item.id, item.url).toUpperCase()}</b>
+          </StyledLink>
+        </Block>
+        <Block>
+          {shouldShowJumpBtn && (
+            <Button
+              kind={KIND.tertiary}
+              size={SIZE.compact}
+              startEnhancer={<TriangleDown />}
+              onClick={() => {
+                document.getElementById('comments')?.scrollIntoView()
+              }}
+              overrides={{
+                BaseButton: {
+                  style: {
+                    color: theme.colors.contentTertiary,
+                  },
+                },
+              }}
+            >
+              Jump to comments
+            </Button>
+          )}
+        </Block>
+      </Block>
     </Block>
   )
 }
@@ -196,6 +215,7 @@ const ActionButtons: React.FC<ItemProps> = ({ item }: ItemProps) => {
             onClickOutside={togglePopover}
             onClick={togglePopover}
             content={<MoreBtnPopOver item={item} closeFunc={togglePopover} />}
+            placement="auto"
           >
             <Button
               kind="secondary"
