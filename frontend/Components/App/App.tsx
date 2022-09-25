@@ -15,6 +15,7 @@ const StyledAppShell = styled(Block, ({ $theme }) => ({
   overflow: 'hidden',
   minHeight: '100vh',
   minWidth: '100vw',
+  maxWidth: '38rem',
 }))
 
 function useDarkMode() {

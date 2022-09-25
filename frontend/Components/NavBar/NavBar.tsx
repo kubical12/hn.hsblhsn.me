@@ -8,6 +8,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { useStyletron } from 'baseui'
 import { Avatar } from 'baseui/avatar'
 import { useEffect, useState } from 'react'
+import { BEHAVIOR, Cell, Grid } from 'baseui/layout-grid'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface NavBarProps {}
@@ -15,46 +16,54 @@ interface NavBarProps {}
 const NavBar: React.FC<NavBarProps> = () => {
   const [, theme] = useStyletron()
   return (
-    <Block>
-      <div className="flex items-left justify-left pl-2 pt-2 md:hidden">
-        <Link to="/">
-          <Logo />
-        </Link>
-      </div>
-      <Block
-        $style={{
-          display: 'flex',
-          borderBottomWidth: '1px',
-          borderBottomStyle: 'solid',
-          borderBottomColor: `${theme.colors.borderOpaque}`,
-          fontSize: '1rem',
-        }}
-      >
-        <StyledNavigationList $align={ALIGN.left}>
-          <StyledNavigationItem className="mr-48 py-4 hidden md:block">
-            <Link to="/">
-              <Logo />
-            </Link>
-          </StyledNavigationItem>
-          <NavBarItem to={'/'}>Top</NavBarItem>
-          <NavBarItem to={'/newest'}>New</NavBarItem>
-          <NavBarItem to={'/ask'}>Ask</NavBarItem>
-          <NavBarItem to={'/show'}>Show</NavBarItem>
-          <NavBarItem to={'/jobs'}>Jobs</NavBarItem>
-          <NavBarItem to={'/search'}>Search</NavBarItem>
-        </StyledNavigationList>
-        <StyledNavigationList $align={ALIGN.center}></StyledNavigationList>
-        <StyledNavigationList $align={ALIGN.right}>
-          <StyledNavigationItem className="hidden md:block mr-12 cursor-not-allowed">
-            <Avatar
-              name="Coming Soon"
-              size="scale900"
-              src="https://avatars.dicebear.com/api/personas/hackernews.svg"
-            />
-          </StyledNavigationItem>
-        </StyledNavigationList>
-      </Block>
-    </Block>
+    <Grid
+      behavior={BEHAVIOR.fixed}
+      gridColumns={[4, 8, 12]}
+      gridMargins={[0, 0, 0]}
+      gridGaps={0}
+      gridMaxWidth={1200}
+    >
+      <Cell span={[4, 8, 12]}>
+        <div className="flex items-left justify-left pl-2 pt-2 md:hidden">
+          <Link to="/">
+            <Logo />
+          </Link>
+        </div>
+        <Block
+          $style={{
+            display: 'flex',
+            borderBottomWidth: '1px',
+            borderBottomStyle: 'solid',
+            borderBottomColor: `${theme.colors.borderOpaque}`,
+            fontSize: '1rem',
+          }}
+        >
+          <StyledNavigationList $align={ALIGN.left}>
+            <StyledNavigationItem className="hidden md:block py-4 mr-12 xl:mr-48">
+              <Link to="/">
+                <Logo />
+              </Link>
+            </StyledNavigationItem>
+            <NavBarItem to={'/'}>Top</NavBarItem>
+            <NavBarItem to={'/newest'}>New</NavBarItem>
+            <NavBarItem to={'/ask'}>Ask</NavBarItem>
+            <NavBarItem to={'/show'}>Show</NavBarItem>
+            <NavBarItem to={'/jobs'}>Jobs</NavBarItem>
+            <NavBarItem to={'/search'}>Search</NavBarItem>
+          </StyledNavigationList>
+          <StyledNavigationList $align={ALIGN.center}></StyledNavigationList>
+          <StyledNavigationList $align={ALIGN.right}>
+            <StyledNavigationItem className="hidden md:block mr-12 cursor-not-allowed">
+              <Avatar
+                name="Coming Soon"
+                size="scale900"
+                src="https://avatars.dicebear.com/api/personas/hackernews.svg"
+              />
+            </StyledNavigationItem>
+          </StyledNavigationList>
+        </Block>
+      </Cell>
+    </Grid>
   )
 }
 
@@ -90,6 +99,10 @@ const NavBarItem: React.FC<NavBarItemProps> = (props: NavBarItemProps) => {
           paddingLeft: '0.7rem',
           paddingRight: '0.7rem',
           [theme.mediaQuery.medium]: {
+            paddingLeft: '1rem',
+            paddingRight: '1rem',
+          },
+          [theme.mediaQuery.large]: {
             paddingLeft: '2rem',
             paddingRight: '2rem',
           },

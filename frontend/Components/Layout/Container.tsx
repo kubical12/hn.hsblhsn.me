@@ -12,13 +12,13 @@ export function Container(props: ContainerProps) {
     <Fragment>
       <Grid
         behavior={BEHAVIOR.fixed}
-        gridColumns={[4, 8, 12]}
+        gridColumns={[4, 8, 16]}
         gridMargins={[0, 0, 0]}
         gridGaps={0}
-        gridMaxWidth={1500}
+        gridMaxWidth={1200}
       >
         <Cell span={[0, 1, 3]}>{props.left}</Cell>
-        <Cell span={[4, 6, 6]}>{props.center}</Cell>
+        <Cell span={[4, 6, 10]}>{props.center}</Cell>
         <Cell span={[0, 1, 3]}>{props.right}</Cell>
       </Grid>
     </Fragment>
