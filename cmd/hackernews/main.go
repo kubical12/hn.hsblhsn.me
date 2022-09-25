@@ -1,9 +1,18 @@
 package main
 
 import (
-	"cloud.google.com/go/profiler"
 	"context"
 	"fmt"
+	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"path"
+	"runtime/debug"
+	"syscall"
+	"time"
+
+	"cloud.google.com/go/profiler"
 	"github.com/blendle/zapdriver"
 	"github.com/gorilla/mux"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend"
@@ -12,13 +21,6 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
-	"log"
-	"net/http"
-	"os"
-	"os/signal"
-	"path"
-	"runtime/debug"
-	"syscall"
 )
 
 func main() {
@@ -65,10 +67,14 @@ func httpServer(
 	if port == "" {
 		port = "8080"
 	}
+	const defaultTimeout = 15 * time.Second
+	const defaultTimeoutResponse = `{"errors": {"message": "Server timeout"}}`
 	defaultAddr := fmt.Sprintf(":%s", port)
 	server := &http.Server{
-		Handler: router,
-		Addr:    defaultAddr,
+		Handler:           http.TimeoutHandler(router, defaultTimeout, defaultTimeoutResponse),
+		Addr:              defaultAddr,
+		ReadHeaderTimeout: time.Second,
+		ReadTimeout:       time.Second,
 	}
 
 	shutdown := func() {
