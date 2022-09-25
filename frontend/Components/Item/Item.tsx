@@ -75,7 +75,7 @@ const Header: React.FC<ItemProps> = ({ item }: ItemProps) => {
       <LabelXSmall>
         <span className={color(theme.colors.accent)}>@{item.by.id}</span>&nbsp;
         <span className={color(theme.colors.contentSecondary)}>
-          -&nbsp;{item.time ? fromNow(item.time * 1000) : 'unknown'}
+          &middot;&nbsp;{item.time ? fromNow(item.time * 1000) : 'unknown'}
         </span>
       </LabelXSmall>
       <HeadingLarge as="h1">
@@ -117,11 +117,15 @@ const Header: React.FC<ItemProps> = ({ item }: ItemProps) => {
                 BaseButton: {
                   style: {
                     color: theme.colors.contentTertiary,
+                    fontSize: theme.sizing.scale500,
                   },
                 },
               }}
             >
-              Jump to comments
+              Jump to&nbsp;
+              {'descendants' in item && item.descendants > 0
+                ? item.descendants.toString() + ' comments'
+                : 'comments'}
             </Button>
           )}
         </Block>
