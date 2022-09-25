@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/cquality"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/opengraphs"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/readerviews"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/cquality"
 	httpclient2 "github.com/hsblhsn/hn.hsblhsn.me/backend/internal/httpclient"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"

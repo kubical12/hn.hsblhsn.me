@@ -28,6 +28,8 @@ func initLowQualityIndicators() {
 		"Please enable JS and disable any ad blocker",
 		// reddit
 		"whoa there, pardner!",
+		// google support
+		"Search Help Center",
 	}
 	lowQualityIndicators = NewIndicators(list)
 }
