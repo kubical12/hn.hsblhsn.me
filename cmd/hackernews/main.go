@@ -1,18 +1,9 @@
 package main
 
 import (
+	"cloud.google.com/go/profiler"
 	"context"
 	"fmt"
-	"log"
-	"net/http"
-	"os"
-	"os/signal"
-	"path"
-	"runtime/debug"
-	"syscall"
-	"time"
-
-	"cloud.google.com/go/profiler"
 	"github.com/blendle/zapdriver"
 	"github.com/gorilla/mux"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend"
@@ -21,6 +12,13 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
+	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"path"
+	"runtime/debug"
+	"syscall"
 )
 
 func main() {
@@ -69,11 +67,8 @@ func httpServer(
 	}
 	defaultAddr := fmt.Sprintf(":%s", port)
 	server := &http.Server{
-		Handler:           router,
-		Addr:              defaultAddr,
-		ReadHeaderTimeout: time.Second,
-		WriteTimeout:      time.Second,
-		IdleTimeout:       time.Second,
+		Handler: router,
+		Addr:    defaultAddr,
 	}
 
 	shutdown := func() {
