@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/web-manifest-combined.json",
-  "start_url": "/",
+  "start_url": "/?pwa=yes",
   "description": "Readable HackerNews!",
   "name": "HackerNews",
   "short_name": "HackerNews",
@@ -16,8 +16,6 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#ff6600",
-  "background_color": "#ff6600",
   "display": "standalone",
   "orientation": "portrait",
   "lang": "en"
