@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.25.1](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.25.0...v1.25.1) (2022-09-25)
+
+
+### Bug Fixes
+
+* **server:** server timeout issue. let cloud run handle all the timeouts. ([e3856a2](https://github.com/hsblhsn/hn.hsblhsn.me/commit/e3856a20b2459eb6b06a58894f159187f5c4c89c))
+* **server:** timeout issue on cloud run ([3968d90](https://github.com/hsblhsn/hn.hsblhsn.me/commit/3968d90b1c77e216b4413409f2d7df83c0baa530))
+
 ## [1.25.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.24.0...v1.25.0) (2022-09-25)
 
 
