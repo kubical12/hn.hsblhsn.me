@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.23.3...v1.24.0) (2022-09-25)
+
+
+### Features
+
+* **navbar:** make navbar to follow primary color and redesign for mobile. ([#316](https://github.com/hsblhsn/hn.hsblhsn.me/issues/316)) ([4545a40](https://github.com/hsblhsn/hn.hsblhsn.me/commit/4545a4027edc5481d3b6dc6fcfa788f6b9cce35c))
+
 ## [1.23.3](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.23.2...v1.23.3) (2022-09-21)
 
 
