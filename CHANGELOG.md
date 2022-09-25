@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.29.1](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.29.0...v1.29.1) (2022-09-25)
+
+
+### Bug Fixes
+
+* **content:** add feature flag for readability (disabled by default) ([f6cca0b](https://github.com/hsblhsn/hn.hsblhsn.me/commit/f6cca0bc4d9fca1ccd1a913b23c94a4282c7f660))
+
 ## [1.29.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.28.0...v1.29.0) (2022-09-25)
 
 
