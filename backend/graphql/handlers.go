@@ -10,6 +10,7 @@ import (
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/extensions/timeout"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/generated"
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/msgerr"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/featureflags"
 	"github.com/pkg/errors"
 	"github.com/ravilushqa/otelgqlgen"
 	"github.com/vektah/gqlparser/v2/gqlerror"
@@ -22,11 +23,17 @@ type (
 )
 
 const (
-	MaxQueryComplexity      = 500
-	complexityNetworkField  = 1
-	complexityComputedField = 10
-	DefaultTimeout          = time.Second * 10
+	MaxQueryComplexity     = 300
+	complexityNetworkField = 1
+	DefaultTimeout         = time.Second * 10
 )
+
+func getHTMLFieldComplexity() int {
+	if !featureflags.IsOn(featureflags.FeatureReadability, false) {
+		return 0
+	}
+	return 10
+}
 
 // ComplexityMap is a map of field names to their maximum complexity.
 // The map is used to calculate the complexity of a query.
@@ -35,12 +42,12 @@ const (
 var ComplexityMap = complexity.Map{
 	"StoryConnection":      complexityNetworkField,
 	"Story":                complexityNetworkField,
-	"Story.html":           complexityComputedField,
+	"Story.html":           getHTMLFieldComplexity(),
 	"CommentConnection":    complexityNetworkField,
 	"Comment":              complexityNetworkField,
 	"JobConnection":        complexityNetworkField,
 	"Job":                  complexityNetworkField,
-	"Job.html":             complexityComputedField,
+	"Job.html":             getHTMLFieldComplexity(),
 	"PollConnection":       complexityNetworkField,
 	"Poll":                 complexityNetworkField,
 	"PollOptionConnection": complexityNetworkField,
