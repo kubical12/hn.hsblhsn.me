@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.28.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.27.0...v1.28.0) (2022-09-25)
+
+
+### Features
+
+* **ui:** redesigned item page header/title section ([a874ceb](https://github.com/hsblhsn/hn.hsblhsn.me/commit/a874cebac3a84c52385ea55be50e531558568f2c))
+
 ## [1.27.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.26.0...v1.27.0) (2022-09-25)
 
 ### Features
