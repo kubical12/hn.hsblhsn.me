@@ -34,7 +34,7 @@ gql:
 	@go run github.com/99designs/gqlgen
 
 proto-backend:
-	@cd backend/graph/internal/grpc/readabilityclient && \
+	@cd backend/graphql/internal/grpc/readabilityclient && \
 		protoc \
 			--proto_path=../protos \
 			--go_out=. \
@@ -43,7 +43,7 @@ proto-backend:
 			--go-grpc_opt=paths=source_relative \
 			../protos/readability.proto		
 proto-readability:
-	@cd backend/graph/internal/grpc/readabilityserver && \
+	@cd backend/graphql/internal/grpc/readabilityserver && \
 		python3 \
 			-m grpc_tools.protoc \
 			--proto_path=../protos \
