@@ -7,7 +7,7 @@ import { useContext } from 'react'
 import { ConfigContext } from '../Config'
 
 const StyledItemCardListItem = styled(Block, ({ $theme }) => ({
-  marginTop: $theme.sizing.scale900,
+  marginTop: $theme.sizing.scale600,
 }))
 
 interface ItemCardListProps {

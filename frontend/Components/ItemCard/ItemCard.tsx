@@ -31,21 +31,21 @@ const ItemCard: React.FC<ItemCardProps> = ({ item }: ItemCardProps) => {
     >
       <LabelXSmall color={theme.colors.contentTertiary}>
         <a href={getLink(item.id, item.url)} target="_blank" rel="noreferrer">
-          {getHost(item.id, item.url)}
+          {getHost(item.id, item.url).toUpperCase()}
         </a>
-        &nbsp;-&nbsp;&nbsp;{fromNow(item.time * 1000) || 'unknown time'}
+        &nbsp;&middot;&nbsp;&nbsp;{fromNow(item.time * 1000) || 'unknown time'}
       </LabelXSmall>
 
       {thumbnail && <StyledThumbnail src={thumbnail.url} alt={thumbnail.alt} />}
 
-      <HeadingXSmall
-        paddingBottom={theme.sizing.scale600}
-        paddingTop={theme.sizing.scale200}
-      >
-        <Link to={`/item?id=${item.id}`}>
+      <Link to={`/item?id=${item.id}`}>
+        <HeadingXSmall
+          paddingBottom={theme.sizing.scale600}
+          paddingTop={theme.sizing.scale200}
+        >
           {getTitle(item.title, item.openGraph?.title)}
-        </Link>
-      </HeadingXSmall>
+        </HeadingXSmall>
+      </Link>
 
       <StyledBody>
         {'text' in item && item.text !== '' ? (

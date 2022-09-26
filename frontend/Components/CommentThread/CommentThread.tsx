@@ -68,9 +68,11 @@ const CommentThread: React.FC<CommentThreadProps> = ({
           kind={KIND.tertiary}
           className={css({
             marginTop: theme.sizing.scale100,
-            padding: theme.sizing.scale300,
-            borderRadius: theme.borders.radius300,
+            paddingTop: theme.sizing.scale300,
+            paddingRight: theme.sizing.scale300,
+            paddingBottom: theme.sizing.scale300,
             paddingLeft: theme.sizing.scale600,
+            borderRadius: theme.borders.radius300,
             opacity: '0.5',
             cursor: 'pointer',
             ':hover': {

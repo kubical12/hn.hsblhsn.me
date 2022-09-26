@@ -17,6 +17,7 @@ const ITEM_FIELDS = gql`
     text
     html
     type
+    score
     descendants
     comments(first: 5) {
       ...CommentThreadFields

@@ -1,5 +1,5 @@
 import { Block } from 'baseui/block'
-import { LabelSmall } from 'baseui/typography'
+import { LabelXSmall } from 'baseui/typography'
 import { useStyletron } from 'baseui'
 import { CommentThread } from '../CommentThread'
 import React, { useState } from 'react'
@@ -29,7 +29,7 @@ const Comment: React.FC<CommentProps> = ({ comment }: CommentProps) => {
 
   return (
     <Block>
-      <LabelSmall
+      <LabelXSmall
         onClick={() => {
           setIsExpanded(!isExpanded)
         }}
@@ -39,7 +39,7 @@ const Comment: React.FC<CommentProps> = ({ comment }: CommentProps) => {
               return {
                 marginTop: $theme.sizing.scale600,
                 paddingTop: $theme.sizing.scale300,
-                paddingBottom: $theme.sizing.scale300,
+                paddingBottom: $theme.sizing.scale100,
                 paddingLeft: $theme.sizing.scale300,
                 borderRadius: $theme.borders.radius300,
                 cursor: 'pointer',
@@ -62,13 +62,13 @@ const Comment: React.FC<CommentProps> = ({ comment }: CommentProps) => {
             : `@${comment.by.id}`}
         </span>
         <span className={color(theme.colors.contentSecondary)}>
-          &nbsp;commented&nbsp;
+          &nbsp;&middot;&nbsp;
           {comment.time ? fromNow(comment.time * 1000) : 'unknown'}
         </span>
         <span className={color(theme.colors.contentSecondary)}>
           &nbsp;&nbsp;[{isExpanded ? 'close' : 'show'}]&nbsp;&nbsp;
         </span>
-      </LabelSmall>
+      </LabelXSmall>
       <Block display={isExpanded ? 'block' : 'none'}>
         <div
           className="comment-reader-view-content"

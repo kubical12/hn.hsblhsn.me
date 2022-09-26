@@ -3,12 +3,7 @@ import { Block } from 'baseui/block'
 import { Button, KIND, SIZE } from 'baseui/button'
 import { Cell, Grid } from 'baseui/layout-grid'
 import { StyledLink } from 'baseui/link'
-import {
-  HeadingMedium,
-  HeadingSmall,
-  LabelXSmall,
-  ParagraphXSmall,
-} from 'baseui/typography'
+import { HeadingMedium, LabelXSmall, ParagraphXSmall } from 'baseui/typography'
 import { useLocation } from 'react-router-dom'
 import { Job, NodeT, Story } from '../../Types'
 import { CommentThread } from '../CommentThread'
@@ -75,12 +70,38 @@ const Header: React.FC<ItemProps> = ({ item }: ItemProps) => {
   }, [])
   return (
     <Block>
-      <LabelXSmall>
-        <span className={color(theme.colors.accent)}>@{item.by.id}</span>&nbsp;
-        <span className={color(theme.colors.contentSecondary)}>
-          &middot;&nbsp;{item.time ? fromNow(item.time * 1000) : 'unknown'}
-        </span>
-      </LabelXSmall>
+      <Block
+        $style={{
+          display: 'flex',
+          //justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Block>
+          <LabelXSmall>
+            <span className={color(theme.colors.accent)}>@{item.by.id}</span>
+            &nbsp;
+            <span className={color(theme.colors.contentSecondary)}>
+              &middot;&nbsp;{item.time ? fromNow(item.time * 1000) : 'unknown'}
+              &nbsp;&middot;
+            </span>
+          </LabelXSmall>
+        </Block>
+        <Block>
+          <LabelXSmall>
+            {'score' in item && (
+              <span className={color(theme.colors.contentSecondary)}>
+                &nbsp;{item.score} points &middot;
+              </span>
+            )}
+            {'descendants' in item && (
+              <span className={color(theme.colors.contentSecondary)}>
+                &nbsp;{item.descendants} comments
+              </span>
+            )}
+          </LabelXSmall>
+        </Block>
+      </Block>
       <HeadingMedium
         as="h1"
         $style={{
@@ -347,24 +368,8 @@ const MoreBtnPopOver: React.FC<MoreBtnPopOverProps> = ({
 }
 
 const Comments: React.FC<ItemProps> = ({ item }: ItemProps) => {
-  const [, theme] = useStyletron()
   return (
     <Block id="comments">
-      {'descendants' in item && (
-        <HeadingSmall paddingTop={theme.sizing.scale600}>
-          {item.descendants} comments
-          <LabelXSmall color={theme.colors.contentTertiary}>
-            Posted on&nbsp;
-            <StyledLink
-              href={getLink(item.id, undefined)}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {getHost(item.id, undefined)}
-            </StyledLink>
-          </LabelXSmall>
-        </HeadingSmall>
-      )}
       {'comments' in item && (
         <Block>
           <CommentThread parentId={item.id} comments={item.comments} />
