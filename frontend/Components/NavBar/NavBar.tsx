@@ -15,6 +15,26 @@ interface NavBarProps {}
 
 const NavBar: React.FC<NavBarProps> = () => {
   const [, theme] = useStyletron()
+  const [show, setShow] = useState(true)
+  const [lastScrollY, setLastScrollY] = useState(0)
+  const controlNavbar = () => {
+    if (typeof window !== 'undefined') {
+      if (window.scrollY > lastScrollY) {
+        setShow(false)
+      } else {
+        setShow(true)
+      }
+      setLastScrollY(window.scrollY)
+    }
+  }
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', controlNavbar)
+      return () => {
+        window.removeEventListener('scroll', controlNavbar)
+      }
+    }
+  }, [lastScrollY])
   return (
     <Fragment>
       <Grid
@@ -26,9 +46,13 @@ const NavBar: React.FC<NavBarProps> = () => {
         overrides={{
           Grid: {
             style: {
-              position: 'fixed',
+              position: show ? 'fixed' : 'relative',
               top: 0,
               backgroundColor: theme.colors.backgroundSecondary,
+              opacity: show ? 1 : 0,
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              transition: 'opacity 0.7s linear',
             },
           },
         }}
@@ -76,6 +100,7 @@ const NavBar: React.FC<NavBarProps> = () => {
       </Grid>
       <Block
         $style={{
+          display: show ? 'block' : 'none',
           height: '5rem',
           [theme.mediaQuery.medium]: {
             height: '4rem',

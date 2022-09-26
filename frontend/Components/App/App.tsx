@@ -47,7 +47,6 @@ interface AppProps {
 const App: React.FC<AppProps> = ({ children }: AppProps) => {
   const theme = useTheme()
   useEffect(() => {
-    console.log('setting theme')
     document.body.style.backgroundColor = theme.colors.backgroundSecondary
   }, [theme])
   return (
