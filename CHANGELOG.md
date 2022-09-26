@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.33.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.32.0...v1.33.0) (2022-09-26)
+
+
+### Features
+
+* **ui:** add animation to all noticable pages. ([49caa05](https://github.com/hsblhsn/hn.hsblhsn.me/commit/49caa05cebd333146d8bc79f5774bbc7775492f4))
+
+
+### Reverts
+
+* **ui:** use relative (non-fixed) navbar. ([c104cff](https://github.com/hsblhsn/hn.hsblhsn.me/commit/c104cfff6265db504c37e69befac0830c0485b0f))
+
 ## [1.32.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.31.0...v1.32.0) (2022-09-26)
 
 
