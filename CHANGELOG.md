@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.34.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.33.0...v1.34.0) (2022-09-26)
+
+
+### Features
+
+* **ui:** use fixed navbar on desktop. ([988fcfc](https://github.com/hsblhsn/hn.hsblhsn.me/commit/988fcfc53655d487bcd13ceb6bb4c67e98ee5520))
+
 ## [1.33.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.32.0...v1.33.0) (2022-09-26)
 
 
