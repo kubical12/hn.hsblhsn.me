@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.31.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.30.0...v1.31.0) (2022-09-26)
+
+
+### Features
+
+* **ui:** make nabvar fixed to the top. ([d324e15](https://github.com/hsblhsn/hn.hsblhsn.me/commit/d324e1533c74b0297007720346814117b0d49ed4))
+* **ui:** redesign comment section and make urls uppercase. ([49fc61d](https://github.com/hsblhsn/hn.hsblhsn.me/commit/49fc61db63033542d0c88b3bd885c3d62973966d))
+
+
+### Bug Fixes
+
+* **seo:** fixed a bug where seo images on story pages presented weirdly. ([9185b21](https://github.com/hsblhsn/hn.hsblhsn.me/commit/9185b21fc2b10356b8cf26cca0f521dd13f121e8))
+
 ## [1.30.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.29.2...v1.30.0) (2022-09-25)
 
 
