@@ -18,23 +18,26 @@ const StyledAppShell = styled(Block, ({ $theme }) => ({
   maxWidth: '38rem',
 }))
 
-function useDarkMode() {
-  const [isDark, setIsDark] = useState(
+function useTheme() {
+  const [theme, setTheme] = useState(
     window.matchMedia &&
       window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? DARK_THEME
+      : LIGHT_THEME
   )
   // setup theme change listener.
   useEffect(() => {
     const osTheme = window.matchMedia('(prefers-color-scheme: dark)')
     const changeTheme = (e: MediaQueryListEvent) => {
-      setIsDark(e.matches)
+      const shouldUseDarkTheme = e.matches
+      setTheme(shouldUseDarkTheme ? DARK_THEME : LIGHT_THEME)
     }
     osTheme.addEventListener('change', changeTheme)
     return () => {
       osTheme.removeEventListener('change', changeTheme)
     }
   }, [])
-  return isDark
+  return theme
 }
 
 interface AppProps {
@@ -42,9 +45,13 @@ interface AppProps {
 }
 
 const App: React.FC<AppProps> = ({ children }: AppProps) => {
-  const isDark = useDarkMode()
+  const theme = useTheme()
+  useEffect(() => {
+    console.log('setting theme')
+    document.body.style.backgroundColor = theme.colors.backgroundSecondary
+  }, [theme])
   return (
-    <BaseProvider theme={isDark ? DARK_THEME : LIGHT_THEME}>
+    <BaseProvider theme={theme}>
       <ConfigProvider>
         <StyledAppShell>{children}</StyledAppShell>
       </ConfigProvider>
