@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.32.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.31.0...v1.32.0) (2022-09-26)
+
+
+### Features
+
+* **ui:** hide navbar on scroll. ([81c5fe5](https://github.com/hsblhsn/hn.hsblhsn.me/commit/81c5fe5367cfba2c629a1ce6fefaaa3586b81fb5))
+
 ## [1.31.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.30.0...v1.31.0) (2022-09-26)
 
 
