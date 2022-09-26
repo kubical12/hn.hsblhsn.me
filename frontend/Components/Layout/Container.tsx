@@ -1,5 +1,5 @@
 import { Grid, Cell, BEHAVIOR } from 'baseui/layout-grid'
-import { Fragment } from 'react'
+import { Block } from 'baseui/block'
 
 type ContainerProps = {
   left: JSX.Element
@@ -9,7 +9,7 @@ type ContainerProps = {
 
 export function Container(props: ContainerProps) {
   return (
-    <Fragment>
+    <Block className="animate__animated animate__fadeIn animate__faster">
       <Grid
         behavior={BEHAVIOR.fixed}
         gridColumns={[4, 8, 16]}
@@ -21,6 +21,6 @@ export function Container(props: ContainerProps) {
         <Cell span={[4, 6, 10]}>{props.center}</Cell>
         <Cell span={[0, 1, 3]}>{props.right}</Cell>
       </Grid>
-    </Fragment>
+    </Block>
   )
 }

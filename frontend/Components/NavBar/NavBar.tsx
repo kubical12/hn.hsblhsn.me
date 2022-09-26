@@ -169,7 +169,7 @@ const Logo: React.FC = () => {
       }}
     >
       <span
-        className="flex-1 h-6 w-6 text-center mx-2"
+        className="flex-1 h-6 w-6 text-center mx-2 animate__animated animate__fadeIn"
         style={{
           backgroundColor: theme.colors.accent,
         }}

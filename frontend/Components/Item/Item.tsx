@@ -42,7 +42,10 @@ const Item: React.FC<ItemProps> = ({ item }: ItemProps) => {
   }
 
   return (
-    <Block paddingTop={theme.sizing.scale600}>
+    <Block
+      paddingTop={theme.sizing.scale600}
+      className="animate__animated animate__fadeIn"
+    >
       <SnackbarProvider>
         <Header item={item} />
         <Content item={item} />

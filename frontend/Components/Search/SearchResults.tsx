@@ -25,7 +25,7 @@ const SearchResults = ({
 
   if (results && results.edges.length === 0) {
     return (
-      <PaddedBlock>
+      <PaddedBlock className="animate__animated animate__fadeIn animate__faster">
         <ParagraphMedium
           className={css({
             textAlign: 'center',
