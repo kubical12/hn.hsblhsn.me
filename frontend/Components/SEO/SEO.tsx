@@ -12,15 +12,18 @@ interface SEOProps {
 const SEO: React.FC<SEOProps> = (props: SEOProps) => {
   const config = useContext(ConfigContext)
   let imageUrl = props.imageUrl
-  if (props.title !== '') {
+  if (props.title) {
     let title = props.title
     const trimSuffix = '| Hacker News'
     if (props.title.endsWith(trimSuffix)) {
       title = props.title.substring(0, props.title.length - trimSuffix.length)
     }
-    imageUrl = `${
-      config.host
-    }/images/social_preview.jpeg?title=${encodeURIComponent(title)}`
+    // Only large and quality thumbnails are used
+    if (title.length > 8) {
+      imageUrl = `${
+        config.host
+      }/images/social_preview.jpeg?title=${encodeURIComponent(title)}`
+    }
   }
   if (!imageUrl || imageUrl.length === 0) {
     imageUrl = `${config.host}/og-banner.jpg`
