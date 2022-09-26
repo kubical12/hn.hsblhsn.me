@@ -26,21 +26,39 @@ const NavBar: React.FC<NavBarProps> = () => {
         overrides={{
           Grid: {
             style: {
-              position: 'relative',
-              top: 0,
               backgroundColor: theme.colors.backgroundSecondary,
+              position: 'relative',
               marginLeft: 'auto',
               marginRight: 'auto',
+              width: '100%',
+              [theme.mediaQuery.medium]: {
+                position: 'fixed',
+                top: 1,
+                zIndex: 9,
+                marginLeft: 'auto',
+                marginRight: 'auto',
+              },
             },
           },
         }}
       >
         <Cell span={[4, 8, 12]}>
-          <div className="flex items-left justify-left pl-2 pt-2 md:hidden">
+          <Block
+            $style={{
+              display: 'flex',
+              alignItems: 'items-left',
+              justifyContent: 'justify-left',
+              paddingLeft: '1rem',
+              paddingTop: '1rem',
+              [theme.mediaQuery.medium]: {
+                display: 'none',
+              },
+            }}
+          >
             <Link to="/">
               <Logo />
             </Link>
-          </div>
+          </Block>
           <Block
             $style={{
               display: 'flex',
@@ -51,7 +69,20 @@ const NavBar: React.FC<NavBarProps> = () => {
             }}
           >
             <StyledNavigationList $align={ALIGN.left}>
-              <StyledNavigationItem className="hidden md:block py-4 mr-12 xl:mr-48">
+              <StyledNavigationItem
+                $style={{
+                  display: 'none',
+                  paddingRight: '1rem',
+                  paddingLeft: '1rem',
+                  marginRight: '3rem',
+                  [theme.mediaQuery.medium]: {
+                    display: 'block',
+                  },
+                  [theme.mediaQuery.large]: {
+                    marginRight: '12rem',
+                  },
+                }}
+              >
                 <Link to="/">
                   <Logo />
                 </Link>
@@ -76,6 +107,15 @@ const NavBar: React.FC<NavBarProps> = () => {
           </Block>
         </Cell>
       </Grid>
+      <Block
+        $style={{
+          display: 'none',
+          [theme.mediaQuery.medium]: {
+            display: 'block',
+            height: '3.5rem',
+          },
+        }}
+      />
     </Fragment>
   )
 }
