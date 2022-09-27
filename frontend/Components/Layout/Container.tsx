@@ -16,6 +16,13 @@ export function Container(props: ContainerProps) {
         gridMargins={[0, 0, 0]}
         gridGaps={0}
         gridMaxWidth={1200}
+        overrides={{
+          Grid: {
+            style: {
+              minHeight: '100vh',
+            },
+          },
+        }}
       >
         <Cell span={[0, 1, 3]}>{props.left}</Cell>
         <Cell span={[4, 6, 10]}>{props.center}</Cell>

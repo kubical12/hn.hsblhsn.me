@@ -17,6 +17,7 @@ import { relayStylePagination } from '@apollo/client/utilities'
 import { Routes } from './Routes'
 import { defaultConfig } from './app.config'
 import { NavBar } from './Components/NavBar'
+import { Footer } from './Components/Footer'
 
 const engine = new Styletron()
 
@@ -53,6 +54,7 @@ root.render(
             <App>
               <NavBar />
               <Routes />
+              <Footer />
             </App>
           </HelmetProvider>
         </BrowserRouter>
