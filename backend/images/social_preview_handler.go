@@ -4,6 +4,7 @@ import (
 	"image/jpeg"
 	"net/http"
 
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/logutil"
 	"go.uber.org/zap"
 )
 
@@ -28,7 +29,7 @@ func (h *SocialPreviewHandler) ServeHTTP(resp http.ResponseWriter, req *http.Req
 	if err != nil {
 		h.logger.Error(
 			"failed to encode generated social preview image",
-			zap.String("title", title),
+			zap.String("title", logutil.Sanitize(title)),
 			zap.Error(err),
 		)
 		writeBlankImage(resp)
@@ -40,7 +41,7 @@ func (h *SocialPreviewHandler) ServeHTTP(resp http.ResponseWriter, req *http.Req
 	if err != nil {
 		h.logger.Error(
 			"failed to encode generated social preview image",
-			zap.String("title", title),
+			zap.String("title", logutil.Sanitize(title)),
 			zap.Error(err),
 		)
 		writeBlankImage(resp)

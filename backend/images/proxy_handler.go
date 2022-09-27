@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/httpclient"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/logutil"
 	"go.uber.org/zap"
 )
 
@@ -25,28 +26,30 @@ func NewImageProxyHandler(client *httpclient.Client, logger *zap.Logger) *ImageP
 
 func (h *ImageProxyHandler) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	// get image size from query string
-	size := ImageSize(req.URL.Query().Get("size"))
+	size := ImageSize(logutil.Sanitize(req.URL.Query().Get("size")))
+	src := logutil.Sanitize(req.URL.Query().Get("src"))
 	if size == "" {
 		size = ImageSizeFull
 	}
+	logger := h.logger.With(zap.Stringer("size", size), zap.String("src", src))
+
 	// get image src from query string
-	src := req.URL.Query().Get("src")
 	if src == "" {
-		h.logger.Error("no src provided", zap.String("size", string(size)))
+		logger.Error("no src provided")
 		writeBlankImage(resp)
 		return
 	}
 	// get image from src
 	imgResp, err := h.client.Get(req.Context(), src)
 	if err != nil {
-		h.logger.Error("failed to get image", zap.String("size", string(size)), zap.String("src", src), zap.Error(err))
+		logger.Error("failed to get image", zap.Error(err))
 		writeBlankImage(resp)
 		return
 	}
 	// resize image
 	resized, err := Resize(imgResp.Body, size)
 	if err != nil {
-		h.logger.Error("failed to resize image", zap.String("size", string(size)), zap.String("src", src), zap.Error(err))
+		logger.Error("failed to resize image", zap.Error(err))
 		writeBlankImage(resp)
 		return
 	}
@@ -55,7 +58,7 @@ func (h *ImageProxyHandler) ServeHTTP(resp http.ResponseWriter, req *http.Reques
 		Quality: quality,
 	})
 	if err != nil {
-		h.logger.Error("failed to encode image", zap.String("size", string(size)), zap.String("src", src), zap.Error(err))
+		logger.Error("failed to encode image", zap.Error(err))
 		writeBlankImage(resp)
 		return
 	}
