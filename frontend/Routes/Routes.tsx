@@ -3,6 +3,7 @@ import HomePage from './HomePage'
 import { lazy, Suspense } from 'react'
 import { useStyletron } from 'baseui'
 import { Block } from 'baseui/block'
+import { Spinner } from 'baseui/spinner'
 
 const ItemPage = lazy(() => import('./ItemPage'))
 const SearchPage = lazy(() => import('./SearchPage'))
@@ -24,18 +25,26 @@ const Routes = () => (
 )
 
 const Fallback = () => {
-  const [css, theme] = useStyletron()
+  const [, theme] = useStyletron()
   return (
-    <Block className="animate-pulse">
-      <Block
-        className={css({
-          textAlign: 'center',
-          height: theme.sizing.scale100,
-          width: '100%',
-          marginTop: '-1px',
-          backgroundColor: theme.colors.backgroundAccent,
-        })}
-      ></Block>
+    <Block
+      $style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Block>
+        <Spinner
+          $style={{
+            width: '2rem',
+            height: '2rem',
+            marginTop: '4rem',
+          }}
+          $size="small"
+          $color={theme.colors.contentTertiary}
+        />
+      </Block>
     </Block>
   )
 }

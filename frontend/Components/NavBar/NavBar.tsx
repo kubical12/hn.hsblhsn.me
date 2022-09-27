@@ -112,7 +112,7 @@ const NavBar: React.FC<NavBarProps> = () => {
           display: 'none',
           [theme.mediaQuery.medium]: {
             display: 'block',
-            height: '3.5rem',
+            height: '3.8rem',
           },
         }}
       />
