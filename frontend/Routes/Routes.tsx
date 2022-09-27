@@ -32,6 +32,7 @@ const Fallback = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        marginBottom: '100vh',
       }}
     >
       <Block>
