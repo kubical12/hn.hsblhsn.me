@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.36.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.35.0...v1.36.0) (2022-09-27)
+
+
+### Features
+
+* **ui:** add footer section to provide a little context about it. ([c204489](https://github.com/hsblhsn/hn.hsblhsn.me/commit/c20448928a8a1bae721e8765a67a5d7763c6c6dd))
+
 ## [1.35.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.34.0...v1.35.0) (2022-09-27)
 
 
