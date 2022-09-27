@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.37.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.36.0...v1.37.0) (2022-09-27)
+
+
+### Features
+
+* **security:** sanitize logs before puting it in logs. ([c1856f2](https://github.com/hsblhsn/hn.hsblhsn.me/commit/c1856f21b7ae3bdea73a355a5e3c26eb847a5104))
+
 ## [1.36.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.35.0...v1.36.0) (2022-09-27)
 
 
