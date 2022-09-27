@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	DefaultCacheExpiration = 10 * time.Minute
+	DefaultCacheExpiration = 3 * time.Minute
 )
 
 var _ Cache = (*bigcache.BigCache)(nil)
