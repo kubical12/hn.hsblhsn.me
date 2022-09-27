@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.38.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.37.0...v1.38.0) (2022-09-27)
+
+
+### Features
+
+* **ui:** never let the footer show up in first visual height. ([f65f23a](https://github.com/hsblhsn/hn.hsblhsn.me/commit/f65f23a5f06bda44d88a94ed49e04eefda10edf1))
+
 ## [1.37.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.36.0...v1.37.0) (2022-09-27)
 
 
