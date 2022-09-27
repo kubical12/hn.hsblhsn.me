@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.35.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.34.0...v1.35.0) (2022-09-27)
+
+
+### Features
+
+* **backend:** reduce cache time to improve data accuracy. ([1360993](https://github.com/hsblhsn/hn.hsblhsn.me/commit/13609937605fc2e359f45e56af0876101bb280b9))
+* **ui:** change the loader set as fallback. ([edc3210](https://github.com/hsblhsn/hn.hsblhsn.me/commit/edc3210b1fc433c0df83113fa582fef4654f19b0))
+
 ## [1.34.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.33.0...v1.34.0) (2022-09-26)
 
 
