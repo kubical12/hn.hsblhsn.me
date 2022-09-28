@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.38.2](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.38.1...v1.38.2) (2022-09-28)
+
+
+### Bug Fixes
+
+* **backend:** make timeout for 10 second for every request. ([99b5ca5](https://github.com/hsblhsn/hn.hsblhsn.me/commit/99b5ca5cee4aff3c072330beca4c9b425e3773c9))
+* **backend:** make timeout for 5 second for every query. ([1101f0e](https://github.com/hsblhsn/hn.hsblhsn.me/commit/1101f0e5e0165a6c867202a6b4e0b1a9c2819fc9))
+
 ## [1.38.1](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.38.0...v1.38.1) (2022-09-28)
 
 
