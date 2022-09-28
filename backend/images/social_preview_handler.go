@@ -4,7 +4,6 @@ import (
 	"image/jpeg"
 	"net/http"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/logutil"
 	"go.uber.org/zap"
 )
 
@@ -25,26 +24,28 @@ func (h *SocialPreviewHandler) ServeHTTP(resp http.ResponseWriter, req *http.Req
 	if title == "" {
 		title = "Hackernews client focused on content and readability"
 	}
+	logger := h.logger.With(
+		zap.String("component", "social_preview"),
+		zap.String("title", title),
+	)
 	img, err := h.generator.Generate(title)
 	if err != nil {
-		h.logger.Error(
+		logger.Error(
 			"failed to encode generated social preview image",
-			zap.String("title", logutil.Sanitize(title)),
 			zap.Error(err),
 		)
-		writeBlankImage(resp)
+		writeBlankImage(resp, logger)
 		return
 	}
 	err = jpeg.Encode(resp, img, &jpeg.Options{
 		Quality: 85,
 	})
 	if err != nil {
-		h.logger.Error(
+		logger.Error(
 			"failed to encode generated social preview image",
-			zap.String("title", logutil.Sanitize(title)),
 			zap.Error(err),
 		)
-		writeBlankImage(resp)
+		writeBlankImage(resp, logger)
 		return
 	}
 }

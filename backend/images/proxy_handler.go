@@ -36,21 +36,21 @@ func (h *ImageProxyHandler) ServeHTTP(resp http.ResponseWriter, req *http.Reques
 	// get image src from query string
 	if src == "" {
 		logger.Error("no src provided")
-		writeBlankImage(resp)
+		writeBlankImage(resp, logger)
 		return
 	}
 	// get image from src
 	imgResp, err := h.client.Get(req.Context(), src)
 	if err != nil {
 		logger.Error("failed to get image", zap.Error(err))
-		writeBlankImage(resp)
+		writeBlankImage(resp, logger)
 		return
 	}
 	// resize image
 	resized, err := Resize(imgResp.Body, size)
 	if err != nil {
 		logger.Error("failed to resize image", zap.Error(err))
-		writeBlankImage(resp)
+		writeBlankImage(resp, logger)
 		return
 	}
 
@@ -59,7 +59,7 @@ func (h *ImageProxyHandler) ServeHTTP(resp http.ResponseWriter, req *http.Reques
 	})
 	if err != nil {
 		logger.Error("failed to encode image", zap.Error(err))
-		writeBlankImage(resp)
+		writeBlankImage(resp, logger)
 		return
 	}
 }
@@ -68,9 +68,9 @@ func blankImage() image.Image {
 	return image.NewRGBA(image.Rect(0, 0, 1, 1))
 }
 
-func writeBlankImage(w http.ResponseWriter) {
+func writeBlankImage(w http.ResponseWriter, logger *zap.Logger) {
 	w.WriteHeader(http.StatusOK)
 	if err := jpeg.Encode(w, blankImage(), &jpeg.Options{Quality: quality}); err != nil {
-		panic(err)
+		logger.Error("failed to write blank image", zap.Error(err))
 	}
 }
