@@ -25,7 +25,7 @@ type (
 const (
 	MaxQueryComplexity     = 300
 	complexityNetworkField = 1
-	DefaultTimeout         = time.Second * 10
+	DefaultTimeout         = time.Second * 5
 )
 
 func getHTMLFieldComplexity() int {
