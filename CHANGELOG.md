@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.38.1](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.38.0...v1.38.1) (2022-09-28)
+
+
+### Bug Fixes
+
+* **backend:** DO NOT PANIC! ([60a97ed](https://github.com/hsblhsn/hn.hsblhsn.me/commit/60a97eda244e1f156556d92292ff1a148fd9b3bf))
+* **ui:** add border to bnw logo. ([1a61d2a](https://github.com/hsblhsn/hn.hsblhsn.me/commit/1a61d2a16d4afa3f29daf48277f9ee9bbc749220)), closes [#341](https://github.com/hsblhsn/hn.hsblhsn.me/issues/341)
+* **ui:** do not flash list page ([bc38bc0](https://github.com/hsblhsn/hn.hsblhsn.me/commit/bc38bc0789abd884cbce668e87553958a03798e0)), closes [#342](https://github.com/hsblhsn/hn.hsblhsn.me/issues/342)
+
 ## [1.38.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.37.0...v1.38.0) (2022-09-27)
 
 
