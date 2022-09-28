@@ -19,7 +19,7 @@ const ItemCardList: React.FC<ItemCardListProps> = ({
 }: ItemCardListProps) => {
   const config = useContext(ConfigContext)
   return (
-    <Block className="animate__animated animate__fadeIn animate__faster">
+    <Block>
       {items.edges.map((edge, index) => {
         const item = edge.node
         if (!item) {
