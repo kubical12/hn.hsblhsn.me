@@ -86,6 +86,9 @@ const Logo: React.FC = () => {
           style={{
             backgroundColor: theme.colors.mono500,
             color: theme.colors.contentTertiary,
+            borderWidth: 1,
+            borderStyle: 'solid',
+            borderColor: theme.colors.borderSelected,
           }}
         >
           H
