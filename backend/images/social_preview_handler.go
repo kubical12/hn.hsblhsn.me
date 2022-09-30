@@ -1,6 +1,7 @@
 package images
 
 import (
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/logutil"
 	"image/jpeg"
 	"net/http"
 
@@ -26,7 +27,7 @@ func (h *SocialPreviewHandler) ServeHTTP(resp http.ResponseWriter, req *http.Req
 	}
 	logger := h.logger.With(
 		zap.String("component", "social_preview"),
-		zap.String("title", title),
+		zap.String("title", logutil.Sanitize(title)),
 	)
 	img, err := h.generator.Generate(title)
 	if err != nil {
