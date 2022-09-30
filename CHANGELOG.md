@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.39.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.38.2...v1.39.0) (2022-09-30)
+
+
+### Features
+
+* add smoke test to detect anomalies ([#345](https://github.com/hsblhsn/hn.hsblhsn.me/issues/345)) ([15b34e5](https://github.com/hsblhsn/hn.hsblhsn.me/commit/15b34e5277a709b7ac79bf3aeb282dcaaa2bf161))
+
+
+### Bug Fixes
+
+* **security:** sanitize title before logging. ([fa5b7c5](https://github.com/hsblhsn/hn.hsblhsn.me/commit/fa5b7c50fbffc34247364a2772f5ac7ea86175b6))
+
 ## [1.38.2](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.38.1...v1.38.2) (2022-09-28)
 
 
