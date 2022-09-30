@@ -25,7 +25,7 @@ require (
 	go.opentelemetry.io/otel v1.10.0
 	go.opentelemetry.io/otel/sdk v1.10.0
 	go.opentelemetry.io/otel/trace v1.10.0
-	go.uber.org/fx v1.18.1
+	go.uber.org/fx v1.18.2
 	go.uber.org/zap v1.23.0
 	golang.org/x/image v0.0.0-20220902085622-e7cb96979f69
 	google.golang.org/grpc v1.49.0
@@ -49,7 +49,7 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/pprof v0.0.0-20220829040838-70bd9ae97f40 // indirect
-	github.com/googleapis/enterprise-certificate-proxy v0.1.0 // indirect
+	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
 	github.com/googleapis/gax-go/v2 v2.5.1 // indirect
 	github.com/gorilla/css v1.0.0 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
@@ -57,7 +57,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
-	github.com/urfave/cli/v2 v2.16.3 // indirect
+	github.com/urfave/cli/v2 v2.17.1 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
 	go.opencensus.io v0.23.0 // indirect
 	go.opentelemetry.io/contrib v1.10.0 // indirect
@@ -72,6 +72,6 @@ require (
 	golang.org/x/tools v0.1.12 // indirect
 	google.golang.org/api v0.98.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto v0.0.0-20220927151529-dcaddaf36704 // indirect
+	google.golang.org/genproto v0.0.0-20220929141241-1ce7b20da813 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

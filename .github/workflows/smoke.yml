@@ -1,9 +1,8 @@
 name: "Smoke Test"
 
 on:
-  push:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '25,55 * * * *'
 
 jobs:
   Analyze:
@@ -17,5 +16,5 @@ jobs:
             sudo mv hey_linux_amd64 /usr/local/bin/hey
       - name: Test
         run: |
-          hey -n 42000 -q 100 -c 100 \
+          hey -n 20000 -q 100 -c 50 \
           https://hn.hsblhsn.me/images/proxy.jpeg\?src\=https://hn.hsblhsn.me/images/social_preview.jpeg\?title\=ping
