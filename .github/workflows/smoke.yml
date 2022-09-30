@@ -1,0 +1,21 @@
+name: "Smoke Test"
+
+on:
+  push:
+  schedule:
+    - cron: '0 * * * *'
+
+jobs:
+  Analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        run: |
+          apt-get update && apt-get install wget -y
+          wget https://hey-release.s3.us-east-2.amazonaws.com/hey_linux_amd64 && \
+            chmod +x hey_linux_amd64 && \
+            sudo mv hey_linux_amd64 /usr/local/bin/hey
+      - name: Test
+        run: |
+          hey -n 42000 -q 100 -c 100 \
+          https://hn.hsblhsn.me/images/proxy.jpeg\?src\=https://hn.hsblhsn.me/images/social_preview.jpeg\?title\=ping
