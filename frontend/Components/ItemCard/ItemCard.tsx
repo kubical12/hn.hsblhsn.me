@@ -11,6 +11,7 @@ import {
   getLink,
   getTitle,
 } from '../commonutils'
+import { StyledLink } from 'baseui/link'
 
 interface ItemCardProps {
   item: Story | Job
@@ -30,9 +31,19 @@ const ItemCard: React.FC<ItemCardProps> = ({ item }: ItemCardProps) => {
       }}
     >
       <LabelXSmall color={theme.colors.contentTertiary}>
-        <a href={getLink(item.id, item.url)} target="_blank" rel="noreferrer">
+        <StyledLink
+          href={getLink(item.id, item.url)}
+          target="_blank"
+          rel="noreferrer"
+          $style={{
+            color: theme.colors.contentTertiary,
+            textDecoration: 'none',
+            fontSize: theme.sizing.scale400,
+            fontWeight: 700,
+          }}
+        >
           {getHost(item.id, item.url).toUpperCase()}
-        </a>
+        </StyledLink>
         &nbsp;&middot;&nbsp;&nbsp;{fromNow(item.time * 1000) || 'unknown time'}
       </LabelXSmall>
 

@@ -1,9 +1,10 @@
 package images
 
 import (
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/logutil"
 	"image/jpeg"
 	"net/http"
+
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/logutil"
 
 	"go.uber.org/zap"
 )

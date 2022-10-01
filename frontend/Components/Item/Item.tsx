@@ -76,7 +76,6 @@ const Header: React.FC<ItemProps> = ({ item }: ItemProps) => {
       <Block
         $style={{
           display: 'flex',
-          //justifyContent: 'space-between',
           alignItems: 'center',
         }}
       >
