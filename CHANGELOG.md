@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.39.2](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.39.1...v1.39.2) (2022-10-01)
+
+
+### Bug Fixes
+
+* **content:** replace `&[#39](https://github.com/hsblhsn/hn.hsblhsn.me/issues/39);` with `'` ([3767d9d](https://github.com/hsblhsn/hn.hsblhsn.me/commit/3767d9d1941d8e1d5cd4c237a2f0f8b187b7144f))
+
 ## [1.39.1](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.39.0...v1.39.1) (2022-10-01)
 
 
