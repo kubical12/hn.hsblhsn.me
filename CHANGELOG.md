@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.39.1](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.39.0...v1.39.1) (2022-10-01)
+
+
+### Bug Fixes
+
+* **ui:** maintain consistent style for website hostname. ([63da4fa](https://github.com/hsblhsn/hn.hsblhsn.me/commit/63da4fad2f2a3c48ca1bcea7ca048063305ae38f))
+
 ## [1.39.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.38.2...v1.39.0) (2022-09-30)
 
 
