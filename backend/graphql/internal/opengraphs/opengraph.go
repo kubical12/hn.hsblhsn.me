@@ -21,6 +21,7 @@ var replacer = strings.NewReplacer(
 	"&nbsp;", " ",
 	"&amp;", "&",
 	"&quot;", "\"",
+	"&#39;", "'",
 )
 
 func GetOpengraphData(uri string, content *bytes.Buffer) (*OpenGraph, error) {
