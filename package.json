@@ -12,7 +12,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "@apollo/client": "^3.6.10",
+    "@apollo/client": "^3.7.0",
     "animate.css": "^4.1.1",
     "awesome-debounce-promise": "^2.1.0",
     "baseui": "^12.1.3",
