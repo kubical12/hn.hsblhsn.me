@@ -5,7 +5,7 @@ go 1.18
 require (
 	cloud.google.com/go/profiler v0.3.0
 	github.com/99designs/gqlgen v0.17.20
-	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/trace v1.8.8
+	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/trace v1.9.0
 	github.com/PuerkitoBio/goquery v1.8.0
 	github.com/allegro/bigcache/v3 v3.0.2
 	github.com/blendle/zapdriver v1.3.1
@@ -37,7 +37,7 @@ require (
 	cloud.google.com/go/compute v1.10.0 // indirect
 	cloud.google.com/go/trace v1.2.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v0.32.8 // indirect
-	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.32.8 // indirect
+	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.33.0 // indirect
 	github.com/agnivade/levenshtein v1.1.1 // indirect
 	github.com/andybalholm/cascadia v1.3.1 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
