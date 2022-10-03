@@ -1,4 +1,4 @@
-FROM node:18.9.0-bullseye AS frontend-builder
+FROM node:18.10.0-bullseye AS frontend-builder
 WORKDIR /frontend
 COPY package.json package.json
 COPY package-lock.json package-lock.json
