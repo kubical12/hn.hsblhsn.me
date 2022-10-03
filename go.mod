@@ -18,7 +18,7 @@ require (
 	github.com/microcosm-cc/bluemonday v1.0.20
 	github.com/otiai10/opengraph/v2 v2.1.0
 	github.com/pkg/errors v0.9.1
-	github.com/ravilushqa/otelgqlgen v0.9.0
+	github.com/ravilushqa/otelgqlgen v0.10.0
 	github.com/stretchr/testify v1.8.0
 	github.com/vektah/gqlparser/v2 v2.5.1
 	go.opentelemetry.io/contrib/detectors/gcp v1.10.0
