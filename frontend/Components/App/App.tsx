@@ -6,6 +6,7 @@ import { ConfigProvider } from '../Config'
 const primitives = {
   accent: '#ff6600',
   accent100: '#ffc8a8',
+  borderAccent: '#ff6600',
 }
 const LIGHT_THEME = createLightTheme(primitives)
 const DARK_THEME = createDarkTheme(primitives)

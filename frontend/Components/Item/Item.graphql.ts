@@ -1,15 +1,14 @@
 import { gql } from '@apollo/client'
 import { COMMENT_THREAD_FIELDS } from '../CommentThread'
+import { USER_POPOVER_FIELDS } from '../UserPopover'
 
 const ITEM_FIELDS = gql`
   ${COMMENT_THREAD_FIELDS}
-  fragment AuthorFields on User {
-    id
-  }
+  ${USER_POPOVER_FIELDS}
   fragment ItemFields on Story {
     id
     by {
-      ...AuthorFields
+      ...UserPopoverFields
     }
     time
     url
@@ -35,7 +34,7 @@ const ITEM_FIELDS = gql`
   fragment JobFields on Job {
     id
     by {
-      ...AuthorFields
+      ...UserPopoverFields
     }
     time
     url

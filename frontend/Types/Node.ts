@@ -13,4 +13,5 @@ export interface EdgeT<T> {
 export interface ConnectionT<T> {
   edges: EdgeT<T>[]
   pageInfo: PageInfo
+  totalCount: number
 }

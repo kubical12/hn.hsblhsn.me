@@ -4,9 +4,9 @@ import { useStyletron } from 'baseui'
 import { CommentThread } from '../CommentThread'
 import React, { useState } from 'react'
 import './Comment.css'
-import { Comment as CommentT } from '../../Types'
-import { StyleProps } from '../../Types'
+import { Comment as CommentT, StyleProps } from '../../Types'
 import { fromNow } from '../commonutils'
+import { UserPopover } from '../UserPopover'
 
 interface CommentProps {
   comment: CommentT
@@ -30,13 +30,11 @@ const Comment: React.FC<CommentProps> = ({ comment }: CommentProps) => {
   return (
     <Block>
       <LabelXSmall
-        onClick={() => {
-          setIsExpanded(!isExpanded)
-        }}
         overrides={{
           Block: {
             style({ $theme }: StyleProps) {
               return {
+                display: 'flex',
                 marginTop: $theme.sizing.scale600,
                 paddingTop: $theme.sizing.scale300,
                 paddingBottom: $theme.sizing.scale100,
@@ -54,24 +52,35 @@ const Comment: React.FC<CommentProps> = ({ comment }: CommentProps) => {
           },
         }}
       >
-        <span className={color(theme.colors.accent)}>
-          {comment.deleted
-            ? '[deleted]'
-            : comment.dead
-            ? '[dead]'
-            : `@${comment.by.id}`}
-        </span>
-        <span className={color(theme.colors.contentSecondary)}>
+        <UserPopover user={comment.by}>
+          <span className={color(theme.colors.accent)}>
+            {comment.deleted
+              ? '[deleted]'
+              : comment.dead
+              ? '[dead]'
+              : `@${comment.by.id}`}
+          </span>
+        </UserPopover>
+        <div
+          style={{
+            cursor: 'pointer',
+            color: theme.colors.contentTertiary,
+            width: '100%',
+          }}
+          onClick={() => {
+            setIsExpanded(!isExpanded)
+          }}
+        >
           &nbsp;&middot;&nbsp;
           {comment.time ? fromNow(comment.time * 1000) : 'unknown'}
-        </span>
-        <span className={color(theme.colors.contentSecondary)}>
-          &nbsp;&nbsp;[{isExpanded ? 'close' : 'show'}]&nbsp;&nbsp;
-        </span>
+          <span className={color(theme.colors.contentSecondary)}>
+            &nbsp;&nbsp;{isExpanded ? '' : '[closed]'}&nbsp;&nbsp;
+          </span>
+        </div>
       </LabelXSmall>
       <Block display={isExpanded ? 'block' : 'none'}>
         <div
-          className="comment-reader-view-content"
+          className="comment-reader-view-content animate__animated animate__fadeIn"
           dangerouslySetInnerHTML={{ __html: comment.text || '' }}
         />
         <Block className="pl-3">

@@ -22,6 +22,7 @@ import { Popover } from 'baseui/popover'
 import { DURATION, SnackbarProvider, useSnackbar } from 'baseui/snackbar'
 import { ConfigContext } from '../Config'
 import { AdWindow, ArticleAd } from '../GoogleAds'
+import { UserPopover } from '../UserPopover'
 
 interface ItemProps {
   item: NodeT<Story | Job>
@@ -81,7 +82,9 @@ const Header: React.FC<ItemProps> = ({ item }: ItemProps) => {
       >
         <Block>
           <LabelXSmall>
-            <span className={color(theme.colors.accent)}>@{item.by.id}</span>
+            <UserPopover user={item.by}>
+              <span className={color(theme.colors.accent)}>@{item.by.id}</span>
+            </UserPopover>
             &nbsp;
             <span className={color(theme.colors.contentSecondary)}>
               &middot;&nbsp;{item.time ? fromNow(item.time * 1000) : 'unknown'}

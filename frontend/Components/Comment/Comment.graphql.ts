@@ -1,11 +1,13 @@
 import { gql } from '@apollo/client'
+import { USER_POPOVER_FIELDS } from '../UserPopover'
 
 const COMMENT_FIELDS = gql`
+  ${USER_POPOVER_FIELDS}
   fragment CommentContentFields on Comment {
     id
     type
     by {
-      id
+      ...UserPopoverFields
     }
     time
     text
