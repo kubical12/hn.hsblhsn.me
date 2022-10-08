@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.40.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.39.2...v1.40.0) (2022-10-08)
+
+
+### Features
+
+* **ui:** add user card to preview user info. ([#357](https://github.com/hsblhsn/hn.hsblhsn.me/issues/357)) ([7645b11](https://github.com/hsblhsn/hn.hsblhsn.me/commit/7645b11265745d3520ca7d87c5d77e8f7a897de3))
+
 ## [1.39.2](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.39.1...v1.39.2) (2022-10-01)
 
 
