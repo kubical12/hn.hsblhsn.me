@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.40.1](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.40.0...v1.40.1) (2022-10-11)
+
+
+### Bug Fixes
+
+* **telemetry:** add feature flag for opentelemetry ([77dfc3b](https://github.com/hsblhsn/hn.hsblhsn.me/commit/77dfc3b1f74edeaa3d5fb66f85019575832a0269))
+
 ## [1.40.0](https://github.com/hsblhsn/hn.hsblhsn.me/compare/v1.39.2...v1.40.0) (2022-10-08)
 
 
