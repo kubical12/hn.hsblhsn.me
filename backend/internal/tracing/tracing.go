@@ -5,6 +5,7 @@ import (
 	"os"
 
 	texporter "github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/trace"
+	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/featureflags"
 	"go.opentelemetry.io/contrib/detectors/gcp"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/sdk/resource"
@@ -16,6 +17,9 @@ import (
 )
 
 func New(lc fx.Lifecycle, logger *zap.Logger) (trace.TracerProvider, error) {
+	if featureflags.IsOn(featureflags.FeatureOpentelemetry, false) {
+		return trace.NewNoopTracerProvider(), nil
+	}
 	ctx := context.Background()
 	projectID := os.Getenv("GOOGLE_CLOUD_PROJECT")
 	exporter, err := texporter.New(texporter.WithProjectID(projectID))

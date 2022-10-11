@@ -6,6 +6,7 @@ const (
 	FeatureImgProxy         Feature = "image_proxy"
 	FeatureImgSocialPreview Feature = "image_social_preview"
 	FeatureReadability      Feature = "readability"
+	FeatureOpentelemetry    Feature = "opentelemetry"
 )
 
 type Feature string
