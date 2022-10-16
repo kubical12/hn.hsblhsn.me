@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.40.2](https://github.com/tasylab/hn.hsblhsn.me/compare/v1.40.1...v1.40.2) (2022-10-16)
+
+
+### Bug Fixes
+
+* logical bug on opentelemetry feature flag. ([a85eaa4](https://github.com/tasylab/hn.hsblhsn.me/commit/a85eaa46c4ea6499066eed30a953676ad4cea514))
+
 ## [1.40.1](https://github.com/tasylab/hn.hsblhsn.me/compare/v1.40.0...v1.40.1) (2022-10-11)
 
 
