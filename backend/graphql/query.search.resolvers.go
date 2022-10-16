@@ -7,10 +7,10 @@ import (
 	"context"
 	"strconv"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/algolia"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/msgerr"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/relays"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/model"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/algolia"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/msgerr"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/relays"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/model"
 )
 
 // Search is the resolver for the search field.

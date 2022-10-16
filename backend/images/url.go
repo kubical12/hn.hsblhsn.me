@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/featureflags"
+	"github.com/tasylab/hn.hsblhsn.me/backend/internal/featureflags"
 )
 
 func ProxiedURL(src string, size ImageSize) string {

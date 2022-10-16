@@ -15,10 +15,10 @@ import (
 	"cloud.google.com/go/profiler"
 	"github.com/blendle/zapdriver"
 	"github.com/gorilla/mux"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql"
-	"github.com/hsblhsn/hn.hsblhsn.me/frontend"
 	"github.com/pkg/errors"
+	"github.com/tasylab/hn.hsblhsn.me/backend"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql"
+	"github.com/tasylab/hn.hsblhsn.me/frontend"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
 )

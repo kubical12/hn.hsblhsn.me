@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/99designs/gqlgen/graphql"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/msgerr"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/msgerr"
 )
 
 type Extension struct {

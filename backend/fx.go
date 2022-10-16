@@ -1,10 +1,10 @@
 package backend
 
 import (
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/images"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/caches"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/httpclient"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/tracing"
+	"github.com/tasylab/hn.hsblhsn.me/backend/images"
+	"github.com/tasylab/hn.hsblhsn.me/backend/internal/caches"
+	"github.com/tasylab/hn.hsblhsn.me/backend/internal/httpclient"
+	"github.com/tasylab/hn.hsblhsn.me/backend/internal/tracing"
 	"go.uber.org/fx"
 )
 

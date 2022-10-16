@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/readerviews"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/httpclient"
 	"github.com/pkg/errors"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/readerviews"
+	"github.com/tasylab/hn.hsblhsn.me/backend/internal/httpclient"
 )
 
 type HackerNews struct {

@@ -5,9 +5,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/grpc/readabilityclient"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/grpc/readabilityserver"
 	"github.com/pkg/errors"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/grpc/readabilityclient"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/grpc/readabilityserver"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

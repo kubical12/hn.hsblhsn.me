@@ -4,7 +4,7 @@ import (
 	"image/jpeg"
 	"net/http"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/logutil"
+	"github.com/tasylab/hn.hsblhsn.me/backend/internal/logutil"
 
 	"go.uber.org/zap"
 )

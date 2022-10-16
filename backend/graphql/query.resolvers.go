@@ -6,10 +6,10 @@ package graphql
 import (
 	"context"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/generated"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/hackernews"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/msgerr"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/model"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/generated"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/hackernews"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/msgerr"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/model"
 )
 
 // Node is the resolver for the node field.

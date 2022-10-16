@@ -8,8 +8,8 @@ import (
 	"crypto/md5" //nolint:gosec // not a cryptographic operation
 	"encoding/hex"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/generated"
 	opengraph "github.com/otiai10/opengraph/v2"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/generated"
 )
 
 // ID is the resolver for the id field.

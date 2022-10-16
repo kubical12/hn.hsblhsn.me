@@ -8,8 +8,8 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/httpclient"
 	"github.com/pkg/errors"
+	"github.com/tasylab/hn.hsblhsn.me/backend/internal/httpclient"
 )
 
 type Algolia struct {

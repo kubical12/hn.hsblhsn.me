@@ -3,9 +3,9 @@ package model
 import (
 	"context"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/hackernews"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/opengraphs"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/relays"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/hackernews"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/opengraphs"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/relays"
 )
 
 type Story struct {

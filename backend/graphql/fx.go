@@ -1,11 +1,11 @@
 package graphql
 
 import (
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/algolia"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/grpc/readabilityserver"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/hackernews"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/relays"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/model"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/algolia"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/grpc/readabilityserver"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/hackernews"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/relays"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/model"
 	"go.uber.org/fx"
 )
 

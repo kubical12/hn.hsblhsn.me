@@ -47,7 +47,7 @@ const Footer: React.FC = () => {
             <a
               rel="noreferrer"
               target="_blank"
-              href="https://github.com/hsblhsn/hn.hsblhsn.me"
+              href="https://github.com/tasylab/hn.hsblhsn.me"
               style={{
                 textDecoration: 'underline',
               }}

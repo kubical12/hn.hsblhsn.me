@@ -4,8 +4,8 @@ import (
 	"regexp"
 	"strconv"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/relays"
 	"github.com/pkg/errors"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/relays"
 )
 
 const host = "https://hacker-news.firebaseio.com"

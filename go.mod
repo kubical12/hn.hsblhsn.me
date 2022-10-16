@@ -1,4 +1,4 @@
-module github.com/hsblhsn/hn.hsblhsn.me
+module github.com/tasylab/hn.hsblhsn.me
 
 go 1.19
 

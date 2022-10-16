@@ -5,7 +5,7 @@ import (
 	"os"
 
 	texporter "github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/trace"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/featureflags"
+	"github.com/tasylab/hn.hsblhsn.me/backend/internal/featureflags"
 	"go.opentelemetry.io/contrib/detectors/gcp"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/sdk/resource"

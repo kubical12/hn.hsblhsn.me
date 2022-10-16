@@ -1,8 +1,8 @@
 package graphql
 
 import (
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/algolia"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/hackernews"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/algolia"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/hackernews"
 )
 
 // This file will not be regenerated automatically.

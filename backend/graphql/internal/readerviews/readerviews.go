@@ -12,9 +12,9 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/grpc/readabilityclient"
-	images2 "github.com/hsblhsn/hn.hsblhsn.me/backend/images"
 	"github.com/pkg/errors"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/grpc/readabilityclient"
+	images2 "github.com/tasylab/hn.hsblhsn.me/backend/images"
 )
 
 const (

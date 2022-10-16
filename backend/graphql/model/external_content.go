@@ -7,12 +7,12 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/opengraphs"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/readerviews"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/cquality"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/internal/featureflags"
-	httpclient2 "github.com/hsblhsn/hn.hsblhsn.me/backend/internal/httpclient"
 	"github.com/pkg/errors"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/opengraphs"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/readerviews"
+	"github.com/tasylab/hn.hsblhsn.me/backend/internal/cquality"
+	"github.com/tasylab/hn.hsblhsn.me/backend/internal/featureflags"
+	httpclient2 "github.com/tasylab/hn.hsblhsn.me/backend/internal/httpclient"
 	"go.uber.org/zap"
 )
 

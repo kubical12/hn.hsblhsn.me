@@ -3,10 +3,10 @@ package graphql
 import (
 	"fmt"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/hackernews"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/msgerr"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/model"
 	"github.com/pkg/errors"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/hackernews"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/msgerr"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/model"
 )
 
 func ItemToNode(resp *hackernews.ItemResponse) (model.Node, error) {

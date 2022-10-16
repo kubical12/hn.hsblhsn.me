@@ -6,10 +6,10 @@ package graphql
 import (
 	"context"
 
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/generated"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/msgerr"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/internal/relays"
-	"github.com/hsblhsn/hn.hsblhsn.me/backend/graphql/model"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/generated"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/msgerr"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/internal/relays"
+	"github.com/tasylab/hn.hsblhsn.me/backend/graphql/model"
 )
 
 // Type is the resolver for the type field.
