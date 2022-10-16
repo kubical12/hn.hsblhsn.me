@@ -17,7 +17,7 @@ import (
 )
 
 func New(lc fx.Lifecycle, logger *zap.Logger) (trace.TracerProvider, error) {
-	if featureflags.IsOn(featureflags.FeatureOpentelemetry, false) {
+	if !featureflags.IsOn(featureflags.FeatureOpentelemetry, false) {
 		return trace.NewNoopTracerProvider(), nil
 	}
 	ctx := context.Background()
