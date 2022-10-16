@@ -7,6 +7,13 @@ dep-frontend:
 dep:
 	@make dep-backend dep-readability dep-frontend
 
+dep-update-backend:
+	@go get -u all
+dep-update-fronted:
+	@ncu -u && npm install
+dep-update:
+	@make dep-update-backend dep-update-fronted
+
 
 lint-backend:
 	@golangci-lint run --fix ./... && go mod tidy
